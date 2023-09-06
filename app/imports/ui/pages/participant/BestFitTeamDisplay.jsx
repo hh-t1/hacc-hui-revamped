@@ -1,7 +1,6 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Loader } from 'semantic-ui-react';
-import { Container, Dropdown, Card, Row, Col,  } from 'react-bootstrap';
+import { Container, Dropdown, Card, Row, Col } from 'react-bootstrap';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -124,10 +123,6 @@ class BestTeam extends React.Component {
       </Row>
       <hr />
     </div>;
-  }
-
-  render() {
-    return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
 
   renderPage() {
