@@ -1,12 +1,15 @@
 import React from 'react';
-import { Header, Segment, Form } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
+import { Card, Col, Container, Row } from 'react-bootstrap';
 import {
-  AutoForm, BoolField,
-  LongTextField, SelectField,
+  AutoForm,
+  BoolField,
+  SelectField,
   SubmitField,
   TextField,
-} from 'uniforms-semantic';
+  LongTextField,
+} from 'uniforms-bootstrap5';
+
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
@@ -19,7 +22,7 @@ import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
 import { demographicLevels } from '../../../api/level/Levels';
-import MultiSelectField from '../form-fields/MultiSelectField';
+// import MultiSelectField from '../form-fields/MultiSelectField';
 import { ROUTES } from '../../../startup/client/route-constants';
 import { Slugs } from '../../../api/slug/SlugCollection';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
@@ -57,7 +60,7 @@ class CreateProfileWidget extends React.Component {
     return schema;
   }
 
-  submit(data) {
+  submit(data, formRef) {
     const collectionName = Participants.getCollectionName();
     const updateData = {};
     updateData.id = data._id;
@@ -116,6 +119,7 @@ class CreateProfileWidget extends React.Component {
           icon: 'success',
           text: 'Your profile is updated.',
         });
+        formRef.reset();
       }
     });
     this.setState({ redirectToReferer: true });
@@ -131,37 +135,66 @@ class CreateProfileWidget extends React.Component {
       return <Redirect to={from} />;
     }
     return (
-        <Segment>
-          <Header dividing>Hello {firstname}, this is your first time to login, so please fill out your profile</Header>
-          <AutoForm schema={formSchema} model={model} onSubmit={data => {
-            this.submit(data);
-          }}>
-            <Form.Group widths="equal">
-              <TextField name="username" disabled />
-              <BoolField name="isCompliant" disabled />
-            </Form.Group>
-            <Form.Group widths="equal">
-              <TextField name="firstName" />
-              <TextField name="lastName" />
-              <SelectField name="demographicLevel" />
-            </Form.Group>
-            <Form.Group widths="equal">
-              <TextField name="linkedIn" />
-              <TextField name="gitHub" />
-              <TextField name="slackUsername" />
-            </Form.Group>
-            <Form.Group widths="equal">
-              <TextField name="website" />
-              <LongTextField name="aboutMe" />
-            </Form.Group>
-            <MultiSelectField name="challenges" />
-            <Form.Group widths="equal">
-              <MultiSelectField name="skills" />
-              <MultiSelectField name="tools" />
-            </Form.Group>
-            <SubmitField />
-          </AutoForm>
-        </Segment>
+        <Container className="justify-content-center my-3">
+          <Row className="justify-content-center">
+            <Col className="text-center my-2">
+              <h2>Hello {firstname}, this is your first time logging in, please tells us more about yourself! </h2>
+              <h2>You can always change this later</h2>
+            </Col>
+            <AutoForm schema={formSchema} model={model} onSubmit={data => {
+              this.submit(data);
+            }}>
+              <Card>
+                <Card.Body>
+                  <Row>
+                    <Col>
+                      <TextField name="username" disabled/>
+                      <BoolField name="isCompliant" disabled/>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <TextField name="firstName" />
+                    </Col>
+                    <Col>
+                      <TextField name="lastName" />
+                    </Col>
+                    <Col>
+                      <SelectField name="demographicLevel" />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <TextField name="linkedIn" />
+                    </Col>
+                    <Col>
+                      <TextField name="gitHub" />
+                    </Col>
+                    <Col>
+                      <TextField name="slackUsername" />
+                    </Col>
+                  </Row>
+                  {/* <Row> */}
+                  {/*  <Col> */}
+                  {/*    <MultiSelectField name="challenges" /> */}
+                  {/*  </Col> */}
+                  {/*  <Col> */}
+                  {/*    <MultiSelectField name="skills" /> */}
+                  {/*  </Col> */}
+                  {/*  <Col> */}
+                  {/*    <MultiSelectField name="tools" /> */}
+                  {/*  </Col> */}
+                  {/* </Row> */}
+                  <Row>
+                    <TextField name="website" />
+                    <LongTextField name="aboutMe" />
+                  </Row>
+                  <SubmitField />
+                </Card.Body>
+              </Card>
+            </AutoForm>
+          </Row>
+        </Container>
     );
   }
 }
