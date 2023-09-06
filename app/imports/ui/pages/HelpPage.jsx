@@ -19,7 +19,7 @@ const HelpPage = () => (
     <p>GENERAL</p>
     <hr />
 
-    <Row style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+    <Row>
       <Col style={{ paddingTop: '30px' }}>
         <h1>
           <b>How do I Register?</b>
@@ -58,7 +58,7 @@ const HelpPage = () => (
     <p>TEAM MANAGEMENT</p>
     <hr />
 
-    <Row style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+    <Row>
       <Col style={{ paddingTop: '30px' }}>
         <h1>
           <b>Where can I find Teammates?</b>
