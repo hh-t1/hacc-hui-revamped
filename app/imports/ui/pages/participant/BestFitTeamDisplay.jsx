@@ -1,6 +1,7 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Container, Header, Loader, Grid, Dropdown, Segment, Card } from 'semantic-ui-react';
+import { Loader } from 'semantic-ui-react';
+import { Container, Dropdown, Card, Row, Col,  } from 'react-bootstrap';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -112,15 +113,15 @@ class BestTeam extends React.Component {
       { key: 4, text: 'sort the teams by the name in alphabet order', value: 'AToZ' },
     ];
     return <div>
-      <Grid stackable columns={2} style={{ paddingTop: '1rem' }}>
-        <Grid.Column width={7}>
-          <Header>Please select a filter to reorder the teams: </Header>
-        </Grid.Column>
-        <Grid.Column>
+      <Row stackable columns={2} style={{ paddingTop: '1rem' }}>
+        <Col width={7}>
+          <Row>Please select a filter to reorder the teams: </Row>
+        </Col>
+        <Col>
           <Dropdown style={{ fontSize: `${20}px`, width: 'device-width' }} options={options} onChange={_select}
                     placeholder="Select an option to reorder the team" />
-        </Grid.Column>
-      </Grid>
+        </Col>
+      </Row>
       <hr />
     </div>;
   }
@@ -149,18 +150,16 @@ class BestTeam extends React.Component {
     }
     return (
         <div style={{ paddingBottom: '50px', paddingTop: '40px' }}>
-          <Container>
-            <Segment style={paleBlueStyle}>
-              <Header as={'h2'} textAlign="center">
-                Open Teams
-              </Header>
-              <Card fluid>
-                {this.renderDropDown()}
-                <div style={{ paddingTop: '1rem', paddingBottom: '2rem' }}>
-                  <ListTeamsWidget teams={teams} />
-                </div>
-              </Card>
-            </Segment>
+          <Container style={paleBlueStyle}>
+            <Col as={'h2'} textAlign="center">
+              Open Teams
+            </Col>
+            <Card fluid>
+              {this.renderDropDown()}
+              <div style={{ paddingTop: '1rem', paddingBottom: '2rem' }}>
+                <ListTeamsWidget teams={teams} />
+              </div>
+            </Card>
           </Container>
         </div>
     );
