@@ -1,47 +1,49 @@
 import React from 'react';
-import { Header, Divider, Segment, Grid } from 'semantic-ui-react';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { Link } from 'react-router-dom';
 
-class HelpPage extends React.Component {
-  render() {
-    return (
-        <Segment style = {{ margin: '30px', backgroundColor: '#E5F0FE' }}>
-        <div style={{ textAlign: 'center' }}>
-        <p
-          style={{
-            fontSize: '40px',
-            paddingTop: '20px',
-          }}
-        >
-          Questions By Category
-        </p>
-         <Divider horizontal>GENERAL</Divider>
-          <Grid columns={2} container doubling relaxed stackable style={{ display: 'block',
-            marginLeft: 'auto', marginRight: 'auto' }}>
-            <Grid.Column width={7} style={{ paddingTop: '30px' }}>
-              <Header as='h1' textAlign='center'>
-                <b>How do I Register?</b>
-              </Header>
-        <Header textAlign='center'>
+const HelpPage = () => (
+  <Container
+    style={{
+      margin: '30px',
+      backgroundColor: '#E5F0FE',
+      textAlign: 'center',
+    }}
+  >
+    <p style={{ fontSize: '40px', paddingTop: '20px' }}>
+      Questions By Category
+    </p>
+    <hr />
+    <p>GENERAL</p>
+    <hr />
+
+    <Row style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+      <Col style={{ paddingTop: '30px' }}>
+        <h1>
+          <b>How do I Register?</b>
+        </h1>
+        <h2>
           <a href={'https://slack.com/signin#/signin'}>
             Join The Slack Workspace
           </a>
-        </Header>
+        </h2>
         <p>
           <b>
             You will need to make a Slack account if you do not have a
-            pre-existing one <br></br> Join the Slack Workspace and type
-            &apos;register&apos; <br></br> You will then be given a username and password
-            to login.
+            pre-existing one. <br />
+            Join the Slack Workspace and type register. <br />
+            You will then be given a username and password to login.
           </b>
         </p>
-            </Grid.Column>
+      </Col>
 
-      <Grid.Column width={7} style={{ paddingTop: '30px' }}>
+      <Col style={{ paddingTop: '30px' }}>
         <div>
-          <Header as='h1' textAlign='center'>
+          <h1>
             <b>What is HACC HUI?</b>
-          </Header>
+          </h1>
           <h4>
             <b>
               HACC HUI is an official HACC 2022 site to help participants create
@@ -49,23 +51,21 @@ class HelpPage extends React.Component {
             </b>
           </h4>
         </div>
-      </Grid.Column>
-          </Grid>
+      </Col>
+    </Row>
 
-          <Divider horizontal style={{ paddingTop: '40px' }}>
-          TEAM MANAGEMENT
-        </Divider>
-          <Grid columns={2} container doubling relaxed stackable style={{ display: 'block',
-            marginLeft: 'auto', marginRight: 'auto' }}>
-            <Grid.Column width={7} style={{ paddingTop: '30px' }}>
-        <Header as='h1' textAlign='center'>
+    <hr />
+    <p>TEAM MANAGEMENT</p>
+    <hr />
+
+    <Row style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+      <Col style={{ paddingTop: '30px' }}>
+        <h1>
           <b>Where can I find Teammates?</b>
-        </Header>
-        <Header textAlign='center'>
-          <Link to='list-participants'>
-            <text>List Participants Page</text>
-          </Link>
-        </Header>
+        </h1>
+        <h2>
+          <Link to="list-participants">List Participants Page</Link>
+        </h2>
         <p>
           <b>
             You can view/send an invitation to all participants through this
@@ -73,44 +73,38 @@ class HelpPage extends React.Component {
           </b>
         </p>
 
-              <div style={{ paddingTop: '100px' }}>
-          <Header as='h1' textAlign='center'>
+        <div style={{ paddingTop: '100px' }}>
+          <h1>
             <b>How do I Leave/Delete my Team?</b>
-          </Header>
-          <Header textAlign='center'>
-            <Link to='your-teams'>
-              <text>Edit Teams Page</text>
-            </Link>
-          </Header>
+          </h1>
+          <h2>
+            <Link to="your-teams">Edit Teams Page</Link>
+          </h2>
           <p>
             <b>
               Here you can leave, delete, invite, and recruit for your team!
             </b>
           </p>
         </div>
-            </Grid.Column>
+      </Col>
 
-            <Grid.Column width={7} style={{ paddingTop: '30px' }}>
-            <div>
-          <Header as='h1' textAlign='center'>
+      <Col style={{ paddingTop: '30px' }}>
+        <div>
+          <h1>
             <b>How do I Create a Team?</b>
-          </Header>
-          <Header textAlign='center'>
-            <Link to='create-team'>
-              <text>Create Teams Page</text>
-            </Link>
-          </Header>
+          </h1>
+          <h2>
+            <Link to="create-team">Create Teams Page</Link>
+          </h2>
           <p>
             <b>Make sure to fill out the team creation form fully</b>
           </p>
         </div>
         <div style={{ paddingTop: '115px' }}>
-          <Header as='h1' textAlign='center'>
+          <h1>
             <b>Can I be on Multiple Teams?</b>
-          </Header>
-          <Header textAlign='center'>
-            Yes!
-          </Header>
+          </h1>
+          <h2>Yes!</h2>
           <p>
             <b>
               Although it is suggested that you stay with one team, you are
@@ -118,26 +112,23 @@ class HelpPage extends React.Component {
             </b>
           </p>
         </div>
-            </Grid.Column>
+      </Col>
+    </Row>
 
-          </Grid>
+    <hr />
+    <p>UNEXPECTED ERRORS</p>
+    <hr />
 
-        <Divider horizontal style={{ paddingTop: '40px' }}>
-          UNEXPECTED ERRORS
-        </Divider>
-        <div style={{ paddingTop: '10px', paddingBottom: '30px' }}>
-          <Header as='h1' textAlign='center'>
-            <b>Site not Functioning Properly?</b>
-          </Header>
-          <Header as='h3' textAlign='center'>
-            Please screenshot the problem and direct message cmoore@hawaii.edu
-            on Slack
-          </Header>
-        </div>
-      </div>
-        </Segment>
-    );
-  }
-}
+    <div style={{ paddingTop: '10px', paddingBottom: '30px' }}>
+      <h1>
+        <b>Site not Functioning Properly?</b>
+      </h1>
+      <h3>
+        Please screenshot the problem and direct message cmoore@hawaii.edu on
+        Slack
+      </h3>
+    </div>
+  </Container>
+);
 
 export default HelpPage;
