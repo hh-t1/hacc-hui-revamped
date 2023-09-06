@@ -1,9 +1,9 @@
 import { Selector } from 'testcafe';
-import { Credentials } from './tests.testcafe';
+import { Credentials, signInAs } from './tests.testcafe';
 
-class PageNameTest {
+class SignoutPageTest {
   constructor() {
-    this.pageId = '#PAGE-ID';
+    this.pageId = '#signout-page';
     this.pageSelector = Selector(this.pageId);
   }
 
@@ -13,10 +13,11 @@ class PageNameTest {
     await tc.expect(this.pageSelector.visible).ok();
   }
 
-  /** @type {(tc: TestController) => Promise<void>} */
-  async test(tc) {
+  /** @type {(tc: TestController, creds: Credentials) => Promise<void>} */
+  async test(tc, creds) {
     // await tc.debug();
-    await tc.navigateTo('/#/page-path');
+    await signInAs(tc, creds);
+    await tc.navigateTo('/#/signout');
     await this.isDisplayed(tc);
   }
 
@@ -30,4 +31,4 @@ class PageNameTest {
   // }
 }
 
-export const pageNameTest = new PageNameTest();
+export const signoutPageTest = new SignoutPageTest();

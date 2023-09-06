@@ -1,9 +1,9 @@
 import { Selector } from 'testcafe';
 import { Credentials } from './tests.testcafe';
 
-class HelpPageTest {
+class NotFoundPageTest {
   constructor() {
-    this.pageId = '#help-page';
+    this.pageId = '#not-found-page';
     this.pageSelector = Selector(this.pageId);
   }
 
@@ -16,7 +16,7 @@ class HelpPageTest {
   /** @type {(tc: TestController) => Promise<void>} */
   async test(tc) {
     // await tc.debug();
-    await tc.navigateTo('/#/help-page');
+    await tc.navigateTo('/#/56456gfdf');
     await this.isDisplayed(tc);
   }
 
@@ -24,10 +24,9 @@ class HelpPageTest {
   // /** @type {(tc: TestController, creds: Credentials) => void} */
   // async test(tc, creds) {
   //   // await tc.debug();
-  //   await tc.navigateTo('/#/page-path');
   //   await this.isDisplayed(tc);
   //   await this.somethingThatNeedsCreds(tc, creds);
   // }
 }
 
-export const helpPageTest = new HelpPageTest();
+export const notFoundPageTest = new NotFoundPageTest();
