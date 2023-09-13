@@ -2,23 +2,29 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 
 const HelpPage = () => (
-  <Container
-    style={{
-      margin: '30px',
-      backgroundColor: '#E5F0FE',
-      textAlign: 'center',
-    }}
-  >
+  <Container>
     <p style={{ fontSize: '40px', paddingTop: '20px' }}>
       Questions By Category
     </p>
     <hr />
     <p>GENERAL</p>
     <hr />
-
+    <Card style={{ width: '18rem' }}>
+      <Card.Img variant="top" src="holder.js/100px180" />
+      <Card.Body>
+        <Card.Title>Card Title</Card.Title>
+        <Card.Text>
+          Some quick example text to build on the card title and make up the
+          bulk of the card's content.
+        </Card.Text>
+        <Button variant="primary">Go somewhere</Button>
+      </Card.Body>
+    </Card>
     <Row>
       <Col style={{ paddingTop: '30px' }}>
         <h1>
@@ -53,11 +59,9 @@ const HelpPage = () => (
         </div>
       </Col>
     </Row>
-
     <hr />
     <p>TEAM MANAGEMENT</p>
     <hr />
-
     <Row>
       <Col style={{ paddingTop: '30px' }}>
         <h1>
@@ -114,11 +118,9 @@ const HelpPage = () => (
         </div>
       </Col>
     </Row>
-
     <hr />
     <p>UNEXPECTED ERRORS</p>
     <hr />
-
     <div style={{ paddingTop: '10px', paddingBottom: '30px' }}>
       <h1>
         <b>Site not Functioning Properly?</b>
