@@ -19,6 +19,7 @@
     "react-addons-pure-render-mixin": "^15.6.3",
     "react-bootstrap": "^2.8.0",
     "react-dom": "^16.14.0",
+    "react-icons": "^4.10.1",
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
     "sass": "^1.66.1",
@@ -28,11 +29,13 @@
     "sweetalert": "^2.1.2",
     "sweetalert2": "^10.16.11",
     "uniforms": "^3.10.2",
+    "uniforms-bootstrap5": "^4.0.0-alpha.5",
     "uniforms-bridge-simple-schema-2": "^3.10.2",
     "uniforms-semantic": "^3.10.2",
     "xkpasswd": "^1.0.5"
   },
   "devDependencies": {
+    "@types/react-router-dom": "^5.3.3",
     "acorn": "^8.10.0",
     "babel-eslint": "^10.1.0",
     "better-docs": "^2.3.2",
@@ -42,25 +45,31 @@
     "enzyme-adapter-react-16": "^1.15.7",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-meteor": "^7.3.0",
+    "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-utils": "^2.1.0",
     "fast-check": "^2.18.0",
     "jsdoc": "^3.6.7",
+    "prettier": "^3.0.3",
     "puppeteer": "^15.5.0",
     "sinon": "^9.2.4",
-    "testcafe": "^1.20.1"
+    "testcafe": "^3.3.0"
   },
   "scripts": {
     "start": "cross-env METEOR_NO_RELEASE_CHECK=1 meteor --exclude-archs web.browser.legacy,web.cordova --settings ../config/settings.development.json --port 3400",
     "lint": "eslint --quiet --ext .jsx --ext .js ./imports",
     "test-unit": "cross-env METEOR_NO_RELEASE_CHECK=1 TEST_BROWSER_DRIVER=puppeteer MOCHA_TIMEOUT=150000 meteor test --exclude-archs web.browser.legacy,web.cordova --once --driver-package meteortesting:mocha --port 3500",
     "test-integration": "cross-env METEOR_NO_RELEASE_CHECK=1 TEST_BROWSER_DRIVER=puppeteer MOCHA_TIMEOUT=150000 meteor test --exclude-archs web.browser.legacy,web.cordova --full-app --once --driver-package meteortesting:mocha --port 3500",
+    "testcafe": "testcafe chrome tests/*.testcafe.js",
+    "testcafe-ci": "testcafe chrome:headless tests/*.testcafe.js -q",
     "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json",
     "move-docs": "cp -r ../docs/ ../../docusaurus/static/jsdoc/",
-    "deploy": "cross-env DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy hacchui.meteorapp.com --settings ../config/settings.production.json"
+    "deploy": "cross-env DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy hacchui.meteorapp.com --settings ../config/settings.production.json",
+    "check-format": "npx prettier . --check"
   }
 }
