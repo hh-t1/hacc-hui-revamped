@@ -291,21 +291,21 @@ class CreateTeamWidget extends React.Component {
                 <ErrorsField />
               </AutoForm>
             </Segment>
-            <Modal
+            <Container className="modal"
                 onClose={this.close}
                 open={this.state.errorModal}
             >
-              <Modal.Header>Member Warning</Modal.Header>
-              <Modal.Content scrolling>
-                <Modal.Description>
+              <div className="modal-header">Member Warning</div>
+              <div className="modal-content" scrolling>
+                <div className="modal-description">
                   <h1>Some Members you are trying to invite have not registered with SlackBot.</h1>
                   <b>Registered Members:</b>
                   <List items={this.state.isRegistered} />
                   <b>Not Registered Members:</b>
                   <List items={this.state.notRegistered} />
-                </Modal.Description>
-              </Modal.Content>
-              <Modal.Actions>
+                </div>
+              </div>
+              <div className="modal-footer">
                 <b floated="left">Slackbot will only send invites to registered members, please confirm.</b>
                 <Button
                     content="I Understand"
@@ -314,8 +314,8 @@ class CreateTeamWidget extends React.Component {
                     onClick={() => this.closeModal()}
                     positive
                 />
-              </Modal.Actions>
-            </Modal>
+              </div>
+            </Container>
           </Col>
         </Container>
 
