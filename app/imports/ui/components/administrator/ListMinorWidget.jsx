@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Table } from 'semantic-ui-react';
+import Button from 'react-bootstrap/Button';
+import Table from 'react-bootstrap/Table';
 import PropTypes from 'prop-types';
 import swal from 'sweetalert';
 import { Link } from 'react-router-dom';
@@ -7,8 +8,8 @@ import { removeItMethod } from '../../../api/base/BaseCollection.methods';
 import { MinorParticipants } from '../../../api/user/MinorParticipantCollection';
 
 /** Renders a single row in the table. See pages/Listmenuitemss.jsx. */
-class ListMinorWidget extends React.Component {
-  removeItem(docID) {
+const ListMinorWidget = () => {
+  const removeItem = (docID) => {
     swal({
       title: 'Are you sure?',
       text: 'Once deleted, you will not be able to recover this participant!',
@@ -30,22 +31,20 @@ class ListMinorWidget extends React.Component {
         });
   }
 
-  render() {
-    // const challengeInterestArray = this.findInterests();
-    // console.log(challengeInterestArray);
     return (
-        <Table.Row>
-          <Table.Cell width={2}>{this.props.minorParticipants.username}</Table.Cell>
-          <Table.Cell width={5}>{this.props.minorParticipants.parentFirstName}</Table.Cell>
-          <Table.Cell width={5}>{this.props.minorParticipants.parentLastName}</Table.Cell>
-          <Table.Cell width={5}>{this.props.minorParticipants.parentEmail}</Table.Cell>
-          {/* eslint-disable-next-line max-len */}
-          <Table.Cell width={2}><Button><Link to={`/edit-challenge/${this.props.minorParticipants._id}`} style={{ color: 'rgba(0, 0, 0, 0.6)' }}>Edit</Link></Button></Table.Cell>
-          {/* eslint-disable-next-line max-len */}
-          <Table.Cell width={2}><Button negative onClick={() => this.removeItem(this.props.minorParticipants._id)}>Delete</Button></Table.Cell>
-        </Table.Row>
+        <Table>
+          <tr>
+            <th width={2}>{this.props.minorParticipants.username}</th>
+            <th width={5}>{this.props.minorParticipants.parentFirstName}</th>
+            <th width={5}>{this.props.minorParticipants.parentLastName}</th>
+            <th width={5}>{this.props.minorParticipants.parentEmail}</th>
+            {/* eslint-disable-next-line max-len */}
+            <th width={2}><Button><Link to={`/edit-challenge/${this.props.minorParticipants._id}`} style={{ color: 'rgba(0, 0, 0, 0.6)' }}>Edit</Link></Button></th>
+            {/* eslint-disable-next-line max-len */}
+            <th width={2}><Button negative onClick={() => removeItem(this.props.minorParticipants._id)}>Delete</Button></th>
+          </tr>
+        </Table>
     );
-  }
 }
 
 /** Require a document to be passed to this component. */
