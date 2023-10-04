@@ -30,7 +30,6 @@ const AdminEditTeamPage = () => {
   const match = useRouteMatch();
   const { team, members } = useTracker(() => {
     // Get the documentID from the URL field. See imports/ui/layouts/App.jsx for the route containing :_id.
-    const documentId = match.params._id;
     const teamDoc = Teams.findDoc(documentId);
     const tParticipants = TeamParticipants.find({
       teamID: teamDoc._id,
