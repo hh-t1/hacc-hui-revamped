@@ -1,6 +1,5 @@
 import React from 'react';
-import { Modal, Grid, Segment, Divider, Icon, Message } from 'semantic-ui-react';
-import { Container, Col, Button, ListGroupItem } from 'react-bootstrap';
+import { Container, Col, Button, ListGroupItem, Modal, Row } from 'react-bootstrap';
 import { AutoForm, ErrorsField, LongTextField, SelectField,
   SubmitField, TextField, ListItemField, ListField } from 'uniforms-bootstrap5';
 import swal from 'sweetalert';
@@ -203,8 +202,8 @@ class CreateTeamWidget extends React.Component {
     if (!this.props.participant.isCompliant) {
       return (
           <div align={'center'}>
-            <Container as='h2' icon>
-              <Icon name='thumbs down outline' />
+            <Container as='h2'>
+              <i className="bi bi-hand-thumbs-down"></i>
               You have not agreed to the <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>
               &nbsp;or we&apos;ve haven&apos;t received the signed form yet.
               <Col>
@@ -220,20 +219,18 @@ class CreateTeamWidget extends React.Component {
     const model = this.buildTheModel();
     const disabled = !this.props.canCreateTeams;
     return (
-        <Grid container centered style={{ paddingBottom: '50px', paddingTop: '40px' }}>
-          <Grid.Column>
-            <Divider hidden />
-            <Segment
+        <Container centered style={{ paddingBottom: '50px', paddingTop: '40px' }}>
+          <Row>
+            <hr />
+            <ul
                 style={{
                   // borderRadius: '10px',
                   backgroundColor: '#E5F0FE',
                 }} className={'createTeam'}>
-              <Container as="h2" textAlign="center">Create a Team</Container>
+              <h2>Create a Team</h2>
               {/* eslint-disable-next-line max-len */}
-              <Message>
-                <Container as="h4" textAlign="center">Team name and Devpost page ALL
-                  have to use the same name. Team names cannot have spaces or special characters.</Container>
-              </Message>
+              <h4>Team name and Devpost page ALL
+                  have to use the same name. Team names cannot have spaces or special characters.</h4>
               <AutoForm
                   ref={ref => {
                     fRef = ref;
@@ -245,21 +242,21 @@ class CreateTeamWidget extends React.Component {
                     paddingBottom: '40px',
                   }}
               >
-                <Grid columns={1} style={{ paddingTop: '20px' }}>
-                  <Grid.Column style={{ paddingLeft: '30px', paddingRight: '30px' }}>
-                    <Grid className='doubleLine'>
+                <Row style={{ paddingTop: '20px' }}>
+                  <Row style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+                    <Col className='doubleLine'>
                       <TextField name='name' />
                       <RadioField
                           name='open'
                           inline
                       />
-                    </Grid>
+                    </Col>
                     <LongTextField name='description' />
                     <SelectField name='challenge' />
-                    <Grid columns={2}>
-                      <Grid.Column><MultiSelectField name='skills' /></Grid.Column>
-                      <Grid.Column><MultiSelectField name='tools' /></Grid.Column>
-                    </Grid>
+                    <Col>
+                      <MultiSelectField name='skills' />
+                      <MultiSelectField name='tools' />
+                    </Col>
                     <TextField name="devpostPage" />
                     <TextField name="affiliation" />
 
@@ -272,8 +269,8 @@ class CreateTeamWidget extends React.Component {
                       </ListItemField>
                     </ListField>
 
-                  </Grid.Column>
-                </Grid>
+                  </Row>
+                </Row>
                 <div align='center'>
                   <SubmitField value='Submit'
                                style={{
@@ -285,7 +282,7 @@ class CreateTeamWidget extends React.Component {
                 </div>
                 <ErrorsField />
               </AutoForm>
-            </Segment>
+            </ul>
             <Modal
                 onClose={this.close}
                 open={this.state.errorModal}
@@ -302,17 +299,16 @@ class CreateTeamWidget extends React.Component {
               </Modal.Content>
               <Modal.Actions>
                 <b floated="left">Slackbot will only send invites to registered members, please confirm.</b>
-                <Button
-                    content="I Understand"
-                    labelPosition='right'
-                    icon='checkmark'
-                    onClick={() => this.closeModal()}
-                    positive
-                />
+                <Button align='right'>
+                  <i className="bi bi-check"></i>
+                  I Understand
+                  onClick={() => this.closeModal()}
+                  positive
+                </Button>
               </Modal.Actions>
             </Modal>
-          </Grid.Column>
-        </Grid>
+          </Row>
+        </Container>
 
     );
   }
