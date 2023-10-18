@@ -9,3 +9,10 @@ export const darkerBlueStyle = {
 export const greyStyle = {
   backgroundColor: '#C4C4C4',
 };
+
+export const hr = {
+  marginTop: 1,
+  marginBottom: 1,
+  border: 0,
+  borderTop: 1, rgba: (0, 0, 0, 0.1),
+};

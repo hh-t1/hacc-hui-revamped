@@ -1,12 +1,7 @@
 import React from 'react';
-import { Modal, Grid, Segment, Header, Divider, Icon, Message, Button, List } from 'semantic-ui-react';
-import {
-  AutoForm,
-  ErrorsField,
-  SubmitField,
-  TextField,
-  LongTextField, ListItemField, ListField, SelectField,
-} from 'uniforms-semantic';
+import { Container, Col, Button, ListGroupItem, Modal, Row } from 'react-bootstrap';
+import { AutoForm, ErrorsField, LongTextField, SelectField,
+  SubmitField, TextField, ListItemField, ListField } from 'uniforms-bootstrap5';
 import swal from 'sweetalert';
 import PropTypes from 'prop-types';
 import { _ } from 'lodash';
@@ -207,14 +202,14 @@ class CreateTeamWidget extends React.Component {
     if (!this.props.participant.isCompliant) {
       return (
           <div align={'center'}>
-            <Header as='h2' icon>
-              <Icon name='thumbs down outline' />
+            <Container as='h2'>
+              <i className="bi bi-hand-thumbs-down"></i>
               You have not agreed to the <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>
               &nbsp;or we&apos;ve haven&apos;t received the signed form yet.
-              <Header.Subheader>
+              <Col>
                 You cannot create a team until you do agree to the rules. Please check back later.
-              </Header.Subheader>
-            </Header>
+              </Col>
+            </Container>
           </div>
       );
     }
@@ -224,20 +219,18 @@ class CreateTeamWidget extends React.Component {
     const model = this.buildTheModel();
     const disabled = !this.props.canCreateTeams;
     return (
-        <Grid container centered style={{ paddingBottom: '50px', paddingTop: '40px' }}>
-          <Grid.Column>
-            <Divider hidden />
-            <Segment
+        <Container centered style={{ paddingBottom: '50px', paddingTop: '40px' }}>
+          <Row>
+            <hr />
+            <ul
                 style={{
                   // borderRadius: '10px',
                   backgroundColor: '#E5F0FE',
                 }} className={'createTeam'}>
-              <Header as="h2" textAlign="center">Create a Team</Header>
+              <h2>Create a Team</h2>
               {/* eslint-disable-next-line max-len */}
-              <Message>
-                <Header as="h4" textAlign="center">Team name and Devpost page ALL
-                  have to use the same name. Team names cannot have spaces or special characters.</Header>
-              </Message>
+              <h4>Team name and Devpost page ALL
+                  have to use the same name. Team names cannot have spaces or special characters.</h4>
               <AutoForm
                   ref={ref => {
                     fRef = ref;
@@ -249,21 +242,21 @@ class CreateTeamWidget extends React.Component {
                     paddingBottom: '40px',
                   }}
               >
-                <Grid columns={1} style={{ paddingTop: '20px' }}>
-                  <Grid.Column style={{ paddingLeft: '30px', paddingRight: '30px' }}>
-                    <Grid className='doubleLine'>
+                <Row style={{ paddingTop: '20px' }}>
+                  <Row style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+                    <Col className='doubleLine'>
                       <TextField name='name' />
                       <RadioField
                           name='open'
                           inline
                       />
-                    </Grid>
+                    </Col>
                     <LongTextField name='description' />
                     <SelectField name='challenge' />
-                    <Grid columns={2}>
-                      <Grid.Column><MultiSelectField name='skills' /></Grid.Column>
-                      <Grid.Column><MultiSelectField name='tools' /></Grid.Column>
-                    </Grid>
+                    <Col>
+                      <MultiSelectField name='skills' />
+                      <MultiSelectField name='tools' />
+                    </Col>
                     <TextField name="devpostPage" />
                     <TextField name="affiliation" />
 
@@ -276,8 +269,8 @@ class CreateTeamWidget extends React.Component {
                       </ListItemField>
                     </ListField>
 
-                  </Grid.Column>
-                </Grid>
+                  </Row>
+                </Row>
                 <div align='center'>
                   <SubmitField value='Submit'
                                style={{
@@ -289,7 +282,7 @@ class CreateTeamWidget extends React.Component {
                 </div>
                 <ErrorsField />
               </AutoForm>
-            </Segment>
+            </ul>
             <Modal
                 onClose={this.close}
                 open={this.state.errorModal}
@@ -297,26 +290,25 @@ class CreateTeamWidget extends React.Component {
               <Modal.Header>Member Warning</Modal.Header>
               <Modal.Content scrolling>
                 <Modal.Description>
-                  <Header>Some Members you are trying to invite have not registered with SlackBot.</Header>
+                  <Container>Some Members you are trying to invite have not registered with SlackBot.</Container>
                   <b>Registered Members:</b>
-                  <List items={this.state.isRegistered} />
+                  <ListGroupItem items={this.state.isRegistered} />
                   <b>Not Registered Members:</b>
-                  <List items={this.state.notRegistered} />
+                  <ListGroupItem items={this.state.notRegistered} />
                 </Modal.Description>
               </Modal.Content>
               <Modal.Actions>
                 <b floated="left">Slackbot will only send invites to registered members, please confirm.</b>
-                <Button
-                    content="I Understand"
-                    labelPosition='right'
-                    icon='checkmark'
-                    onClick={() => this.closeModal()}
-                    positive
-                />
+                <Button align='right'>
+                  <i className="bi bi-check"></i>
+                  I Understand
+                  onClick={() => this.closeModal()}
+                  positive
+                </Button>
               </Modal.Actions>
             </Modal>
-          </Grid.Column>
-        </Grid>
+          </Row>
+        </Container>
 
     );
   }
