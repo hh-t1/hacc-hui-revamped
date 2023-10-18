@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, Container, Form, Table } from 'react-bootstrap';
 import {
   AutoForm,
@@ -11,7 +11,6 @@ import SimpleSchema from 'simpl-schema';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { useTracker } from 'meteor/react-meteor-data';
 import { useRouteMatch } from 'react-router';
-import swal from 'sweetalert';
 
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { Teams } from '../../../api/team/TeamCollection';
@@ -19,6 +18,9 @@ import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
 import { paleBlueStyle } from '../../styles';
+import Swal from 'sweetalert2';
+import { Redirect } from 'react-router-dom';
+import { ROUTES } from '../../../startup/client/route-constants';
 
 const schema = new SimpleSchema({
   name: String,
@@ -28,6 +30,7 @@ const schema = new SimpleSchema({
 
 const AdminEditTeamPage = () => {
   const match = useRouteMatch();
+  const [redirect, setRedirect] = useState(false);
   const { team, members } = useTracker(() => {
     // Get the documentID from the URL field. See imports/ui/layouts/App.jsx for the route containing :_id.
     const documentId = match.params._id;
@@ -51,6 +54,7 @@ const AdminEditTeamPage = () => {
   const handleSubmit = (data) => {
     const { name, description, gitHubRepo } = data;
 
+
     const updateData = {};
     updateData.id = data._id;
     updateData.name = name;
@@ -62,12 +66,26 @@ const AdminEditTeamPage = () => {
     // console.log(collectionName);
     updateMethod.call({ collectionName, updateData }, (error) => {
       if (error) {
-        swal('Error', error.message, 'error');
+        Swal.fire('Error', error.message, 'error').then(() => {});
       } else {
-        swal('Success', 'Item edited successfully', 'success');
+        Swal.fire({
+          title: '<strong>Success!</strong>',
+          text: 'Item edited successfully',
+          icon: 'success',
+          showCloseButton: true,
+          focusConfirm: false,
+          confirmButtonText:
+              'OK'
+        }).then(() => {
+          setRedirect(true);
+        })
       }
     });
   };
+
+  if (redirect) {
+    return <Redirect to={ROUTES.VIEW_TEAMS} />;
+  }
 
   const formSchema = new SimpleSchema2Bridge(schema);
   const memberNamesAndGitHub = members.map((p) => {

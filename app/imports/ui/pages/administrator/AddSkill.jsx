@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   AutoForm,
   ErrorsField,
@@ -6,11 +6,13 @@ import {
   TextField,
 } from 'uniforms-bootstrap5';
 import { Container } from 'react-bootstrap';
-import swal from 'sweetalert';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import { defineMethod } from '../../../api/base/BaseCollection.methods';
 import { Skills } from '../../../api/skill/SkillCollection';
+import Swal from 'sweetalert2';
+import { Redirect } from 'react-router-dom';
+import { ROUTES } from '../../../startup/client/route-constants';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const schema = new SimpleSchema({
@@ -26,6 +28,8 @@ const formSchema = new SimpleSchema2Bridge(schema);
 const AddSkill = () => {
   const formRef = useRef(null);
 
+  const [redirect, setRedirect] = useState(false);
+
   /** On submit, insert the data.
    * @param data {Object} the results from the form.
    */
@@ -34,13 +38,21 @@ const AddSkill = () => {
         const { name, description } = data;
         const definitionData = { name, description };
         const collectionName = Skills.getCollectionName();
-        // console.log(collectionName);
         defineMethod.call({ collectionName, definitionData }, (error) => {
           if (error) {
-            swal('Error', error.message, 'error');
+            Swal.fire('Error', error.message, 'error').then(() => {});
             console.error(error.message);
           } else {
-            swal('Success', 'Item added successfully', 'success');
+            Swal.fire({
+              title: '<strong>Success!</strong>',
+              icon: 'success',
+              showCloseButton: true,
+              focusConfirm: false,
+              confirmButtonText:
+                  'OK'
+            }).then(() => {
+              setRedirect(true);
+            })
             formRef.current.reset();
             // console.log('Success');
           }
@@ -48,6 +60,10 @@ const AddSkill = () => {
       },
       [formRef],
   );
+
+  if (redirect) {
+    return <Redirect to={ROUTES.CONFIGURE_HACC} />;
+  }
 
   return (
       <Container id="add-skill-page">
