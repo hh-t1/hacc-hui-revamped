@@ -1,8 +1,9 @@
 import { Selector } from 'testcafe';
+import { adminCredentials, signInAs } from './_helpers';
 
-class LandingPageTest {
+class ListSuggestionsPageTest {
   constructor() {
-    this.pageId = '#landing-page';
+    this.pageId = '#list-suggestions-page';
     this.pageSelector = Selector(this.pageId);
   }
 
@@ -14,10 +15,10 @@ class LandingPageTest {
 
   /** @type {(tc: TestController) => Promise<void>} */
   async test(tc) {
-    // await tc.debug();
-    await tc.navigateTo('/#/');
+    await signInAs(tc, adminCredentials);
+    await tc.navigateTo('/#/list-suggestions');
     await this.isDisplayed(tc);
   }
 }
 
-export const landingPageTest = new LandingPageTest();
+export const listSuggestionsPageTest = new ListSuggestionsPageTest();

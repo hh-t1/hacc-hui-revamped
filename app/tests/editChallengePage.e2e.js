@@ -1,8 +1,9 @@
 import { Selector } from 'testcafe';
+import { adminCredentials, signInAs } from './_helpers';
 
-class LandingPageTest {
+class EditChallengePageTest {
   constructor() {
-    this.pageId = '#landing-page';
+    this.pageId = '#edit-challenge-page';
     this.pageSelector = Selector(this.pageId);
   }
 
@@ -15,9 +16,10 @@ class LandingPageTest {
   /** @type {(tc: TestController) => Promise<void>} */
   async test(tc) {
     // await tc.debug();
-    await tc.navigateTo('/#/');
+    await signInAs(tc, adminCredentials);
+    await tc.navigateTo('/#/edit-challenge/3aRmn3k2GAvCRtSMH');
     await this.isDisplayed(tc);
   }
 }
 
-export const landingPageTest = new LandingPageTest();
+export const editChallengePageTest = new EditChallengePageTest();

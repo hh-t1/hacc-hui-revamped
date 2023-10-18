@@ -1,8 +1,9 @@
 import { Selector } from 'testcafe';
+import { compliantParticipantCredentials, signInAs } from './_helpers';
 
-class LandingPageTest {
+class OpenTeamsPageTest {
   constructor() {
-    this.pageId = '#landing-page';
+    this.pageId = '#open-teams-page';
     this.pageSelector = Selector(this.pageId);
   }
 
@@ -15,9 +16,10 @@ class LandingPageTest {
   /** @type {(tc: TestController) => Promise<void>} */
   async test(tc) {
     // await tc.debug();
-    await tc.navigateTo('/#/');
+    await signInAs(tc, compliantParticipantCredentials);
+    await tc.navigateTo('/#/open-teams');
     await this.isDisplayed(tc);
   }
 }
 
-export const landingPageTest = new LandingPageTest();
+export const openTeamsPageTest = new OpenTeamsPageTest();

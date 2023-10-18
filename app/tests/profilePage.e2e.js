@@ -1,8 +1,9 @@
 import { Selector } from 'testcafe';
+import { compliantParticipantCredentials, signInAs } from './_helpers';
 
-class LandingPageTest {
+class YourProfilePageTest {
   constructor() {
-    this.pageId = '#landing-page';
+    this.pageId = '#your-profile-page';
     this.pageSelector = Selector(this.pageId);
   }
 
@@ -15,9 +16,11 @@ class LandingPageTest {
   /** @type {(tc: TestController) => Promise<void>} */
   async test(tc) {
     // await tc.debug();
-    await tc.navigateTo('/#/');
+    // IN CASE YOUR TEST NEEDS TO SIGN IN FIRST, YOU CAN DO SOMETHING LIKE THIS
+    await signInAs(tc, compliantParticipantCredentials);
+    await tc.navigateTo('/#/your-profile');
     await this.isDisplayed(tc);
   }
 }
 
-export const landingPageTest = new LandingPageTest();
+export const yourProfilePageTest = new YourProfilePageTest();

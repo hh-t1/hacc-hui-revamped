@@ -1,8 +1,9 @@
 import { Selector } from 'testcafe';
+import { adminCredentials, signInAs } from './_helpers';
 
-class LandingPageTest {
+class AdminEditTeamPageTest {
   constructor() {
-    this.pageId = '#landing-page';
+    this.pageId = '#admin-edit-team-page';
     this.pageSelector = Selector(this.pageId);
   }
 
@@ -15,9 +16,12 @@ class LandingPageTest {
   /** @type {(tc: TestController) => Promise<void>} */
   async test(tc) {
     // await tc.debug();
-    await tc.navigateTo('/#/');
+    await signInAs(tc, adminCredentials);
+    await tc.navigateTo('/#/view-teams');
+    await tc.click(Selector('.team-item'));
+    await tc.click(Selector('button').withExactText('Edit'));
     await this.isDisplayed(tc);
   }
 }
 
-export const landingPageTest = new LandingPageTest();
+export const adminEditTeamPageTest = new AdminEditTeamPageTest();
