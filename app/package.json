@@ -26,6 +26,7 @@
     "sweetalert": "^2.1.2",
     "sweetalert2": "^10.16.9",
     "uniforms": "^3.6.1",
+    "uniforms-bootstrap5": "^4.0.0-alpha.5",
     "uniforms-bridge-simple-schema-2": "^3.6.1",
     "uniforms-semantic": "^3.6.1",
     "xkpasswd": "^1.0.5"
