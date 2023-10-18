@@ -28,37 +28,29 @@ const ManageHaccWidget = (props) => {
   const [canCreate, setCreate] = useState(false);
   const [canChange, setChange] = useState(false);
 
-  const toggleTeam = async () => {
-    try {
-      const doc = await CanCreateTeams.findOne();
-      if (doc) {
-        const updateData = {
-          id: doc._id,
-          canCreateTeams: !canCreate,
-        };
-        const collectionName = CanCreateTeams.getCollectionName();
-        updateMethod.call({ collectionName, updateData });
-        setCreate(!canCreate);
-      }
-    } catch (error) {
-      console.error(error);
+  const toggleTeam = () => {
+    const doc = CanCreateTeams.findOne();
+    if (doc) {
+      const updateData = {
+        id: doc._id,
+        canCreateTeams: !canCreate,
+      };
+      const collectionName = CanCreateTeams.getCollectionName();
+      updateMethod.call({ collectionName, updateData });
+      setCreate(!canCreate);
     }
   };
 
-  const toggleChallenge = async () => {
-    try {
-      const doc = await CanChangeChallenges.findOne();
-      if (doc) {
-        const updateData = {
-          id: doc._id,
-          canChangeChallenges: !canChange,
-        };
-        const collectionName = CanChangeChallenges.getCollectionName();
-        updateMethod.call({ collectionName, updateData });
-        setChange(!canChange);
-      }
-    } catch (error) {
-      console.error(error);
+  const toggleChallenge = () => {
+    const doc = CanChangeChallenges.findOne();
+    if (doc) {
+      const updateData = {
+        id: doc._id,
+        canChangeChallenges: !canChange,
+      };
+      const collectionName = CanChangeChallenges.getCollectionName();
+      updateMethod.call({ collectionName, updateData });
+      setChange(!canChange);
     }
   };
 
@@ -80,14 +72,14 @@ const ManageHaccWidget = (props) => {
                           type={'switch'}
                           toggle label="Can Create Teams"
                           checked={canCreate}
-                          onChange={toggleTeam} />&nbsp;
+                          onChange={toggleTeam}/>&nbsp;
                     </h5>
                     <h5>
                       <Form.Check
                           type={'switch'}
                           toggle label="Can Change Challenges"
                           checked={canChange}
-                          onChange={toggleChallenge} />
+                          onChange={toggleChallenge}/>
                     </h5>
                   </Col>
                 </Row>
@@ -98,7 +90,7 @@ const ManageHaccWidget = (props) => {
               borderRadius: '1rem',
               backgroundColor: '#E5F0FE',
             }} className={'teamCreate'}>
-              <h2 >Challenges</h2>
+              <h2>Challenges</h2>
               <Table>
                 <thead>
                 <tr>
@@ -112,7 +104,7 @@ const ManageHaccWidget = (props) => {
                 </thead>
                 <tbody>
                 {props.challenges.map((challenges =>
-                        <ChallengesAdminWidget key={challenges._id} challenges={challenges} />
+                        <ChallengesAdminWidget key={challenges._id} challenges={challenges}/>
                 ))}
                 </tbody>
               </Table>
@@ -134,7 +126,7 @@ const ManageHaccWidget = (props) => {
                 </tr>
                 </thead>
                 {/* eslint-disable-next-line max-len */}
-                <tbody>{props.skills.map((skills => <SkillsAdminWidget key={skills._id} skills={skills} />))}
+                <tbody>{props.skills.map((skills => <SkillsAdminWidget key={skills._id} skills={skills}/>))}
                 </tbody>
               </Table>
               <div align='center'>
@@ -153,7 +145,7 @@ const ManageHaccWidget = (props) => {
                   <th width={2}>Delete</th>
                 </tr>
                 </thead>
-                <tbody>{props.tools.map((tools => <ToolsAdminWidget key={tools._id} tools={tools} />))}
+                <tbody>{props.tools.map((tools => <ToolsAdminWidget key={tools._id} tools={tools}/>))}
                 </tbody>
               </Table>
               <div align='center'>
