@@ -1,91 +1,81 @@
-import React from 'react';
-import { Header, Segment, Form } from 'semantic-ui-react';
-import { withTracker } from 'meteor/react-meteor-data';
-import {
-  AutoForm,
-  SelectField,
-  SubmitField,
-  TextField,
-} from 'uniforms-semantic';
-import { Meteor } from 'meteor/meteor';
-import PropTypes from 'prop-types';
-import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
-import SimpleSchema from 'simpl-schema';
-import swal from 'sweetalert';
-import { Administrators } from '../../../api/user/AdministratorCollection';
-import { defineMethod } from '../../../api/base/BaseCollection.methods';
-import { Suggestions } from '../../../api/suggestions/SuggestionCollection';
+import React, { useRef } from "react";
+import { Row, Col, Form, Button, Card } from "react-bootstrap";
+import { useTracker } from "meteor/react-meteor-data";
+import { AutoForm, SelectField, TextField } from "uniforms-bootstrap5";
+import { Meteor } from "meteor/meteor";
+import { SimpleSchema2Bridge } from "uniforms-bridge-simple-schema-2";
+import SimpleSchema from "simpl-schema";
+import swal from "sweetalert";
+import { Administrators } from "../../../api/user/AdministratorCollection";
+import { defineMethod } from "../../../api/base/BaseCollection.methods";
+import { Suggestions } from "../../../api/suggestions/SuggestionCollection";
 
-class SuggestToolSkillWidgetAdmin extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { redirectToReferer: false };
-  }
+const SuggestToolSkillWidgetAdmin = (props) => {
+  const admin = useTracker(() => {
+    return Administrators.findDoc({ userID: Meteor.userId() });
+  });
+  const fRef = useRef(null);
 
-  buildTheFormSchema() {
+  const buildTheFormSchema = () => {
     const schema = new SimpleSchema({
-      type: { type: String, allowedValues: ['Tool', 'Skill'], optional: false },
+      type: { type: String, allowedValues: ["Tool", "Skill"], optional: false },
       name: String,
       description: String,
     });
     return schema;
-  }
+  };
 
-  submit(data, formRef) {
-    // console.log('CreateProfileWidget.submit', data);
+  const submit = (data) => {
     const collectionName = Suggestions.getCollectionName();
     const newData = {};
-    const model = this.props.admin;
+    const model = admin;
     newData.username = model.username;
     newData.name = data.name;
     newData.type = data.type;
     newData.description = data.description;
-    // console.log(newData);
 
-    defineMethod.call({ collectionName: collectionName, definitionData: newData },
-        (error) => {
-          if (error) {
-            swal('Error', error.message, 'error');
-          } else {
-            swal('Success', 'Thank you for your suggestion', 'success');
-            formRef.reset();
-          }
-        });
-  }
-
-  render() {
-    let fRef = null;
-    const schema = this.buildTheFormSchema();
-    const formSchema = new SimpleSchema2Bridge(schema);
-    return (
-        <Segment>
-          <Header dividing> Add suggestion to list. </Header>
-          <AutoForm ref={ref => {
-            fRef = ref;
-          }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}>
-            <Form.Group widths="equal">
-              <SelectField name="type" />
-            </Form.Group>
-              <Form.Group widths="equal">
-              <TextField name="name" />
-              </Form.Group>
-                <Form.Group widths="equal">
-              <TextField name="description" />
-            </Form.Group>
-            <SubmitField />
-          </AutoForm>
-        </Segment>
+    defineMethod.call(
+      { collectionName: collectionName, definitionData: newData },
+      (error) => {
+        if (error) {
+          swal("Error", error.message, "error");
+        } else {
+          swal("Success", "Thank you for your suggestion", "success");
+          fRef.current.reset();
+        }
+      }
     );
-  }
-}
+  };
 
-SuggestToolSkillWidgetAdmin.propTypes = {
-  admin: PropTypes.object.isRequired,
+  const schema = buildTheFormSchema();
+  const formSchema = new SimpleSchema2Bridge(schema);
+  return (
+    <Card>
+      <Card.Header>Add suggestion to list.</Card.Header>
+      <Card.Body>
+        <AutoForm ref={fRef} schema={formSchema} onSubmit={submit}>
+          <Form.Group as={Row}>
+            <Col>
+              <SelectField name="type" />
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row}>
+            <Col>
+              <TextField name="name" />
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row}>
+            <Col>
+              <TextField name="description" />
+            </Col>
+          </Form.Group>
+          <Button type="submit">Submit</Button>
+        </AutoForm>
+      </Card.Body>
+    </Card>
+  );
 };
 
-export default withTracker(() => {
-  const admin = Administrators.findDoc({ userID: Meteor.userId() });
-  return {
-    admin,
-  };
-})(SuggestToolSkillWidgetAdmin);
+SuggestToolSkillWidgetAdmin.propTypes = {};
+
+export default SuggestToolSkillWidgetAdmin;
