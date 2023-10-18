@@ -47,6 +47,7 @@ const Dropdown = ({ items, onItemSelect, label, style }) => {
 Dropdown.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
+      key: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired,
     }),
