@@ -1,92 +1,114 @@
-import React from 'react';
-import { Header, Segment, Form, Container, Card } from 'semantic-ui-react';
-import { withTracker } from 'meteor/react-meteor-data';
-import {
-  AutoForm,
-  SelectField,
-  SubmitField,
-  TextField,
-} from 'uniforms-semantic';
+import React, { useState, useEffect } from 'react';
+import { Container, Card, Button, Form, Row, Col } from 'react-bootstrap';
 import { Meteor } from 'meteor/meteor';
+import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
-import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
-import SimpleSchema from 'simpl-schema';
 import swal from 'sweetalert';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { defineMethod } from '../../../api/base/BaseCollection.methods';
 import { Suggestions } from '../../../api/suggestions/SuggestionCollection';
 import { paleBlueStyle } from '../../styles';
+import Dropdown from '../Dropdown';
 
-class SuggestToolSkillWidget extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { redirectToReferer: false };
-  }
+const SuggestToolSkillWidget = ({ participant }) => {
+  const [type, setType] = useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [isValid, setIsValid] = useState(false);
 
-  buildTheFormSchema() {
-    const schema = new SimpleSchema({
-      type: { type: String, allowedValues: ['Tool', 'Skill'], optional: false },
-      name: String,
-      description: String,
-    });
-    return schema;
-  }
+  const validateForm = () => {
+    type !== "" && name !== "" && description !== "" ? setIsValid(true) : setIsValid(false);
+  };
 
-  submit(data, formRef) {
-    // console.log('CreateProfileWidget.submit', data);
+  useEffect(() => {
+    validateForm();
+  }, [type, name, description]);
+
+  const submit = (e) => {
+    e.preventDefault();
+
     const collectionName = Suggestions.getCollectionName();
-    const newData = {};
-    const model = this.props.participant;
-    newData.username = model.username;
-    newData.name = data.name;
-    newData.type = data.type;
-    newData.description = data.description;
-    console.log(newData);
+    const newData = {
+      username: participant.username,
+      name,
+      type,
+      description,
+    };
 
-    defineMethod.call({ collectionName: collectionName, definitionData: newData },
-        (error) => {
-          if (error) {
-            swal('Error', error.message, 'error');
-          } else {
-            swal('Success', 'Thank you for your suggestion', 'success');
-            formRef.reset();
-          }
-        });
-  }
+    defineMethod.call({ collectionName, definitionData: newData }, (error) => {
+      if (error) {
+        swal('Error', error.message, 'error');
+      } else {
+        swal('Success', 'Thank you for your suggestion', 'success');
+        setName('');
+        setType('');
+        setDescription('');
+      }
+    });
+  };
 
-  render() {
-    let fRef = null;
-    const model = this.props.participant;
-    const schema = this.buildTheFormSchema();
-    const formSchema = new SimpleSchema2Bridge(schema);
-    const firstname = model.firstName;
-    return (
-        <Container style={{ paddingBottom: '50px', paddingTop: '40px' }}>
-        <Segment style = { paleBlueStyle }>
-          {/* eslint-disable-next-line max-len */}
-          <Header as="h2" textAlign="center">Hello {firstname}, please fill out the form to
-            suggest a new tool or skill. </Header>
-          <Card fluid>
-          <AutoForm ref={ref => {
-            fRef = ref;
-          }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}>
-            <Form.Group widths="equal" style={{ paddingRight: '10px', paddingLeft: '10px',
-              paddingTop: '10px', paddingBottom: '10px' }}>
-              <SelectField name="type" />
-              <TextField name="name" />
-              <TextField name="description" />
+  return (
+    <Container id="suggest-tool-skill" style={{ paddingBottom: '50px', paddingTop: '40px' }}>
+      <Card style={{ ...paleBlueStyle, maxWidth: '800px', margin: '0 auto' }}>
+        <Card.Header as="h2" className="text-center">
+          Hello {participant.firstName}, please fill out the form to suggest a new tool or skill.
+        </Card.Header>
+        <Card.Body style={{ width: '400px', margin: '0 auto' }}>
+          <Form onSubmit={submit}>
+            <Form.Group>
+              <Row className="py-1">
+                <Col className="text-center">
+                  <Dropdown
+                    items={[
+                      { key: '1', text: 'Tool', value: 'Tool' },
+                      { key: '2', text: 'Skill', value: 'Skill' },
+                    ]}
+                    onItemSelect={value => setType(value)}
+                    label={type || "Select Type"}
+                    style={{
+                      backgroundColor: '#ffffff',
+                      color: '#000000',
+                    }}
+                    className="text-center"
+                  />
+                </Col>
+              </Row>
+              <Row className="py-1">
+                <Form.Control
+                  type="text"
+                  placeholder="Name"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                />
+              </Row>
+              <Row className="py-1">
+                <Form.Control
+                  type="text"
+                  placeholder="Description"
+                  value={description}
+                  onChange={e => setDescription(e.target.value) }
+                  as="textarea"
+                />
+              </Row>
             </Form.Group>
-            <SubmitField style={{
-  display: 'block',
-  marginLeft: 'auto', marginRight: 'auto', marginBottom: '10px',
-}}/>
-          </AutoForm>
-          </Card>
-        </Segment>
-        </Container>
-    );
-  }
-}
+            <Button
+              type="submit"
+              style={{
+                display: 'block',
+                margin: 'auto',
+                backgroundColor: isValid ? null : 'gray',
+                cursor: isValid ? 'pointer' : 'not-allowed',
+              }}
+              disabled={!isValid}
+            >
+              Submit
+            </Button>
+          </Form>
+        </Card.Body>
+      </Card>
+    </Container>
+  );
+};
 
 SuggestToolSkillWidget.propTypes = {
   participant: PropTypes.object.isRequired,
