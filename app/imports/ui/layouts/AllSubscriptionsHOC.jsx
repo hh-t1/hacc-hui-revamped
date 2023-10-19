@@ -38,11 +38,12 @@ const allSubs = new SubsManager({ cacheLimit: 25, expireIn: 30 });
  * @memberOf ui/layouts
  */
 function withAllSubscriptions(WrappedComponent) {
-  const AllSubscriptionsHOC = (props) => ((props.loading) ? (
-              <Loader active>Getting data.</Loader>
-          ) :
-          <WrappedComponent {...props} />
-  );
+  const AllSubscriptionsHOC = (props) =>
+    props.loading ? (
+      <Loader active>Getting data.</Loader>
+  ) :
+      <WrappedComponent {...props} />
+    );
   AllSubscriptionsHOC.propTypes = {
     loading: PropTypes.bool,
   };
@@ -77,7 +78,6 @@ function withAllSubscriptions(WrappedComponent) {
     return {
       loading,
     };
-
   })(AllSubscriptionsHOC);
 }
 

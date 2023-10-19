@@ -42,15 +42,17 @@ class SuggestToolSkillWidgetAdmin extends React.Component {
     newData.description = data.description;
     // console.log(newData);
 
-    defineMethod.call({ collectionName: collectionName, definitionData: newData },
-        (error) => {
-          if (error) {
-            swal('Error', error.message, 'error');
-          } else {
-            swal('Success', 'Thank you for your suggestion', 'success');
-            formRef.reset();
-          }
-        });
+    defineMethod.call(
+      { collectionName: collectionName, definitionData: newData },
+      (error) => {
+        if (error) {
+          swal('Error', error.message, 'error');
+        } else {
+          swal('Success', 'Thank you for your suggestion', 'success');
+          formRef.reset();
+        }
+      },
+    );
   }
 
   render() {
@@ -58,23 +60,27 @@ class SuggestToolSkillWidgetAdmin extends React.Component {
     const schema = this.buildTheFormSchema();
     const formSchema = new SimpleSchema2Bridge(schema);
     return (
-        <Segment>
-          <Header dividing> Add suggestion to list. </Header>
-          <AutoForm ref={ref => {
+      <Segment>
+        <Header dividing> Add suggestion to list. </Header>
+        <AutoForm
+          ref={(ref) => {
             fRef = ref;
-          }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}>
-            <Form.Group widths="equal">
-              <SelectField name="type" />
-            </Form.Group>
-              <Form.Group widths="equal">
-              <TextField name="name" />
-              </Form.Group>
-                <Form.Group widths="equal">
-              <TextField name="description" />
-            </Form.Group>
-            <SubmitField />
-          </AutoForm>
-        </Segment>
+          }}
+          schema={formSchema}
+          onSubmit={(data) => this.submit(data, fRef)}
+        >
+          <Form.Group widths="equal">
+            <SelectField name="type" />
+          </Form.Group>
+          <Form.Group widths="equal">
+            <TextField name="name" />
+          </Form.Group>
+          <Form.Group widths="equal">
+            <TextField name="description" />
+          </Form.Group>
+          <SubmitField />
+        </AutoForm>
+      </Segment>
     );
   }
 }

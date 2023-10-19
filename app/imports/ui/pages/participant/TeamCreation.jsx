@@ -49,14 +49,12 @@ const schema = new SimpleSchema({
  * @memberOf ui/pages
  */
 class TeamCreation extends React.Component {
-
   /** On submit, insert the data.
    * @param formData {Object} the results from the form.
    * @param formRef {FormRef} reference to the form.
    */
   // eslint-disable-next-line no-unused-vars
   submit(formData, formRef) {
-
     // console.log('CreateTeam.submit', formData, this.props);
     const skillsArr = this.props.skills;
     const skillsObj = [];
@@ -69,9 +67,7 @@ class TeamCreation extends React.Component {
 
     const owner = Participants.findDoc({ userID: Meteor.userId() }).username;
 
-    const {
-      name, description, challenges, skills, tools, image,
-    } = formData;
+    const { name, description, challenges, skills, tools, image } = formData;
     let { open } = formData;
     // console.log(challenges, skills, tools, open);
     if (open === 'Open') {
@@ -122,27 +118,31 @@ class TeamCreation extends React.Component {
       tools: toolsObj,
     };
     // console.log(collectionName, definitionData);
-    defineMethod.call({
-          collectionName,
-          definitionData,
-        },
-        (error) => {
-          if (error) {
-            swal('Error', error.message, 'error');
-            // console.error(error.message);
-          } else {
-            swal('Success', 'Team created successfully', 'success');
-            formRef.reset();
-            //   console.log('Success');
-          }
-        });
+    defineMethod.call(
+      collectionName,
+        definitionData,
+    },
+      (error) => {
+        if (error) {
+          swal('Error', error.message, 'error');
+          // console.error(error.message);
+      } else {
+          swal('Success', 'Team created successfully', 'success');
+        formRef.reset();
+          //   console.log('Success');
+        }
+    });
     // console.log(docID);
   }
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
   render() {
     // console.log(Teams.dumpAll());
-    return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
+    return this.props.ready ? (
+      this.renderPage()
+    ) : (
+      <Loader active>Getting data</Loader>
+    );
   }
 
   renderPage() {
@@ -153,53 +153,76 @@ class TeamCreation extends React.Component {
     const toolArr = _.map(this.props.tools, 'name');
 
     return (
-        <Grid container centered>
-          <Grid.Column>
-            <Divider hidden />
-            <AutoForm ref={ref => {
+      <Grid container centered>
+        <Grid.Column>
+          <Divider hidden />
+          <AutoForm
+            ref={(ref) => {
               fRef = ref;
-            }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}
-                      style={{
-                        paddingBottom: '40px',
-                      }}>
-              <Segment style={{
+            }}
+            schema={formSchema}
+            onSubmit={(data) => this.submit(data, fRef)}
+            style={{
+              paddingBottom: '40px',
+            }}
+          >
+            <Segment
+              style={{
                 borderRadius: '10px',
                 backgroundColor: '#E5F0FE',
-              }} className={'createTeam'}>
-                <Grid columns={1} style={{ paddingTop: '20px' }}>
-                  <Grid.Column style={{ paddingLeft: '30px', paddingRight: '30px' }}>
-                    <Header as="h2" textAlign="center" inverted>Team Information</Header>
-                    <Grid className='doubleLine'>
-                      <TextField name='name' />
-                      <RadioField
-                          name='open'
-                          inline
-                      />
-                    </Grid>
-                    <TextField name='image' placeholder={'Team Image URL'} />
-                    <LongTextField name='description' />
-                    <MultiSelectField name='challenges' placeholder={'Challenges'}
-                                      allowedValues={challengeArr} required />
-                    <MultiSelectField name='skills' placeholder={'Skills'}
-                                      allowedValues={skillArr} required />
-                    <MultiSelectField name='tools' placeholder={'Toolsets'}
-                                      allowedValues={toolArr} required />
-                    <TextField name="github" />
-                    <TextField name="devpostPage" />
-                  </Grid.Column>
-                </Grid>
-                <div align='center'>
-                  <SubmitField value='Submit'
-                               style={{
-                                 color: 'white', backgroundColor: '#dd000a',
-                                 margin: '20px 0px',
-                               }} />
-                </div>
-                <ErrorsField />
-              </Segment>
-            </AutoForm>
-          </Grid.Column>
-        </Grid>
+              }}
+              className={'createTeam'}
+            >
+              <Grid columns={1} style={{ paddingTop: '20px' }}>
+                <Grid.Column
+                  style={{ paddingLeft: '30px', paddingRight: '30px' }}
+                >
+                  <Header as="h2" textAlign="center" inverted>
+                    Team Information
+                  </Header>
+                  <Grid className="doubleLine">
+                    <TextField name="name" />
+                    <RadioField name="open" inline />
+                  </Grid>
+                  <TextField name="image" placeholder={'Team Image URL'} />
+                  <LongTextField name="description" />
+                  <MultiSelectField
+                    name="challenges"
+                    placeholder={'Challenges'}
+                    allowedValues={challengeArr}
+                    required
+                  />
+                  <MultiSelectField
+                    name="skills"
+                    placeholder={'Skills'}
+                    allowedValues={skillArr}
+                    required
+                  />
+                  <MultiSelectField
+                    name="tools"
+                    placeholder={'Toolsets'}
+                    allowedValues={toolArr}
+                    required
+                  />
+                  <TextField name="github" />
+                  <TextField name="devpostPage" />
+                </Grid.Column>
+              </Grid>
+              <div align="center">
+                <SubmitField
+                  value="Submit"
+                  style={{
+                    color: 'white',
+                    backgroundColor: '#dd000a',
+                    margin: '20px 0px',
+                  }}
+                />
+              </div>
+              <ErrorsField />
+            </Segment>
+          </AutoForm>
+        </Grid.Column>
+      </Grid>
     );
   }
 }
@@ -210,7 +233,6 @@ TeamCreation.propTypes = {
   tools: PropTypes.array.isRequired,
   participants: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
-
 };
 
 export default withTracker(() => {
@@ -225,6 +247,10 @@ export default withTracker(() => {
     tools: Tools.find({}).fetch(),
     participants: Participants.find({}).fetch(),
     // eslint-disable-next-line max-len
-    ready: subscriptionChallenges.ready() && subscriptionSkills.ready() && subscriptionTools.ready() && subscriptionParticipants.ready(),
+    ready:
+      subscriptionChallenges.ready() &&
+      subscriptionSkills.ready() &&
+      subscriptionTools.ready() &&
+      subscriptionParticipants.ready(),
   };
 })(TeamCreation);

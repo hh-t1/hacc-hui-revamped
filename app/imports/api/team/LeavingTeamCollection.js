@@ -7,11 +7,14 @@ import { ROLE } from '../role/Role';
 
 class LeavingTeamCollection extends BaseCollection {
   constructor() {
-    super('LeavingTeam', new SimpleSchema({
-      participantID: { type: SimpleSchema.RegEx.Id },
-      teamID: { type: SimpleSchema.RegEx.Id },
-      sentOwnerDM: { type: Boolean },
-    }));
+    super(
+      'LeavingTeam',
+      new SimpleSchema({
+        participantID: { type: SimpleSchema.RegEx.Id },
+        teamID: { type: SimpleSchema.RegEx.Id },
+        sentOwnerDM: { type: Boolean },
+      }),
+    );
   }
 
   /**
@@ -22,7 +25,11 @@ class LeavingTeamCollection extends BaseCollection {
   define({ username, team }) {
     const participantID = Participants.getID(username);
     const teamID = Teams.getID(team);
-    return this._collection.insert({ participantID, teamID, sentOwnerDM: false });
+    return this._collection.insert({
+      participantID,
+      teamID,
+      sentOwnerDM: false,
+    });
   }
 
   /**

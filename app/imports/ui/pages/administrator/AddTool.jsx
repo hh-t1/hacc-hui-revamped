@@ -8,10 +8,10 @@ import {
 import { Container } from 'react-bootstrap';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
-import { defineMethod } from '../../../api/base/BaseCollection.methods';
-import { Tools } from '../../../api/tool/ToolCollection';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
+import { defineMethod } from '../../../api/base/BaseCollection.methods';
+import { Tools } from '../../../api/tool/ToolCollection';
 import { ROUTES } from '../../../startup/client/route-constants';
 
 // Create a schema to specify the structure of the data to appear in the form.
@@ -49,11 +49,10 @@ const AddTool = () => {
             icon: 'success',
             showCloseButton: true,
             focusConfirm: false,
-            confirmButtonText:
-                'OK'
+            confirmButtonText: 'OK',
           }).then(() => {
             setRedirect(true);
-          })
+          });
         }
       });
     },

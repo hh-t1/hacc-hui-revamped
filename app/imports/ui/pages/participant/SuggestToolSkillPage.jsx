@@ -5,9 +5,7 @@ import SuggestToolSkillWidget from '../../components/participant/SuggestToolSkil
 
 class SuggestToolSkillPage extends React.Component {
   render() {
-    return (
-        <SuggestToolSkillWidget />
-    );
+    return <SuggestToolSkillWidget />;
   }
 }
 

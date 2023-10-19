@@ -20,10 +20,19 @@ if (Meteor.isServer) {
       const lookingForTeam = true;
       const skills = makeSampleSkillSlugArray(2);
       const tools = makeSampleToolSlugArray();
-      const { profileID } = Participants.define({ username, firstName, lastName, demographicLevel,
-        lookingForTeam, skills, tools });
+      const { profileID } = Participants.define({
+        username,
+        firstName,
+        lastName,
+        demographicLevel,
+        lookingForTeam,
+        skills,
+        tools,
+      });
       expect(Participants.isDefined(profileID)).to.be.true;
-      expect(ParticipantSkills.find({ participantID: profileID }).fetch()).to.have.lengthOf(2);
+      expect(
+        ParticipantSkills.find({ participantID: profileID }).fetch(),
+      ).to.have.lengthOf(2);
     });
 
     it('update', function test() {
@@ -34,7 +43,9 @@ if (Meteor.isServer) {
       const docID = participant._id;
       expect(Participants.isDefined(participant._id)).to.be.true;
       Participants.update(docID, { firstName, skills });
-      expect(ParticipantSkills.find({ participantID: docID }).fetch()).to.have.lengthOf(3);
+      expect(
+        ParticipantSkills.find({ participantID: docID }).fetch(),
+      ).to.have.lengthOf(3);
     });
   });
 }

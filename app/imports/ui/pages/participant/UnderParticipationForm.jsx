@@ -11,7 +11,10 @@ import { Participants } from '../../../api/user/ParticipantCollection';
 import { USER_INTERACTIONS } from '../../../startup/client/user-interaction-constants';
 import { userInteractionDefineMethod } from '../../../api/user/UserInteractionCollection.methods';
 import { MinorParticipants } from '../../../api/user/MinorParticipantCollection';
-import { defineMethod, updateMethod } from '../../../api/base/BaseCollection.methods';
+import {
+  defineMethod,
+  updateMethod,
+} from '../../../api/base/BaseCollection.methods';
 
 const schema = new SimpleSchema({
   yourLastName: String,
@@ -26,14 +29,19 @@ const schema = new SimpleSchema({
  * @memberOf ui/pages
  */
 class UnderParticipationForm extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = { redirectToReferer: false };
   }
 
   submit(formData) {
-    const { firstName, lastName, parentFirstName, parentLastName, parentEmail } = formData;
+    const {
+      firstName,
+      lastName,
+      parentFirstName,
+      parentLastName,
+      parentEmail,
+    } = formData;
     const dev = Participants.findDoc({ userID: Meteor.userId() });
     const username = dev.username;
     let collectionName = MinorParticipants.getCollectionName();
@@ -51,7 +59,13 @@ class UnderParticipationForm extends React.Component {
     const interactionData = {
       username: dev.username,
       type: USER_INTERACTIONS.MINOR_SIGNED_CONSENT,
-      typeData: [firstName, lastName, parentFirstName, parentLastName, parentEmail],
+      typeData: [
+        firstName,
+        lastName,
+        parentFirstName,
+        parentLastName,
+        parentEmail,
+      ],
     };
     console.log(interactionData);
     userInteractionDefineMethod.call(interactionData, (error) => {
@@ -79,28 +93,35 @@ class UnderParticipationForm extends React.Component {
       return <Redirect to={from} />;
     }
     return (
-        <Segment style={darkerBlueStyle}>
-          <Header>HACC Registration</Header>
-          <AutoForm schema={formSchema} onSubmit={data => this.submit(data)}>
-            <Segment>
-              <Message>
-                Read the <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>.
-                <br />
-                Then agree to the terms.
-              </Message>
-              <Form.Group widths="equal">
-                <TextField name='yourFirstName' />
-                <TextField name='yourLastName' />
-              </Form.Group>
-              <Form.Group widths="equal">
-                <TextField name='parentFirstName' label="Parent/Guardian First Name" />
-                <TextField name='parentLastName' label="Parent/Guardian Last Name" />
-                <TextField name='parentEmail' label="Parent/Guardian Email" />
-              </Form.Group>
-              <SubmitField />
-            </Segment>
-          </AutoForm>
-        </Segment>
+      <Segment style={darkerBlueStyle}>
+        <Header>HACC Registration</Header>
+        <AutoForm schema={formSchema} onSubmit={(data) => this.submit(data)}>
+          <Segment>
+            <Message>
+              Read the{' '}
+              <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>.
+              <br />
+              Then agree to the terms.
+            </Message>
+            <Form.Group widths="equal">
+              <TextField name="yourFirstName" />
+              <TextField name="yourLastName" />
+            </Form.Group>
+            <Form.Group widths="equal">
+              <TextField
+                name="parentFirstName"
+                label="Parent/Guardian First Name"
+              />
+              <TextField
+                name="parentLastName"
+                label="Parent/Guardian Last Name"
+              />
+              <TextField name="parentEmail" label="Parent/Guardian Email" />
+            </Form.Group>
+            <SubmitField />
+          </Segment>
+        </AutoForm>
+      </Segment>
     );
   }
 }

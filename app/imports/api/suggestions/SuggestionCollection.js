@@ -14,12 +14,15 @@ class SuggestionCollection extends BaseCollection {
    * Creates the Skill collection.
    */
   constructor() {
-    super('Suggestion', new SimpleSchema({
-      username: { type: String },
-      name: { type: String },
-      type: { type: String },
-      description: { type: String },
-    }));
+    super(
+      'Suggestion',
+      new SimpleSchema({
+        username: { type: String },
+        name: { type: String },
+        type: { type: String },
+        description: { type: String },
+      }),
+    );
   }
 
   /**
@@ -28,13 +31,13 @@ class SuggestionCollection extends BaseCollection {
    * @throws {Meteor.Error} If the Skill definition includes a defined slug.
    * @returns The newly created docID.
    */
-  define({
-           username, name, type,
-           description,
-         }) {
+  define({ username, name, type, description }) {
     // Define the Skill and get its ID
     const SuggestionID = this._collection.insert({
-      username, name, type, description,
+      username,
+      name,
+      type,
+      description,
     });
     return SuggestionID;
   }
@@ -46,9 +49,7 @@ class SuggestionCollection extends BaseCollection {
    * @param description The new description (optional).
    * @throws { Meteor.Error } If docID is not defined.
    */
-  update(docID, {
-    name, type, description,
-  }) {
+  update(docID, { name, type, description }) {
     this.assertDefined(docID);
     const updateData = {};
     if (name) {

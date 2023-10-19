@@ -23,23 +23,30 @@ import { TeamParticipants } from '../team/TeamParticipantCollection';
  */
 class ParticipantCollection extends BaseSlugCollection {
   constructor() {
-    super('Participant', new SimpleSchema({
-      username: { type: String },
-      slugID: { type: String },
-      firstName: { type: String },
-      lastName: { type: String },
-      demographicLevel: { type: String, allowedValues: demographicLevels, optional: true },
-      linkedIn: { type: String, optional: true },
-      gitHub: { type: String, optional: true },
-      slackUsername: { type: String, optional: true },
-      website: { type: String, optional: true },
-      aboutMe: { type: String, optional: true },
-      userID: { type: SimpleSchema.RegEx.Id, optional: true },
-      lookingForTeam: { type: Boolean, optional: true },
-      isCompliant: { type: Boolean, optional: true },
-      editedProfile: { type: Boolean, optional: true },
-      minor: { type: Boolean, optional: true },
-    }));
+    super(
+      'Participant',
+      new SimpleSchema({
+        username: { type: String },
+        slugID: { type: String },
+        firstName: { type: String },
+        lastName: { type: String },
+        demographicLevel: {
+          type: String,
+          allowedValues: demographicLevels,
+          optional: true,
+        },
+        linkedIn: { type: String, optional: true },
+        gitHub: { type: String, optional: true },
+        slackUsername: { type: String, optional: true },
+        website: { type: String, optional: true },
+        aboutMe: { type: String, optional: true },
+        userID: { type: SimpleSchema.RegEx.Id, optional: true },
+        lookingForTeam: { type: Boolean, optional: true },
+        isCompliant: { type: Boolean, optional: true },
+        editedProfile: { type: Boolean, optional: true },
+        minor: { type: Boolean, optional: true },
+      }),
+    );
   }
 
   /**
@@ -62,23 +69,37 @@ class ParticipantCollection extends BaseSlugCollection {
    * @return {{password: *, profileID: any}|undefined}
    */
   define({
-           username, firstName, lastName, demographicLevel, lookingForTeam,
-           challenges = [], interests = [], skills = [], tools = [],
-           linkedIn = '', gitHub = '', website = '', aboutMe = '', slackUsername = '',
-           isCompliant = false,
-         }) {
+    username, firstName, lastName, demographicLevel, lookingForTeam,
+    challenges = [], interests = [], skills = [], tools = [],
+    linkedIn = '', gitHub = '', website = '', aboutMe = '', slackUsername = '',
+    isCompliant = false,
+  }) {
     if (Meteor.isServer) {
       const role = ROLE.PARTICIPANT;
       const slugID = Slugs.define({ name: username }); // ensure the usernames are unique
       const profileID = this._collection.insert({
-        username, slugID, firstName, lastName, demographicLevel,
-        lookingForTeam, linkedIn, gitHub, website, aboutMe, isCompliant, slackUsername,
+        username,
+        slugID,
+        firstName,
+        lastName,
+        demographicLevel,
+        lookingForTeam,
+        linkedIn,
+        gitHub,
+        website,
+        aboutMe,
+        isCompliant,
+        slackUsername,
       });
       Slugs.updateEntityID(slugID, profileID);
       const { userID, password } = Users.define({ username, role });
       this._collection.update(profileID, { $set: { userID } });
-      _.forEach(challenges, (challenge) => ParticipantChallenges.define({ challenge, participant: username }));
-      _.forEach(interests, (interest) => ParticipantInterests.define({ interest, participant: username }));
+      _.forEach(challenges, (challenge) =>
+        ParticipantChallenges.define({ challenge, participant: username }),
+      );
+      _.forEach(interests, (interest) =>
+        ParticipantInterests.define({ interest, participant: username }),
+      );
       _.forEach(skills, (skill) => {
         ParticipantSkills.define({ skill, participant: username });
       });
@@ -110,11 +131,27 @@ class ParticipantCollection extends BaseSlugCollection {
    * @param editedProfile {Boolean} the new edited profile value (optional).
    * @param minor {Boolean} update the minor status (optional).
    */
-  update(docID, {
-    firstName, lastName, demographicLevel, lookingForTeam, challenges,
-    interests, skills, tools, linkedIn, gitHub, website,
-    aboutMe, isCompliant, editedProfile, slackUsername, minor,
-  }) {
+  update(
+    docID,
+    {
+      firstName,
+      lastName,
+      demographicLevel,
+      lookingForTeam,
+      challenges,
+      interests,
+      skills,
+      tools,
+      linkedIn,
+      gitHub,
+      website,
+      aboutMe,
+      isCompliant,
+      editedProfile,
+      slackUsername,
+      minor,
+    },
+  ) {
     // console.log('Participants.update', skills, tools);
     this.assertDefined(docID);
     const updateData = {};
@@ -158,11 +195,15 @@ class ParticipantCollection extends BaseSlugCollection {
     const participant = this.findSlugByID(docID);
     if (challenges) {
       ParticipantChallenges.removeParticipant(participant);
-      _.forEach(challenges, (challenge) => ParticipantChallenges.define({ challenge, participant }));
+      _.forEach(challenges, (challenge) =>
+        ParticipantChallenges.define({ challenge, participant }),
+      );
     }
     if (interests) {
       ParticipantInterests.removeParticipant(participant);
-      _.forEach(interests, (interest) => ParticipantInterests.define({ interest, participant }));
+      _.forEach(interests, (interest) =>
+        ParticipantInterests.define({ interest, participant }),
+      );
     }
     if (skills) {
       ParticipantSkills.removeParticipant(participant);
@@ -204,14 +245,27 @@ class ParticipantCollection extends BaseSlugCollection {
   dumpOne(docID) {
     this.assertDefined(docID);
     const {
-      _id, username, firstName, lastName, demographicLevel, lookingForTeam,
-      linkedIn, gitHub, website, aboutMe, isCompliant,
+      _id,
+      username,
+      firstName,
+      lastName,
+      demographicLevel,
+      lookingForTeam,
+      linkedIn,
+      gitHub,
+      website,
+      aboutMe,
+      isCompliant,
     } = this.findDoc(docID);
     const selector = { participantID: _id };
     const devChallenges = ParticipantChallenges.find(selector).fetch();
-    const challenges = _.map(devChallenges, (dC) => Challenges.findSlugByID(dC.challengeID));
+    const challenges = _.map(devChallenges, (dC) =>
+      Challenges.findSlugByID(dC.challengeID),
+    );
     const devInterests = ParticipantInterests.find(selector).fetch();
-    const interests = _.map(devInterests, (dI) => Interests.findSlugByID(dI.interestID));
+    const interests = _.map(devInterests, (dI) =>
+      Interests.findSlugByID(dI.interestID),
+    );
     const devSkills = ParticipantSkills.find(selector).fetch();
     const skills = _.map(devSkills, (dS) => {
       const skill = Skills.findSlugByID(dS.skillID);
@@ -232,8 +286,20 @@ class ParticipantCollection extends BaseSlugCollection {
     });
     // console.log('Participants.dumpOne', docID, skills, tools);
     return {
-      username, firstName, lastName, demographicLevel, lookingForTeam, isCompliant,
-      linkedIn, gitHub, website, aboutMe, challenges, interests, skills, tools,
+      username,
+      firstName,
+      lastName,
+      demographicLevel,
+      lookingForTeam,
+      isCompliant,
+      linkedIn,
+      gitHub,
+      website,
+      aboutMe,
+      challenges,
+      interests,
+      skills,
+      tools,
     };
   }
 
@@ -263,10 +329,11 @@ class ParticipantCollection extends BaseSlugCollection {
       return false;
     }
     return (
-        !!this._collection.findOne(name)
-        || !!this._collection.findOne({ name })
-        || !!this._collection.findOne({ _id: name })
-        || !!this._collection.findOne({ userID: name }));
+      !!this._collection.findOne(name)
+      !!this._collection.findOne({ name }) ||
+      !!this._collection.findOne({ _id: name }) ||
+      !!this._collection.findOne({ userID: name })
+    );
   }
 
   getFullName(docID) {

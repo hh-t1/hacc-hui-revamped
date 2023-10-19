@@ -10,7 +10,6 @@ import { Skills } from './SkillCollection';
 
 if (Meteor.isServer) {
   describe('SkillCollection', function testSuite() {
-
     before(function setup() {
       resetDatabase();
     });
@@ -22,12 +21,12 @@ if (Meteor.isServer) {
     it('Can define and removeIt', function test1(done) {
       this.timeout(5000);
       fc.assert(
-          fc.property(fc.lorem(3), fc.lorem(24), (name, description) => {
-            const docID = Skills.define({ name, description });
-            expect(Skills.isDefined(docID)).to.be.true;
-            Skills.removeIt(docID);
-            expect(Skills.isDefined(docID)).to.be.false;
-          }),
+        fc.property(fc.lorem(3), fc.lorem(24), (name, description) => {
+          const docID = Skills.define({ name, description });
+          expect(Skills.isDefined(docID)).to.be.true;
+          Skills.removeIt(docID);
+          expect(Skills.isDefined(docID)).to.be.false;
+        }),
       );
       done();
     });
@@ -43,12 +42,12 @@ if (Meteor.isServer) {
       let SkillDoc = Skills.findOne({});
       const docID = SkillDoc._id;
       fc.assert(
-          fc.property(fc.lorem(4), fc.lorem(24), (fcName, fcDescription) => {
-            Skills.update(docID, { name: fcName, description: fcDescription });
-            SkillDoc = Skills.findDoc(docID);
-            expect(SkillDoc.name).to.equal(fcName);
-            expect(SkillDoc.description).to.equal(fcDescription);
-          }),
+        fc.property(fc.lorem(4), fc.lorem(24), (fcName, fcDescription) => {
+          Skills.update(docID, { name: fcName, description: fcDescription });
+          SkillDoc = Skills.findDoc(docID);
+          expect(SkillDoc.name).to.equal(fcName);
+          expect(SkillDoc.description).to.equal(fcDescription);
+        }),
       );
       done();
     });

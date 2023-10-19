@@ -11,13 +11,15 @@ import { paleBlueStyle } from '../../styles';
 import Dropdown from '../Dropdown';
 
 const SuggestToolSkillWidget = ({ participant }) => {
-  const [type, setType] = useState("");
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [type, setType] = useState('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [isValid, setIsValid] = useState(false);
 
   const validateForm = () => {
-    type !== "" && name !== "" && description !== "" ? setIsValid(true) : setIsValid(false);
+    type !== '' && name !== '' && description !== ''
+      ? setIsValid(true)
+      : setIsValid(false);
   };
 
   useEffect(() => {
@@ -48,10 +50,14 @@ const SuggestToolSkillWidget = ({ participant }) => {
   };
 
   return (
-    <Container id="suggest-tool-skill" style={{ paddingBottom: '50px', paddingTop: '40px' }}>
+    <Container
+      id="suggest-tool-skill"
+      style={{ paddingBottom: '50px', paddingTop: '40px' }}
+    >
       <Card style={{ ...paleBlueStyle, maxWidth: '800px', margin: '0 auto' }}>
         <Card.Header as="h2" className="text-center">
-          Hello {participant.firstName}, please fill out the form to suggest a new tool or skill.
+          Hello {participant.firstName}, please fill out the form to suggest a
+          new tool or skill.
         </Card.Header>
         <Card.Body style={{ width: '400px', margin: '0 auto' }}>
           <Form onSubmit={submit}>
@@ -63,8 +69,8 @@ const SuggestToolSkillWidget = ({ participant }) => {
                       { key: '1', text: 'Tool', value: 'Tool' },
                       { key: '2', text: 'Skill', value: 'Skill' },
                     ]}
-                    onItemSelect={value => setType(value)}
-                    label={type || "Select Type"}
+                    onItemSelect={(value) => setType(value)}
+                    label={type || 'Select Type'}
                     style={{
                       backgroundColor: '#ffffff',
                       color: '#000000',
@@ -78,7 +84,7 @@ const SuggestToolSkillWidget = ({ participant }) => {
                   type="text"
                   placeholder="Name"
                   value={name}
-                  onChange={e => setName(e.target.value)}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </Row>
               <Row className="py-1">
@@ -86,7 +92,7 @@ const SuggestToolSkillWidget = ({ participant }) => {
                   type="text"
                   placeholder="Description"
                   value={description}
-                  onChange={e => setDescription(e.target.value) }
+                  onChange={(e) => setDescription(e.target.value)}
                   as="textarea"
                 />
               </Row>

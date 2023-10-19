@@ -12,11 +12,18 @@ import { ROLE } from '../role/Role';
  */
 class ParticipantSkillCollection extends BaseCollection {
   constructor() {
-    super('ParticipantSkill', new SimpleSchema({
-      skillID: { type: SimpleSchema.RegEx.Id },
-      participantID: { type: SimpleSchema.RegEx.Id },
-      skillLevel: { type: String, allowedValues: skillAndToolLevels, optional: true },
-    }));
+    super(
+      'ParticipantSkill',
+      new SimpleSchema({
+        skillID: { type: SimpleSchema.RegEx.Id },
+        participantID: { type: SimpleSchema.RegEx.Id },
+        skillLevel: {
+          type: String,
+          allowedValues: skillAndToolLevels,
+          optional: true,
+        },
+      }),
+    );
   }
 
   /**
@@ -88,7 +95,6 @@ class ParticipantSkillCollection extends BaseCollection {
   assertValidRoleForMethod(userId) {
     this.assertRole(userId, [ROLE.ADMIN, ROLE.PARTICIPANT]);
   }
-
 }
 
 /**

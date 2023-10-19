@@ -13,10 +13,13 @@ class ChallengeInterestCollection extends BaseCollection {
    * Creates the ChallengeInterest collection.
    */
   constructor() {
-    super('ChallengeInterest', new SimpleSchema({
-      challengeID: { type: SimpleSchema.RegEx.Id },
-      interestID: { type: SimpleSchema.RegEx.Id },
-    }));
+    super(
+      'ChallengeInterest',
+      new SimpleSchema({
+        challengeID: { type: SimpleSchema.RegEx.Id },
+        interestID: { type: SimpleSchema.RegEx.Id },
+      }),
+    );
   }
 
   /**

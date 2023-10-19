@@ -14,11 +14,14 @@ class SkillCollection extends BaseSlugCollection {
    * Creates the Skill collection.
    */
   constructor() {
-    super('Skill', new SimpleSchema({
-      name: { type: String },
-      slugID: { type: SimpleSchema.RegEx.Id },
-      description: { type: String },
-    }));
+    super(
+      'Skill',
+      new SimpleSchema({
+        name: { type: String },
+        slugID: { type: SimpleSchema.RegEx.Id },
+        description: { type: String },
+      }),
+    );
   }
 
   /**
@@ -32,16 +35,15 @@ class SkillCollection extends BaseSlugCollection {
    * @throws {Meteor.Error} If the Skill definition includes a defined slug.
    * @returns The newly created docID.
    */
-  define({
-           name,
-           description,
-         }) {
+  define({ name, description }) {
     const slug = slugify(name); // we automatically build the slug from the name.
     // Get SlugID, throw error if found.
     const slugID = Slugs.define({ name: slug });
     // Define the Skill and get its ID
     const SkillID = this._collection.insert({
-      name, description, slugID,
+      name,
+      description,
+      slugID,
     });
     // Connect the Slug to this Skill
     Slugs.updateEntityID(slugID, SkillID);
@@ -55,9 +57,7 @@ class SkillCollection extends BaseSlugCollection {
    * @param description The new description (optional).
    * @throws { Meteor.Error } If docID is not defined.
    */
-  update(docID, {
-    name, description,
-  }) {
+  update(docID, { name, description }) {
     this.assertDefined(docID);
     const updateData = {};
     if (name) {

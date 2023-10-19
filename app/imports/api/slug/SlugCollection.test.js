@@ -21,15 +21,15 @@ if (Meteor.isServer) {
     it('Can define and removeIt', function test1(done) {
       this.timeout(5000);
       fc.assert(
-          fc.property(fc.lorem(3), (fcSlug) => {
-            const name = slugify(fcSlug);
-            expect(Slugs.isValidSlugName(name)).to.be.true;
-            const docID = Slugs.define({ name });
-            expect(Slugs.isDefined(docID)).to.be.true;
-            expect(Slugs.isDefined(name)).to.be.true;
-            Slugs.removeIt(docID);
-            expect(Slugs.isDefined(docID)).to.be.false;
-          }),
+        fc.property(fc.lorem(3), (fcSlug) => {
+          const name = slugify(fcSlug);
+          expect(Slugs.isValidSlugName(name)).to.be.true;
+          const docID = Slugs.define({ name });
+          expect(Slugs.isDefined(docID)).to.be.true;
+          expect(Slugs.isDefined(name)).to.be.true;
+          Slugs.removeIt(docID);
+          expect(Slugs.isDefined(docID)).to.be.false;
+        }),
       );
       done();
     });

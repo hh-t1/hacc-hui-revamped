@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import swal from 'sweetalert';
@@ -20,32 +20,50 @@ const ToolsAdminWidget = (props) => {
       icon: 'warning',
       buttons: true,
       dangerMode: true,
-    })
-        .then((willDelete) => {
-          if (willDelete) {
-            removeItMethod.call({
-              collectionName: Tools.getCollectionName(),
-              instance: Tools.getID(docID),
-            }, (error) => (error ?
-                swal('Error', error.message, 'error') :
-                swal('Success', 'Tool removed', 'success')));
-          } else {
-            swal('You canceled the deletion!');
-          }
-        });
-  }
+    }).then((willDelete) => {
+      if (willDelete) {
+        removeItMethod.call({
+          collectionName: Tools.getCollectionName(),
+          instance: Tools.getID(docID),
+        },
+          (error) =>
+            error
+          swal('Error', error.message, 'error') :
+          swal('Success', 'Tool removed', 'success')));
+      } else {
+        swal('You canceled the deletion!');
+      }
+    });
+  };
 
-    return (
-        <tr>
-          <th>{toolData.name}</th>
-          <th>{toolData.description}</th>
-          {/* eslint-disable-next-line max-len */}
-          <th width={2}><Button variant="light"><Link to={`/edit-tool/${toolData._id}`} style={{ color: 'rgba(0, 0, 0, 0.6)' }}>Edit</Link></Button></th>
-          {/* eslint-disable-next-line max-len */}
-          <th width={2}><Button variant="danger" negative onClick={() => removeItem(toolData._id)}>Delete</Button></th>
-        </tr>
-    );
-}
+  return (
+    <tr>
+      <th>{toolData.name}</th>
+      <th>{toolData.description}</th>
+      {/* eslint-disable-next-line max-len */}
+      <th width={2}>
+        <Button variant="light">
+          <Link
+            to={`/edit-tool/${toolData._id}`}
+            style={{ color: 'rgba(0, 0, 0, 0.6)' }}
+          >
+            Edit
+          </Link>
+        </Button>
+      </th>
+      {/* eslint-disable-next-line max-len */}
+      <th width={2}>
+        <Button
+          variant="danger"
+          negative
+          onClick={() => removeItem(toolData._id)}
+        >
+          Delete
+        </Button>
+      </th>
+    </tr>
+  );
+};
 
 /** Require a document to be passed to this component. */
 ToolsAdminWidget.propTypes = {

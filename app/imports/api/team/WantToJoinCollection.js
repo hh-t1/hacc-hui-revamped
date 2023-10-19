@@ -6,13 +6,15 @@ import { Teams } from './TeamCollection';
 import { ROLE } from '../role/Role';
 
 class WantToJoinCollection extends BaseCollection {
-
   constructor() {
-    super('WantToJoin', new SimpleSchema({
-      teamID: { type: SimpleSchema.RegEx.Id },
-      participantID: { type: SimpleSchema.RegEx.Id },
-      sentDM: { type: Boolean },
-    }));
+    super(
+      'WantToJoin',
+      new SimpleSchema({
+        teamID: { type: SimpleSchema.RegEx.Id },
+        participantID: { type: SimpleSchema.RegEx.Id },
+        sentDM: { type: Boolean },
+      }),
+    );
   }
 
   /**
@@ -82,7 +84,6 @@ class WantToJoinCollection extends BaseCollection {
   assertValidRoleForMethod(userId) {
     this.assertRole(userId, [ROLE.ADMIN, ROLE.PARTICIPANT]);
   }
-
 }
 
 export const WantsToJoin = new WantToJoinCollection();

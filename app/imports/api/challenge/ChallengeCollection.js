@@ -11,15 +11,18 @@ import { slugify, Slugs } from '../slug/SlugCollection';
  */
 class ChallengeCollection extends BaseSlugCollection {
   constructor() {
-    super('Challenge', new SimpleSchema({
-      title: { type: String },
-      slugID: { type: SimpleSchema.RegEx.Id },
-      description: { type: String },
-      interests: { type: Array, optional: true },
-      'interests.$': { type: String },
-      submissionDetail: { type: String },
-      pitch: { type: String, optional: true },
-    }));
+    super(
+      'Challenge',
+      new SimpleSchema({
+        title: { type: String },
+        slugID: { type: SimpleSchema.RegEx.Id },
+        description: { type: String },
+        interests: { type: Array, optional: true },
+        'interests.$': { type: String },
+        submissionDetail: { type: String },
+        pitch: { type: String, optional: true },
+      }),
+    );
   }
 
   /**
@@ -32,14 +35,26 @@ class ChallengeCollection extends BaseSlugCollection {
    * @return {string} the id of the new challenge.
    */
   define({ title, description, interests, submissionDetail, pitch }) {
-    const docs = this.find({ title, description, submissionDetail, pitch }).fetch();
+    const docs = this.find({
+      title,
+      description,
+      submissionDetail,
+      pitch,
+    }).fetch();
     if (docs && docs.length > 0) {
       const challengeID = docs[0]._id;
       return challengeID;
     }
     const challenge = slugify(title);
     const slugID = Slugs.define({ name: challenge });
-    const challengeID = this._collection.insert({ title, slugID, description, submissionDetail, pitch, interests });
+    const challengeID = this._collection.insert({
+      title,
+      slugID,
+      description,
+      submissionDetail,
+      pitch,
+      interests,
+    });
     // Connect the Slug to this Challenge
     Slugs.updateEntityID(slugID, challengeID);
     return challengeID;

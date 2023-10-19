@@ -5,9 +5,7 @@ import CreateProfileWidget from '../../components/participant/CreateProfileWidge
 
 class CreateProfilePage extends React.Component {
   render() {
-    return (
-        <CreateProfileWidget />
-    );
+    return <CreateProfileWidget />;
   }
 }
 

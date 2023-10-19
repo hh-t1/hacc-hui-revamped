@@ -14,13 +14,16 @@ import { Users } from './UserCollection';
  */
 class AdministratorCollection extends BaseSlugCollection {
   constructor() {
-    super('Administrator', new SimpleSchema({
-      username: { type: String },
-      slugID: { type: String },
-      firstName: { type: String },
-      lastName: { type: String },
-      userID: { type: SimpleSchema.RegEx.Id, optional: true },
-    }));
+    super(
+      'Administrator',
+      new SimpleSchema({
+        username: { type: String },
+        slugID: { type: String },
+        firstName: { type: String },
+        lastName: { type: String },
+        userID: { type: SimpleSchema.RegEx.Id, optional: true },
+      }),
+    );
   }
 
   /**
@@ -34,7 +37,12 @@ class AdministratorCollection extends BaseSlugCollection {
     if (Meteor.isServer) {
       const role = ROLE.ADMIN;
       const slugID = Slugs.define({ name: username }); // ensure the usernames are unique
-      const profileID = this._collection.insert({ username, slugID, firstName, lastName });
+      const profileID = this._collection.insert({
+        username,
+        slugID,
+        firstName,
+        lastName,
+      });
       Slugs.updateEntityID(slugID, profileID);
       const { userID, password } = Users.define({ username, role });
       this._collection.update(profileID, { $set: { userID } });
@@ -94,7 +102,6 @@ class AdministratorCollection extends BaseSlugCollection {
   assertValidRoleForMethod(userId) {
     this.assertRole(userId, [ROLE.ADMIN]);
   }
-
 }
 
 /**

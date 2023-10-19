@@ -5,9 +5,7 @@ import DeleteFormWidget from '../../components/participant/DeleteFormWidget';
 
 class DeleteForm extends React.Component {
   render() {
-    return (
-        <DeleteFormWidget/>
-    );
+    return <DeleteFormWidget />;
   }
 }
 

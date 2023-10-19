@@ -11,10 +11,13 @@ import { ROLE } from '../role/Role';
  */
 class TeamParticipantCollection extends BaseCollection {
   constructor() {
-    super('TeamParticipant', new SimpleSchema({
-      teamID: { type: SimpleSchema.RegEx.Id },
-      participantID: { type: SimpleSchema.RegEx.Id },
-    }));
+    super(
+      'TeamParticipant',
+      new SimpleSchema({
+        teamID: { type: SimpleSchema.RegEx.Id },
+        participantID: { type: SimpleSchema.RegEx.Id },
+      }),
+    );
   }
 
   /**
@@ -79,7 +82,6 @@ class TeamParticipantCollection extends BaseCollection {
   assertValidRoleForMethod(userId) {
     this.assertRole(userId, [ROLE.ADMIN, ROLE.PARTICIPANT]);
   }
-
 }
 
 /**

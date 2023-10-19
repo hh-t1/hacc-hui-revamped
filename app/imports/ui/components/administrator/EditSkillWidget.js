@@ -11,10 +11,10 @@ import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter } from 'react-router';
 import { Container } from 'react-bootstrap';
-import { updateMethod } from '../../../api/base/BaseCollection.methods';
-import { Skills } from '../../../api/skill/SkillCollection';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
+import { updateMethod } from '../../../api/base/BaseCollection.methods';
+import { Skills } from '../../../api/skill/SkillCollection';
 import { ROUTES } from '../../../startup/client/route-constants';
 
 /**
@@ -52,40 +52,39 @@ const EditSkillWidget = (props) => {
             icon: 'success',
             showCloseButton: true,
             focusConfirm: false,
-            confirmButtonText:
-                'OK'
+            confirmButtonText: 'OK',
           }).then(() => {
             setRedirect(true);
-          })
+          });
         }
       },
     );
-  }
+  };
 
   if (redirect) {
     return <Redirect to={ROUTES.CONFIGURE_HACC} />;
   }
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
-    const formSchema = new SimpleSchema2Bridge(Skills.getSchema());
-    return (
-      <Container id="edit-skill-page">
-        <h2 className="text-center fw-bold">Edit Skill</h2>
-        <AutoForm
-          schema={formSchema}
-          onSubmit={(data) => submit(data)}
-          model={props.doc}
-        >
-          <div className="border p-3">
-            <TextField name="name" required />
-            <LongTextField name="description" required />
-            <SubmitField value="Submit" />
-            <ErrorsField />
-          </div>
-        </AutoForm>
-      </Container>
-    );
-}
+  const formSchema = new SimpleSchema2Bridge(Skills.getSchema());
+  return (
+    <Container id="edit-skill-page">
+      <h2 className="text-center fw-bold">Edit Skill</h2>
+      <AutoForm
+        schema={formSchema}
+        onSubmit={(data) => submit(data)}
+        model={props.doc}
+      >
+        <div className="border p-3">
+          <TextField name="name" required />
+          <LongTextField name="description" required />
+          <SubmitField value="Submit" />
+          <ErrorsField />
+        </div>
+      </AutoForm>
+    </Container>
+  );
+};
 
 EditSkillWidget.propTypes = {
   doc: PropTypes.object,

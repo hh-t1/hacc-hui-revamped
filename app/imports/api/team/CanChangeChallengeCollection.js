@@ -3,9 +3,12 @@ import BaseCollection from '../base/BaseCollection';
 
 class CanChangeChallengeCollection extends BaseCollection {
   constructor() {
-    super('CanChangeChallenge', new SimpleSchema({
-      canChangeChallenges: { type: Boolean },
-    }));
+    super(
+      'CanChangeChallenge',
+      new SimpleSchema({
+        canChangeChallenges: { type: Boolean },
+      }),
+    );
   }
 
   /**

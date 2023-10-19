@@ -65,7 +65,10 @@ export const defineTestUser = new ValidatedMethod({
  * Credentials default to the standard admin username and password.
  * @memberOf test-utilities
  */
-export function withLoggedInUser({ username = 'admin@foo.com', password = 'changeme' } = {}) {
+export function withLoggedInUser({
+  username = 'admin@foo.com',
+  password = 'changeme',
+} = {}) {
   return new Promise((resolve, reject) => {
     Meteor.loginWithPassword(username, password, (error) => {
       if (error) {

@@ -4,9 +4,7 @@ import ListDevelopersWidgetAdmin from '../../components/administrator/ListPartic
 
 class ListParticipantsPageAdmin extends React.Component {
   render() {
-    return (
-        <ListDevelopersWidgetAdmin />
-    );
+    return <ListDevelopersWidgetAdmin />;
   }
 }
 

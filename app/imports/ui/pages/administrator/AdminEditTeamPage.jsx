@@ -12,14 +12,14 @@ import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { useTracker } from 'meteor/react-meteor-data';
 import { useRouteMatch } from 'react-router';
 
+import Swal from 'sweetalert2';
+import { Redirect } from 'react-router-dom';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { Teams } from '../../../api/team/TeamCollection';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
 import { paleBlueStyle } from '../../styles';
-import Swal from 'sweetalert2';
-import { Redirect } from 'react-router-dom';
 import { ROUTES } from '../../../startup/client/route-constants';
 
 const schema = new SimpleSchema({
@@ -54,7 +54,6 @@ const AdminEditTeamPage = () => {
   const handleSubmit = (data) => {
     const { name, description, gitHubRepo } = data;
 
-
     const updateData = {};
     updateData.id = data._id;
     updateData.name = name;
@@ -74,11 +73,10 @@ const AdminEditTeamPage = () => {
           icon: 'success',
           showCloseButton: true,
           focusConfirm: false,
-          confirmButtonText:
-              'OK'
+          confirmButtonText: 'OK',
         }).then(() => {
           setRedirect(true);
-        })
+        });
       }
     });
   };

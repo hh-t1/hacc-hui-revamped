@@ -22,16 +22,24 @@ export const dumpDatabaseMethod = new ValidatedMethod({
   validate: null,
   run() {
     if (!this.userId) {
-      throw new Meteor.Error('unauthorized', 'You must be logged in to dump the database..');
+      throw new Meteor.Error(
+        'unauthorized',
+        'You must be logged in to dump the database..',
+      );
     }
     if (!Roles.userIsInRole(this.userId, ROLE.ADMIN)) {
-      throw new Meteor.Error('unauthorized', 'You must be an admin to dump the database.');
+      throw new Meteor.Error(
+        'unauthorized',
+        'You must be an admin to dump the database.',
+      );
     }
     // Don't do the dump except on server side (disable client-side simulation).
     // Return an object with fields timestamp and collections.
     if (Meteor.isServer) {
-      const collections = _.sortBy(HACCHui.collectionLoadSequence.map((collection) => collection.dumpAll()),
-          (entry) => entry.name);
+      const collections = _.sortBy(
+        HACCHui.collectionLoadSequence.map((collection) =>
+          collection.dumpAll(),
+        (entry) => entry.name);
       const timestamp = new Date();
       return { timestamp, collections };
     }
@@ -49,14 +57,27 @@ export const dumpTeamCSVMethod = new ValidatedMethod({
   validate: null,
   run() {
     if (!this.userId) {
-      throw new Meteor.Error('unauthorized', 'You must be logged in to dump the teams.');
+      throw new Meteor.Error(
+        'unauthorized',
+        'You must be logged in to dump the teams.',
+      );
     }
     if (!Roles.userIsInRole(this.userId, ROLE.ADMIN)) {
-      throw new Meteor.Error('unauthorized', 'You must be an admin to dump the teams.');
+      throw new Meteor.Error(
+        'unauthorized',
+        'You must be an admin to dump the teams.',
+      );
     }
     if (Meteor.isServer) {
       let result = '';
-      const headerArr = ['Team Name', 'Challenge(s)', 'Members', 'Captain', 'Captain Email', 'Affiliation'];
+      const headerArr = [
+        'Team Name',
+        'Challenge(s)',
+        'Members',
+        'Captain',
+        'Captain Email',
+        'Affiliation',
+      ];
       result += headerArr.join('\t');
       result += '\r\n';
       const teams = Teams.find({}).fetch();
@@ -64,17 +85,27 @@ export const dumpTeamCSVMethod = new ValidatedMethod({
         const teamID = team._id;
         const row = [team.name];
         const tcs = TeamChallenges.find({ teamID }).fetch();
-        const challenges = tcs.map((tc) => Challenges.findDoc(tc.challengeID).title);
+        const challenges = tcs.map(
+          (tc) => Challenges.findDoc(tc.challengeID).title,
+        );
         row.push(challenges.join(', '));
         const tps = TeamParticipants.find({ teamID }).fetch();
         const members = tps.map((tp) => {
           const fullName = Participants.getFullName(tp.participantID);
-          const minor = MinorParticipants.find({ participantID: tp.participantID }).fetch().length > 0 ? 'M' : 'A';
+          const minor =
+            MinorParticipants.find({ participantID: tp.participantID }).fetch()
+              .length > 0
+              ? 'M'
+              : 'A';
           return `${fullName} ${minor}`;
         });
         row.push(members.join(', '));
         const captain = Participants.getFullName(team.owner);
-        const captainMinor = MinorParticipants.find({ participantID: team.owner }).fetch().length > 0 ? 'M' : 'A';
+        const captainMinor =
+          MinorParticipants.find({ participantID: team.owner }).fetch().length >
+          0
+            ? 'M'
+            : 'A';
         row.push(`${captain} ${captainMinor}`);
         row.push(Participants.findDoc(team.owner).username);
         row.push(`${team.affiliation}`);
@@ -86,9 +117,16 @@ export const dumpTeamCSVMethod = new ValidatedMethod({
       result += '\r\n';
       const allParticipants = Participants.find({}).fetch();
       const teamParticipants = TeamParticipants.find({}).fetch();
-      const teamParticipantIDs = _.uniq(_.map(teamParticipants, (tp) => tp.participantID));
-      const notOnTeams = _.filter(allParticipants, (p) => !_.includes(teamParticipantIDs, p._id));
-      const notOnTeamsNames = _.map(notOnTeams, (p) => Participants.getFullName(p._id));
+      const teamParticipantIDs = _.uniq(
+        _.map(teamParticipants, (tp) => tp.participantID),
+      );
+      const notOnTeams = _.filter(
+        allParticipants,
+        (p) => !_.includes(teamParticipantIDs, p._id),
+      );
+      const notOnTeamsNames = _.map(notOnTeams, (p) =>
+        Participants.getFullName(p._id),
+      );
       result += `Participants Not On a Team (${notOnTeams.length})\r\n`;
       _.forEach(notOnTeamsNames, (name) => {
         result += `${name}\r\n`;

@@ -14,5 +14,6 @@ export const hr = {
   marginTop: 1,
   marginBottom: 1,
   border: 0,
-  borderTop: 1, rgba: (0, 0, 0, 0.1),
+  borderTop: 1,
+  rgba: (0, 0, 0, 0.1),
 };

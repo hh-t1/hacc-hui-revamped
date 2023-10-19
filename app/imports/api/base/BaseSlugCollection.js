@@ -36,10 +36,15 @@ class BaseSlugCollection extends BaseCollection {
     }
     // Otherwise see if we can find instance as a docID or as a slug.
     try {
-      id = (this._collection.findOne({ _id: instance })) ? instance : this.findIdBySlug(instance);
+      id = this._collection.findOne({ _id: instance })
+        ? instance
+        : this.findIdBySlug(instance);
     } catch (err) {
-      throw new Meteor.Error(`Error in ${this._collectionName} getID(): Failed to convert ${instance} to an ID.`,
-        '', Error().stack);
+      throw new Meteor.Error(
+        `Error in ${this._collectionName} getID(): Failed to convert ${instance} to an ID.`,
+        '',
+        Error().stack,
+      );
     }
     return id;
   }
@@ -55,9 +60,13 @@ class BaseSlugCollection extends BaseCollection {
   getIDs(instances) {
     let ids;
     try {
-      ids = (instances) ? instances.map((instance) => this.getID(instance)) : [];
+      ids = instances ? instances.map((instance) => this.getID(instance)) : [];
     } catch (err) {
-      throw new Meteor.Error(`Error in getIDs(): Failed to convert one of ${instances} to an ID.`, '', Error().stack);
+      throw new Meteor.Error(
+        `Error in getIDs(): Failed to convert one of ${instances} to an ID.`,
+        '',
+        Error().stack,
+      );
     }
     return ids;
   }
@@ -89,7 +98,7 @@ class BaseSlugCollection extends BaseCollection {
    * @returns {boolean} True if instance is a docID or slug for this entity.
    */
   isDefined(instance) {
-    return (super.isDefined(instance) || this.hasSlug(instance));
+    return super.isDefined(instance) || this.hasSlug(instance);
   }
 
   /**
@@ -98,7 +107,7 @@ class BaseSlugCollection extends BaseCollection {
    * @returns {boolean} True if the slug is in this collection.
    */
   hasSlug(slug) {
-    return (!!(this._collection.findOne({ slug })) || Slugs.hasSlug(slug));
+    return !!this._collection.findOne({ slug }) || Slugs.hasSlug(slug);
   }
 
   /**
@@ -118,7 +127,7 @@ class BaseSlugCollection extends BaseCollection {
    * @throws { Meteor.Error } If the slug cannot be found, or is not associated with an instance in this collection.
    */
   findIdsBySlugs(slugs) {
-    return slugs.map(slug => this.findIdBySlug(slug));
+    return slugs.map((slug) => this.findIdBySlug(slug));
   }
 
   /**

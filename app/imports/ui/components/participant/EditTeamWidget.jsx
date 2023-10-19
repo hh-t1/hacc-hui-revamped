@@ -48,7 +48,11 @@ class EditTeamWidget extends React.Component {
         label: 'Availability',
       },
       name: { type: String },
-      challenge: { type: String, allowedValues: challengeNames, optional: true },
+      challenge: {
+        type: String,
+        allowedValues: challengeNames,
+        optional: true,
+      },
       skills: { type: Array, label: 'Skills', optional: true },
       'skills.$': { type: String, allowedValues: skillNames },
       tools: { type: Array, label: 'Toolsets', optional: true },
@@ -64,10 +68,12 @@ class EditTeamWidget extends React.Component {
   }
 
   buildTheModel() {
-
     const model = this.props.team;
     // console.log(model);
-    model.challenges = _.map(this.props.challenges, (challenge) => challenge.title);
+    model.challenges = _.map(
+      this.props.challenges,
+      (challenge) => challenge.title,
+    );
     model.challenge = this.props.team.challenges[0];
     model.skills = _.map(this.props.skills, (skill) => skill.name);
     model.tools = _.map(this.props.tools, (tool) => tool.name);
@@ -143,93 +149,95 @@ class EditTeamWidget extends React.Component {
     const model = this.buildTheModel();
     // console.log(model);
     return (
-        <Grid container centered>
-          <Grid.Column>
-            <Divider hidden />
-            <AutoForm ref={ref => {
+      <Grid container centered>
+        <Grid.Column>
+          <Divider hidden />
+          <AutoForm
+            ref={(ref) => {
               fRef = ref;
-            }} schema={formSchema} model={model} onSubmit={(data) => {
+            }}
+            schema={formSchema}
+            model={model}
+            onSubmit={(data) => {
               // console.log('submit', data);
               this.submitData(data, fRef);
             }}
-                      style={{
-                        paddingBottom: '40px',
-                      }}>
-              <Segment style={{
+            style={{
+              paddingBottom: '40px',
+            }}
+          >
+            <Segment
+              style={{
                 borderRadius: '10px',
                 backgroundColor: '#E5F0FE',
-              }} className={'createTeam'}>
-                <Grid columns={1} style={{ paddingTop: '20px' }}>
-                  <Grid.Column style={{ paddingLeft: '30px', paddingRight: '30px' }}>
-                    <Header as="h2" textAlign="center">Edit Team</Header>
-                    <Message>
-                      <Header as="h4" textAlign="center">Team name and Devpost page ALL
-                        have to use the same name</Header>
-                    </Message>
-                    <Grid className='doubleLine'>
-                      <TextField name='name' />
-                      <RadioField
-                          name='open'
-                          inline
-                      />
-                    </Grid>
-                    <LongTextField name='description' />
-                    <SelectField name='challenge' disabled={!this.props.canChangeChallenges} />
-                    <Grid columns={2}>
-                      <Grid.Column><MultiSelectField name='skills' /></Grid.Column>
-                      <Grid.Column><MultiSelectField name='tools' /></Grid.Column>
-                    </Grid>
-                    <TextField name="gitHubRepo" label="GitHub Repo" disabled />
-                    <TextField name="devPostPage" label="Devpost Page" />
-                    <TextField name="affiliation" />
-                    <MultiSelectField name='members' />
-                  </Grid.Column>
-                </Grid>
-                <div align='center'>
-                  <SubmitField value='Submit'
-                               style={{
-                                 color: 'white', backgroundColor: '#dd000a',
-                                 margin: '20px 0px',
-                               }} />
-                </div>
-                <ErrorsField />
-              </Segment>
-            </AutoForm>
-          </Grid.Column>
-        </Grid>
+              }}
+              className={'createTeam'}
+            >
+              <Grid columns={1} style={{ paddingTop: '20px' }}>
+                <Grid.Column
+                  style={{ paddingLeft: '30px', paddingRight: '30px' }}
+                >
+                  <Header as="h2" textAlign="center">
+                    Edit Team
+                  </Header>
+                  <Message>
+                    <Header as="h4" textAlign="center">
+                      Team name and Devpost page ALL have to use the same name
+                    </Header>
+                  </Message>
+                  <Grid className="doubleLine">
+                    <TextField name="name" />
+                    <RadioField name="open" inline />
+                  </Grid>
+                  <LongTextField name="description" />
+                  <SelectField
+                    name="challenge"
+                    disabled={!this.props.canChangeChallenges}
+                  />
+                  <Grid columns={2}>
+                    <Grid.Column>
+                      <MultiSelectField name="skills" />
+                    </Grid.Column>
+                    <Grid.Column>
+                      <MultiSelectField name="tools" />
+                    </Grid.Column>
+                  </Grid>
+                  <TextField name="gitHubRepo" label="GitHub Repo" disabled />
+                  <TextField name="devPostPage" label="Devpost Page" />
+                  <TextField name="affiliation" />
+                  <MultiSelectField name="members" />
+                </Grid.Column>
+              </Grid>
+              <div align="center">
+                <SubmitField
+                  value="Submit"
+                  style={{
+                    color: 'white',
+                    backgroundColor: '#dd000a',
+                    margin: '20px 0px',
+                  }}
+                />
+              </div>
+              <ErrorsField />
+            </Segment>
+          </AutoForm>
+        </Grid.Column>
+      </Grid>
     );
   }
 }
 
 EditTeamWidget.propTypes = {
-  allChallenges: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  challenges: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
+  allChallenges: PropTypes.arrayOf(PropTypes.object).isRequired,
+  challenges: PropTypes.arrayOf(PropTypes.object).isRequired,
   team: PropTypes.object.isRequired,
-  skills: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  allSkills: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  allTools: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  teamSkills: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-  tools: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-  members: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  participants: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
+  skills: PropTypes.arrayOf(PropTypes.object).isRequired,
+  allSkills: PropTypes.arrayOf(PropTypes.object).isRequired,
+  allTools: PropTypes.arrayOf(PropTypes.object).isRequired,
+  teamSkills: PropTypes.arrayOf(PropTypes.object),
+  tools: PropTypes.arrayOf(PropTypes.object),
+  members: PropTypes.arrayOf(PropTypes.object).isRequired,
+  participants: PropTypes.arrayOf(PropTypes.object).isRequired,
   canChangeChallenges: PropTypes.bool.isRequired,
 };
 
@@ -238,13 +246,17 @@ const EditTeamCon = withTracker(({ match }) => {
   const teamID = match.params._id;
   const team = Teams.findDoc(teamID);
   const challengeIDs = TeamChallenges.find({ teamID }).fetch();
-  const challenges = _.map(challengeIDs, (doc) => Challenges.findDoc(doc.challengeID));
+  const challenges = _.map(challengeIDs, (doc) =>
+    Challenges.findDoc(doc.challengeID),
+  );
   const skillIDs = TeamSkills.find({ teamID }).fetch();
   const skills = _.map(skillIDs, (id) => Skills.findDoc(id.skillID));
   const toolIDs = TeamTools.find({ teamID }).fetch();
   const tools = _.map(toolIDs, (id) => Tools.findDoc(id.toolID));
   const memberIDs = TeamParticipants.find({ teamID }).fetch();
-  const members = _.map(memberIDs, (id) => Participants.findDoc(id.participantID));
+  const members = _.map(memberIDs, (id) =>
+    Participants.findDoc(id.participantID),
+  );
   const participants = Participants.find({}).fetch();
   const allChallenges = Challenges.find({}).fetch();
   const allSkills = Skills.find({}).fetch();

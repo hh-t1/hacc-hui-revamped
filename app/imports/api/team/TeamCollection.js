@@ -21,16 +21,19 @@ import { ROLE } from '../role/Role';
  */
 class TeamCollection extends BaseSlugCollection {
   constructor() {
-    super('Team', new SimpleSchema({
-      name: { type: String },
-      slugID: { type: String },
-      description: { type: String },
-      gitHubRepo: { type: String, optional: true },
-      devPostPage: { type: String, optional: true },
-      owner: { type: SimpleSchema.RegEx.Id },
-      open: { type: Boolean },
-      affiliation: { type: String, optional: true },
-    }));
+    super(
+      'Team',
+      new SimpleSchema({
+        name: { type: String },
+        slugID: { type: String },
+        description: { type: String },
+        gitHubRepo: { type: String, optional: true },
+        devPostPage: { type: String, optional: true },
+        owner: { type: SimpleSchema.RegEx.Id },
+        open: { type: Boolean },
+        affiliation: { type: String, optional: true },
+      }),
+    );
   }
 
   /**
@@ -49,10 +52,18 @@ class TeamCollection extends BaseSlugCollection {
    * @return {string} the id of the team.
    */
   define({
-           name, description = '', gitHubRepo = '', devPostPage = '',
-           owner, open = true, challenges, skills, tools,
-           participants = [], affiliation = '',
-         }) {
+    name,
+    description = '',
+    gitHubRepo = '',
+    devPostPage = '',
+    owner,
+    open = true,
+    challenges,
+    skills,
+    tools,
+    participants = [],
+    affiliation = '',
+  }) {
     // console.log('TeamCollection.define', name, description, skills, tools, affiliation);
     const team = slugify(name);
     const slugID = Slugs.define({ name: team });
@@ -64,12 +75,20 @@ class TeamCollection extends BaseSlugCollection {
       ownerID = owner;
     }
     const teamID = this._collection.insert({
-      name, slugID, description, gitHubRepo, devPostPage,
-      owner: ownerID, open, affiliation,
+      name,
+      slugID,
+      description,
+      gitHubRepo,
+      devPostPage,
+      owner: ownerID,
+      open,
+      affiliation,
     });
     // Connect the Slug to this Interest
     Slugs.updateEntityID(slugID, teamID);
-    _.forEach(challenges, (challenge) => TeamChallenges.define({ team, challenge }));
+    _.forEach(challenges, (challenge) =>
+      TeamChallenges.define({ team, challenge }),
+    );
     _.forEach(skills, (skill) => {
       TeamSkills.define({ team, skill });
     });
@@ -77,7 +96,9 @@ class TeamCollection extends BaseSlugCollection {
       // console.log('TeamCollection defining tools', t);
       TeamTools.define({ team, tool });
     });
-    _.forEach(participants, (participant) => TeamParticipants.define({ team, participant }));
+    _.forEach(participants, (participant) =>
+      TeamParticipants.define({ team, participant }),
+    );
     if (!_.includes(participants, owner)) {
       TeamParticipants.define({ team, participant: owner });
     }
@@ -98,9 +119,22 @@ class TeamCollection extends BaseSlugCollection {
    * @param gitHubRepo {String} The team's GitHub Repository, optional.
    * @param devPostPage {String} The team's devpost page, optional.
    */
-  update(docID, { name, description, open, challenges,
-    skills, tools, participants, affiliation, gitHubRepo,
-    devPostPage, newOwner }) {
+  update(
+    docID,
+    {
+      name,
+      description,
+      open,
+      challenges,
+      skills,
+      tools,
+      participants,
+      affiliation,
+      gitHubRepo,
+      devPostPage,
+      newOwner,
+    },
+  ) {
     this.assertDefined(docID);
     const updateData = {};
     if (name) {
@@ -129,7 +163,9 @@ class TeamCollection extends BaseSlugCollection {
     const team = this.findSlugByID(docID);
     if (challenges) {
       TeamChallenges.removeTeam(team);
-      _.forEach(challenges, (challenge) => TeamChallenges.define({ team, challenge }));
+      _.forEach(challenges, (challenge) =>
+        TeamChallenges.define({ team, challenge }),
+      );
     }
     if (skills) {
       const teamSkills = TeamSkills.find(selector).fetch();
@@ -149,7 +185,9 @@ class TeamCollection extends BaseSlugCollection {
       const owner = this.findDoc(docID).owner;
       const teamParticipants = TeamParticipants.find(selector).fetch();
       _.forEach(teamParticipants, (tD) => TeamParticipants.removeIt(tD._id));
-      _.forEach(participants, (participant) => TeamParticipants.define({ team, participant }));
+      _.forEach(participants, (participant) =>
+        TeamParticipants.define({ team, participant }),
+      );
       if (!_.includes(participants, owner)) {
         TeamParticipants.define({ team, participant: owner });
       }
@@ -185,12 +223,17 @@ class TeamCollection extends BaseSlugCollection {
   dumpOne(docID) {
     this.assertDefined(docID);
     // console.log('Teams.dumpOne', docID);
-    const { _id, name, description, owner, open, affiliation } = this.findDoc(docID);
+    const { _id, name, description, owner, open, affiliation } =
+      this.findDoc(docID);
     const selector = { teamID: _id };
     const teamChallenges = TeamChallenges.find(selector).fetch();
-    const challenges = _.map(teamChallenges, (tC) => Challenges.findSlugByID(tC.challengeID));
+    const challenges = _.map(teamChallenges, (tC) =>
+      Challenges.findSlugByID(tC.challengeID),
+    );
     const teamParticipants = TeamParticipants.find(selector).fetch();
-    const participants = _.map(teamParticipants, (tD) => Participants.findSlugByID(tD.participantID));
+    const participants = _.map(teamParticipants, (tD) =>
+      Participants.findSlugByID(tD.participantID),
+    );
     const ownerSlug = Participants.findSlugByID(owner);
     const teamSkills = TeamSkills.find(selector).fetch();
     const skills = _.map(teamSkills, (tS) => {
@@ -211,7 +254,17 @@ class TeamCollection extends BaseSlugCollection {
       };
     });
     // console.log('Teams.dumpOne', skills, tools);
-    return { name, description, owner: ownerSlug, open, affiliation, challenges, participants, skills, tools };
+    return {
+      name,
+      description,
+      owner: ownerSlug,
+      open,
+      affiliation,
+      challenges,
+      participants,
+      skills,
+      tools,
+    };
   }
 }
 

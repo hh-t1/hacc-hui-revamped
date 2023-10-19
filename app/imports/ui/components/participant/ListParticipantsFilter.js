@@ -1,7 +1,6 @@
 import { _ } from 'lodash';
 
 class ListParticipantsFilter {
-
   /**
    * Filters through the inputted data based on user input. If the search query is empty, it returns
    * the entire dataset.
@@ -23,9 +22,14 @@ class ListParticipantsFilter {
         list.push(data[i]);
       } else if (lastLowercase.includes(searchQuery.toString().toLowerCase())) {
         list.push(data[i]);
-      } else if (searchQuery.toString().toLowerCase() === `${firstLowercase} ${lastLowercase}`) {
+      } else if (
+        searchQuery.toString().toLowerCase() ===
+        `${firstLowercase} ${lastLowercase}`
+      ) {
         list.push(data[i]);
-      } else if (data[i].username.includes(searchQuery.toString().toLowerCase())) {
+      } else if (
+        data[i].username.includes(searchQuery.toString().toLowerCase())
+      ) {
         list.push(data[i]);
       }
     }
@@ -56,7 +60,6 @@ class ListParticipantsFilter {
    * @returns {[]|*} Returns the filtered array
    */
   filterBySkills(value, allSkills, participantSkill, participant) {
-
     // if there are no skills selected
     if (value.length === 0) {
       return participant;
@@ -108,7 +111,6 @@ class ListParticipantsFilter {
    * @returns {[]|*} Returns the filtered array
    */
   filterByTools(value, allTools, participantTools, participant) {
-
     // if there are no tools selected
     if (value.length === 0) {
       return participant;
@@ -159,7 +161,6 @@ class ListParticipantsFilter {
    * @returns {[]|*} Returns the filtered array
    */
   filterByChallenge(value, allChallenges, participantChallenge, participant) {
-
     // if there are no tools selected
     if (value.length === 0) {
       return participant;
@@ -210,7 +211,6 @@ class ListParticipantsFilter {
    * @returns {[]|*} Returns the filtered array
    */
   filterByTeam(value, allTeams, participantTeam, participant) {
-
     // if there are no tools selected
     if (value.length === 0) {
       return participant;

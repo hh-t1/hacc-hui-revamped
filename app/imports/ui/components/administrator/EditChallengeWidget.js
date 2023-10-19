@@ -12,10 +12,10 @@ import { withTracker } from 'meteor/react-meteor-data';
 import SimpleSchema from 'simpl-schema';
 import { withRouter } from 'react-router';
 import { Container } from 'react-bootstrap';
-import { updateMethod } from '../../../api/base/BaseCollection.methods';
-import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
+import { updateMethod } from '../../../api/base/BaseCollection.methods';
+import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { ROUTES } from '../../../startup/client/route-constants';
 
 /**
@@ -60,41 +60,40 @@ const EditChallengeWidget = (props) => {
             icon: 'success',
             showCloseButton: true,
             focusConfirm: false,
-            confirmButtonText:
-                'OK'
+            confirmButtonText: 'OK',
           }).then(() => {
             setRedirect(true);
-          })
+          });
         }
       },
     );
-  }
+  };
 
   if (redirect) {
     return <Redirect to={ROUTES.CONFIGURE_HACC} />;
   }
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
-    const formSchema = new SimpleSchema2Bridge(schema);
-    return (
-      <Container id="edit-challenge-page">
-        <h2 className="text-center fw-bold">Edit Challenge</h2>
-        <AutoForm
-          schema={formSchema}
-          onSubmit={(data) => submit(data)}
-          model={props.doc}
-        >
-          <div className="border p-3">
-            <LongTextField name="description" required />
-            <TextField name="submissionDetail" required />
-            <TextField name="pitch" required />
-            <SubmitField value="Submit" />
-            <ErrorsField />
-          </div>
-        </AutoForm>
-      </Container>
-    );
-}
+  const formSchema = new SimpleSchema2Bridge(schema);
+  return (
+    <Container id="edit-challenge-page">
+      <h2 className="text-center fw-bold">Edit Challenge</h2>
+      <AutoForm
+        schema={formSchema}
+        onSubmit={(data) => submit(data)}
+        model={props.doc}
+      >
+        <div className="border p-3">
+          <LongTextField name="description" required />
+          <TextField name="submissionDetail" required />
+          <TextField name="pitch" required />
+          <SubmitField value="Submit" />
+          <ErrorsField />
+        </div>
+      </AutoForm>
+    </Container>
+  );
+};
 
 EditChallengeWidget.propTypes = {
   doc: PropTypes.object,

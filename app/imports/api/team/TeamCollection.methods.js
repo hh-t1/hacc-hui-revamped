@@ -19,11 +19,17 @@ export const getTeamsWithoutGitHubRepoMethod = new ValidatedMethod({
   validate: null,
   run() {
     if (!this.userId) {
-      throw new Meteor.Error('unauthorized', 'You must be logged in to get the teams w/o GitHub repos.');
+      throw new Meteor.Error(
+        'unauthorized',
+        'You must be logged in to get the teams w/o GitHub repos.',
+      );
     } else {
       const profile = Users.getProfile(this.userId);
       if (profile.role !== ROLE.ADMIN) {
-        throw new Meteor.Error('unauthorized', 'You must be an admin to get the teams w/o GitHub repos.');
+        throw new Meteor.Error(
+          'unauthorized',
+          'You must be an admin to get the teams w/o GitHub repos.',
+        );
       }
     }
     if (Meteor.isServer) {
@@ -46,11 +52,17 @@ export const getTeamsWithoutDevpostPageMethod = new ValidatedMethod({
   validate: null,
   run() {
     if (!this.userId) {
-      throw new Meteor.Error('unauthorized', 'You must be logged in to get the teams w/o Devpost page.');
+      throw new Meteor.Error(
+        'unauthorized',
+        'You must be logged in to get the teams w/o Devpost page.',
+      );
     } else {
       const profile = Users.getProfile(this.userId);
       if (profile.role !== ROLE.ADMIN) {
-        throw new Meteor.Error('unauthorized', 'You must be an admin to get the teams w/o Devpost page.');
+        throw new Meteor.Error(
+          'unauthorized',
+          'You must be an admin to get the teams w/o Devpost page.',
+        );
       }
     }
     if (Meteor.isServer) {
@@ -67,7 +79,10 @@ export const participantIsInterestedInJoiningTeamMethod = new ValidatedMethod({
   validate: null,
   run({ participant, team }) {
     if (!this.userId) {
-      throw new Meteor.Error('unauthorized', 'You must be logged in to indicate you are interested in a team.');
+      throw new Meteor.Error(
+        'unauthorized',
+        'You must be logged in to indicate you are interested in a team.',
+      );
     }
     if (Meteor.isServer) {
       WantsToJoin.define({ team, participant });

@@ -4,9 +4,7 @@ import ListDevelopersWidget from '../../components/participant/ListParticipantsW
 
 class ListParticipantsPage extends React.Component {
   render() {
-    return (
-        <ListDevelopersWidget />
-    );
+    return <ListDevelopersWidget />;
   }
 }
 

@@ -5,15 +5,17 @@ import { Participants } from './ParticipantCollection';
 import { ROLE } from '../role/Role';
 
 class MinorParticipantCollection extends BaseCollection {
-
   constructor() {
-    super('MinorParticipant', new SimpleSchema({
-      participantID: { type: SimpleSchema.RegEx.Id },
-      parentFirstName: { type: String },
-      parentLastName: { type: String },
-      parentEmail: { type: String },
-      sentAdminDM: { type: Boolean },
-    }));
+    super(
+      'MinorParticipant',
+      new SimpleSchema({
+        participantID: { type: SimpleSchema.RegEx.Id },
+        parentFirstName: { type: String },
+        parentLastName: { type: String },
+        parentEmail: { type: String },
+        sentAdminDM: { type: Boolean },
+      }),
+    );
   }
 
   /**
@@ -25,7 +27,13 @@ class MinorParticipantCollection extends BaseCollection {
    */
   define({ username, parentFirstName, parentLastName, parentEmail }) {
     const participantID = Participants.getID(username);
-    return this._collection.insert({ participantID, parentFirstName, parentLastName, parentEmail, sentAdminDM: false });
+    return this._collection.insert({
+      participantID,
+      parentFirstName,
+      parentLastName,
+      parentEmail,
+      sentAdminDM: false,
+    });
   }
 
   /**

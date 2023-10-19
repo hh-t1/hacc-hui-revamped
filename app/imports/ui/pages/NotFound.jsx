@@ -6,11 +6,11 @@ import { Container } from 'react-bootstrap';
  * @memberOf ui/pages
  */
 function NotFound() {
-    return (
-        <Container id="not-found-page" as="h2" className="text-center">
-            <p>Page not found</p>
-        </Container>
-    );
+  return (
+    <Container id="not-found-page" as="h2" className="text-center">
+      <p>Page not found</p>
+    </Container>
+  );
 }
 
 export default NotFound;

@@ -1,7 +1,22 @@
 import React from 'react';
-import { Container, Col, Button, ListGroupItem, Modal, Row } from 'react-bootstrap';
-import { AutoForm, ErrorsField, LongTextField, SelectField,
-  SubmitField, TextField, ListItemField, ListField } from 'uniforms-bootstrap5';
+import {
+  Container,
+  Col,
+  Button,
+  ListGroupItem,
+  Modal,
+  Row,
+} from 'react-bootstrap';
+import {
+  AutoForm,
+  ErrorsField,
+  LongTextField,
+  SelectField,
+  SubmitField,
+  TextField,
+  ListItemField,
+  ListField,
+} from 'uniforms-bootstrap5';
 import swal from 'sweetalert';
 import PropTypes from 'prop-types';
 import { _ } from 'lodash';
@@ -26,10 +41,14 @@ import { CanCreateTeams } from '../../../api/team/CanCreateTeamCollection';
  * @memberOf ui/pages
  */
 class CreateTeamWidget extends React.Component {
-
   constructor(props) {
     super(props);
-    this.state = { redirectToReferer: false, errorModal: false, isRegistered: [], notRegistered: [] };
+    this.state = {
+      redirectToReferer: false,
+      errorModal: false,
+      isRegistered: [],
+      notRegistered: [],
+    };
   }
 
   buildTheModel() {
@@ -40,9 +59,9 @@ class CreateTeamWidget extends React.Component {
   }
 
   buildTheFormSchema() {
-    const challengeNames = _.map(this.props.challenges, c => c.title);
-    const skillNames = _.map(this.props.skills, s => s.name);
-    const toolNames = _.map(this.props.tools, t => t.name);
+    const challengeNames = _.map(this.props.challenges, (c) => c.title);
+    const skillNames = _.map(this.props.skills, (s) => s.name);
+    const toolNames = _.map(this.props.tools, (t) => t.name);
     const schema = new SimpleSchema({
       open: {
         type: String,
@@ -50,7 +69,11 @@ class CreateTeamWidget extends React.Component {
         label: 'Availability',
       },
       name: { type: String, label: 'Team Name' },
-      challenge: { type: String, allowedValues: challengeNames, optional: true },
+      challenge: {
+        type: String,
+        allowedValues: challengeNames,
+        optional: true,
+      },
       skills: { type: Array, label: 'Skills', optional: true },
       'skills.$': { type: String, allowedValues: skillNames },
       tools: { type: Array, label: 'Toolsets', optional: true },
@@ -88,14 +111,19 @@ class CreateTeamWidget extends React.Component {
     this.setState({ isRegistered: [] });
     this.setState({ notRegistered: [] });
     const owner = this.props.participant.username;
-    const { name, description, challenge, skills, tools, participants } = formData;
+    const { name, description, challenge, skills, tools, participants } =
+      formData;
     if (/^[a-zA-Z0-9-]*$/.test(name) === false) {
-      swal('Error', 'Sorry, no special characters or space allowed in the Team name.', 'error');
+      swal(
+        'Error',
+        'Sorry, no special characters or space allowed in the Team name.',
+        'error',
+      );
       return;
     }
     let partArray = [];
 
-    if (typeof (participants) !== 'undefined') {
+    if (typeof participants !== 'undefined') {
       partArray = participants;
     }
 
@@ -109,14 +137,18 @@ class CreateTeamWidget extends React.Component {
         if (currPart[j].username === partArray[i].email) {
           registered = true;
           this.setState({
-            isRegistered: this.state.isRegistered.concat([`-${partArray[i].email}`]),
+            isRegistered: this.state.isRegistered.concat([
+              `-${partArray[i].email}`,
+            ]),
           });
           isRegistered.push(partArray[i].email);
         }
       }
       if (!registered) {
         this.setState({
-          notRegistered: this.state.notRegistered.concat([`-${partArray[i].email}`]),
+          notRegistered: this.state.notRegistered.concat([
+            `-${partArray[i].email}`,
+          ]),
         });
         notRegistered.push(partArray[i].email);
       }
@@ -132,11 +164,11 @@ class CreateTeamWidget extends React.Component {
       open = false;
     }
 
-    const skillsArr = _.map(skills, n => {
+    const skillsArr = _.map(skills, (n) => {
       const doc = Skills.findDoc({ name: n });
       return Slugs.getNameFromID(doc.slugID);
     });
-    const toolsArr = _.map(tools, t => {
+    const toolsArr = _.map(tools, (t) => {
       const doc = Tools.findDoc({ name: t });
       return Slugs.getNameFromID(doc.slugID);
     });
@@ -158,20 +190,20 @@ class CreateTeamWidget extends React.Component {
     };
     // console.log(collectionName, definitionData);
     defineMethod.call(
-        {
-          collectionName,
-          definitionData,
-        },
-        error => {
-          if (error) {
-            swal('Error', error.message, 'error');
-          } else {
-            if (!this.state.errorModal) {
-              swal('Success', 'Team created successfully', 'success');
-            }
-            formRef.reset();
+      {
+        collectionName,
+        definitionData,
+      },
+      (error) => {
+        if (error) {
+          swal('Error', error.message, 'error');
+        } else {
+          if (!this.state.errorModal) {
+            swal('Success', 'Team created successfully', 'success');
           }
-        },
+          formRef.reset();
+        }
+      },
     );
 
     // sending invites out to registered members
@@ -181,14 +213,16 @@ class CreateTeamWidget extends React.Component {
       const team = Slugs.getNameFromID(teamDoc.slugID);
       const inviteCollection = TeamInvitations.getCollectionName();
       const inviteData = { team: team, participant: isRegistered[i] };
-      defineMethod.call({ collectionName: inviteCollection, definitionData: inviteData },
-          (error) => {
-            if (error) {
-              console.error(error.message);
-            } else {
-              console.log('Success');
-            }
-          });
+      defineMethod.call(
+        { collectionName: inviteCollection, definitionData: inviteData },
+        (error) => {
+          if (error) {
+            console.error(error.message);
+          } else {
+            console.log('Success');
+          }
+        },
+      );
     }
   }
 
@@ -201,16 +235,18 @@ class CreateTeamWidget extends React.Component {
   render() {
     if (!this.props.participant.isCompliant) {
       return (
-          <div align={'center'}>
-            <Container as='h2'>
-              <i className="bi bi-hand-thumbs-down"></i>
-              You have not agreed to the <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>
-              &nbsp;or we&apos;ve haven&apos;t received the signed form yet.
-              <Col>
-                You cannot create a team until you do agree to the rules. Please check back later.
-              </Col>
-            </Container>
-          </div>
+        <div align={'center'}>
+          <Container as="h2">
+            <i className="bi bi-hand-thumbs-down"></i>
+            You have not agreed to the{' '}
+            <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>
+            &nbsp;or we&apos;ve haven&apos;t received the signed form yet.
+            <Col>
+              You cannot create a team until you do agree to the rules. Please
+              check back later.
+            </Col>
+          </Container>
+        </div>
       );
     }
 
@@ -219,97 +255,105 @@ class CreateTeamWidget extends React.Component {
     const model = this.buildTheModel();
     const disabled = !this.props.canCreateTeams;
     return (
-        <Container centered style={{ paddingBottom: '50px', paddingTop: '40px' }}>
-          <Row>
-            <hr />
-            <ul
-                style={{
-                  // borderRadius: '10px',
-                  backgroundColor: '#E5F0FE',
-                }} className={'createTeam'}>
-              <h2>Create a Team</h2>
-              {/* eslint-disable-next-line max-len */}
-              <h4>Team name and Devpost page ALL
-                  have to use the same name. Team names cannot have spaces or special characters.</h4>
-              <AutoForm
-                  ref={ref => {
-                    fRef = ref;
-                  }}
-                  schema={formSchema}
-                  model={model}
-                  onSubmit={data => this.submit(data, fRef)}
-                  style={{
-                    paddingBottom: '40px',
-                  }}
-              >
-                <Row style={{ paddingTop: '20px' }}>
-                  <Row style={{ paddingLeft: '30px', paddingRight: '30px' }}>
-                    <Col className='doubleLine'>
-                      <TextField name='name' />
-                      <RadioField
-                          name='open'
-                          inline
-                      />
-                    </Col>
-                    <LongTextField name='description' />
-                    <SelectField name='challenge' />
-                    <Col>
-                      <MultiSelectField name='skills' />
-                      <MultiSelectField name='tools' />
-                    </Col>
-                    <TextField name="devpostPage" />
-                    <TextField name="affiliation" />
-
-                    <ListField name="participants" label={'Enter each participant\'s email'}>
-                      <ListItemField name="$">
-                        <TextField showInlineError
-                                   iconLeft='mail'
-                                   name="email"
-                                   label={'Email'} />
-                      </ListItemField>
-                    </ListField>
-
-                  </Row>
-                </Row>
-                <div align='center'>
-                  <SubmitField value='Submit'
-                               style={{
-                                 color: 'white', backgroundColor: '#dd000a',
-                                 margin: '20px 0px',
-                               }}
-                               disabled={disabled}
-                  />
-                </div>
-                <ErrorsField />
-              </AutoForm>
-            </ul>
-            <Modal
-                onClose={this.close}
-                open={this.state.errorModal}
+      <Container centered style={{ paddingBottom: '50px', paddingTop: '40px' }}>
+        <Row>
+          <hr />
+          <ul
+            style={{
+              // borderRadius: '10px',
+              backgroundColor: '#E5F0FE',
+            }}
+            className={'createTeam'}
+          >
+            <h2>Create a Team</h2>
+            {/* eslint-disable-next-line max-len */}
+            <h4>
+              Team name and Devpost page ALL have to use the same name. Team
+              names cannot have spaces or special characters.
+            </h4>
+            <AutoForm
+              ref={(ref) => {
+                fRef = ref;
+              }}
+              schema={formSchema}
+              model={model}
+              onSubmit={(data) => this.submit(data, fRef)}
+              style={{
+                paddingBottom: '40px',
+              }}
             >
-              <Modal.Header>Member Warning</Modal.Header>
-              <Modal.Content scrolling>
-                <Modal.Description>
-                  <Container>Some Members you are trying to invite have not registered with SlackBot.</Container>
-                  <b>Registered Members:</b>
-                  <ListGroupItem items={this.state.isRegistered} />
-                  <b>Not Registered Members:</b>
-                  <ListGroupItem items={this.state.notRegistered} />
-                </Modal.Description>
-              </Modal.Content>
-              <Modal.Actions>
-                <b floated="left">Slackbot will only send invites to registered members, please confirm.</b>
-                <Button align='right'>
-                  <i className="bi bi-check"></i>
-                  I Understand
-                  onClick={() => this.closeModal()}
-                  positive
-                </Button>
-              </Modal.Actions>
-            </Modal>
-          </Row>
-        </Container>
+              <Row style={{ paddingTop: '20px' }}>
+                <Row style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+                  <Col className="doubleLine">
+                    <TextField name="name" />
+                    <RadioField name="open" inline />
+                  </Col>
+                  <LongTextField name="description" />
+                  <SelectField name="challenge" />
+                  <Col>
+                    <MultiSelectField name="skills" />
+                    <MultiSelectField name="tools" />
+                  </Col>
+                  <TextField name="devpostPage" />
+                  <TextField name="affiliation" />
 
+                  <ListField
+                    name="participants"
+                    label={"Enter each participant's email"}
+                  >
+                    <ListItemField name="$">
+                      <TextField
+                        showInlineError
+                        iconLeft="mail"
+                        name="email"
+                        label={'Email'}
+                      />
+                    </ListItemField>
+                  </ListField>
+                </Row>
+              </Row>
+              <div align="center">
+                <SubmitField
+                  value="Submit"
+                  style={{
+                    color: 'white',
+                    backgroundColor: '#dd000a',
+                    margin: '20px 0px',
+                  }}
+                  disabled={disabled}
+                />
+              </div>
+              <ErrorsField />
+            </AutoForm>
+          </ul>
+          <Modal onClose={this.close} open={this.state.errorModal}>
+            <Modal.Header>Member Warning</Modal.Header>
+            <Modal.Content scrolling>
+              <Modal.Description>
+                <Container>
+                  Some Members you are trying to invite have not registered with
+                  SlackBot.
+                </Container>
+                <b>Registered Members:</b>
+                <ListGroupItem items={this.state.isRegistered} />
+                <b>Not Registered Members:</b>
+                <ListGroupItem items={this.state.notRegistered} />
+              </Modal.Description>
+            </Modal.Content>
+            <Modal.Actions>
+              <b floated="left">
+                Slackbot will only send invites to registered members, please
+                confirm.
+              </b>
+              <Button align="right">
+                <i className="bi bi-check"></i>I Understand onClick=
+                {() => this.closeModal()}
+                positive
+              </Button>
+            </Modal.Actions>
+          </Modal>
+        </Row>
+      </Container>
     );
   }
 }

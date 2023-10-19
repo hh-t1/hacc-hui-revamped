@@ -14,11 +14,14 @@ class ToolCollection extends BaseSlugCollection {
    * Creates the Tool collection.
    */
   constructor() {
-    super('Tool', new SimpleSchema({
-      name: { type: String },
-      slugID: { type: SimpleSchema.RegEx.Id },
-      description: { type: String },
-    }));
+    super(
+      'Tool',
+      new SimpleSchema({
+        name: { type: String },
+        slugID: { type: SimpleSchema.RegEx.Id },
+        description: { type: String },
+      }),
+    );
   }
 
   /**
@@ -32,16 +35,15 @@ class ToolCollection extends BaseSlugCollection {
    * @throws {Meteor.Error} If the Tool definition includes a defined slug.
    * @returns The newly created docID.
    */
-  define({
-           name,
-           description,
-         }) {
+  define({ name, description }) {
     const slug = slugify(name);
     // Get SlugID, throw error if found.
     const slugID = Slugs.define({ name: slug });
     // Define the Tool and get its ID
     const ToolID = this._collection.insert({
-      name, description, slugID,
+      name,
+      description,
+      slugID,
     });
     // Connect the Slug to this Tool
     Slugs.updateEntityID(slugID, ToolID);
@@ -55,9 +57,7 @@ class ToolCollection extends BaseSlugCollection {
    * @param description {String} The new description (optional).
    * @throws { Meteor.Error } If docID is not defined.
    */
-  update(docID, {
-    name, description,
-  }) {
+  update(docID, { name, description }) {
     this.assertDefined(docID);
     const updateData = {};
     if (name) {

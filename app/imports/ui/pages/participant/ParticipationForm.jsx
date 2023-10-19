@@ -61,27 +61,31 @@ class ParticipationForm extends React.Component {
     const formSchema = new SimpleSchema2Bridge(schema);
     if (this.state.redirectToReferer) {
       const from = { pathname: ROUTES.CREATE_PROFILE };
-      return <Redirect to={from}/>;
+      return <Redirect to={from} />;
     }
     return (
-        <Segment style={darkerBlueStyle}>
-          <Header>HACC Registration</Header>
-          <AutoForm schema={formSchema} onSubmit={data => this.submit(data)}>
-              <Segment>
-                <Message>
-                  Read the <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>.
-                  <br />
-                  Then agree to the terms.
-                </Message>
-                <Form.Group widths="equal">
-                  <TextField name="firstName" />
-                  <TextField name="lastName" />
-                </Form.Group>
-                <BoolField name="agree" label="I have read the rules and agree to the terms" />
-                <SubmitField />
-              </Segment>
-            </AutoForm>
-        </Segment>
+      <Segment style={darkerBlueStyle}>
+        <Header>HACC Registration</Header>
+        <AutoForm schema={formSchema} onSubmit={(data) => this.submit(data)}>
+          <Segment>
+            <Message>
+              Read the{' '}
+              <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>.
+              <br />
+              Then agree to the terms.
+            </Message>
+            <Form.Group widths="equal">
+              <TextField name="firstName" />
+              <TextField name="lastName" />
+            </Form.Group>
+            <BoolField
+              name="agree"
+              label="I have read the rules and agree to the terms"
+            />
+            <SubmitField />
+          </Segment>
+        </AutoForm>
+      </Segment>
     );
   }
 }

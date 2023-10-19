@@ -90,11 +90,12 @@ class HACCHuiClass {
   getCollection(collectionName) {
     const collection = this.collectionAssociation[collectionName];
     if (!collection) {
-      throw new Meteor.Error(`Called HACCHui.getCollection with unknown collection name: ${collectionName}`);
+      throw new Meteor.Error(
+        `Called HACCHui.getCollection with unknown collection name: ${collectionName}`,
+      );
     }
     return collection;
   }
-
 }
 
 /**

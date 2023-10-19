@@ -5,9 +5,7 @@ import YourTeamsWidget from '../../components/participant/YourTeamsWidget';
 
 class YourTeams extends React.Component {
   render() {
-    return (
-        <YourTeamsWidget />
-    );
+    return <YourTeamsWidget />;
   }
 }
 

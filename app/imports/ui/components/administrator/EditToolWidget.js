@@ -11,10 +11,10 @@ import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter } from 'react-router';
 import { Container } from 'react-bootstrap';
-import { updateMethod } from '../../../api/base/BaseCollection.methods';
-import { Tools } from '../../../api/tool/ToolCollection';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
+import { updateMethod } from '../../../api/base/BaseCollection.methods';
+import { Tools } from '../../../api/tool/ToolCollection';
 import { ROUTES } from '../../../startup/client/route-constants';
 
 /**
@@ -53,40 +53,39 @@ const EditToolWidget = (props) => {
             icon: 'success',
             showCloseButton: true,
             focusConfirm: false,
-            confirmButtonText:
-                'OK'
+            confirmButtonText: 'OK',
           }).then(() => {
             setRedirect(true);
-          })
+          });
         }
       },
     );
-  }
+  };
 
   if (redirect) {
     return <Redirect to={ROUTES.CONFIGURE_HACC} />;
   }
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
-    const formSchema = new SimpleSchema2Bridge(Tools.getSchema());
-    return (
-      <Container id="edit-tool-page">
-        <h2 className="text-center fw-bold">Edit Tool</h2>
-        <AutoForm
-          schema={formSchema}
-          onSubmit={(data) => submit(data)}
-          model={props.doc}
-        >
-          <div className="border p-3">
-            <TextField name="name" required />
-            <LongTextField name="description" required />
-            <SubmitField value="Submit" />
-            <ErrorsField />
-          </div>
-        </AutoForm>
-      </Container>
-    );
-}
+  const formSchema = new SimpleSchema2Bridge(Tools.getSchema());
+  return (
+    <Container id="edit-tool-page">
+      <h2 className="text-center fw-bold">Edit Tool</h2>
+      <AutoForm
+        schema={formSchema}
+        onSubmit={(data) => submit(data)}
+        model={props.doc}
+      >
+        <div className="border p-3">
+          <TextField name="name" required />
+          <LongTextField name="description" required />
+          <SubmitField value="Submit" />
+          <ErrorsField />
+        </div>
+      </AutoForm>
+    </Container>
+  );
+};
 
 EditToolWidget.propTypes = {
   doc: PropTypes.object,

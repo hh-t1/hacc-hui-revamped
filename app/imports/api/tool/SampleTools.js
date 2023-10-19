@@ -48,10 +48,10 @@ export function makeSampleToolSlugArray(numTools = 1) {
 export function makeSampleToolLevelArray(numTools = 1) {
   const slugs = makeSampleToolSlugArray(numTools);
   return _.map(slugs, (slug) => {
-        const retVal = {
-          slug,
-          toolLevel: getRandomSkillAndToolLevel(),
-        };
-        return retVal;
-      });
+    const retVal = {
+      slug,
+      toolLevel: getRandomSkillAndToolLevel(),
+    };
+    return retVal;
+  });
 }
