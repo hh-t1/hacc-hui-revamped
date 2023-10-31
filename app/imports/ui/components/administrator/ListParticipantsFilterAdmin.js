@@ -1,7 +1,6 @@
 import { _ } from 'lodash';
 
 class ListParticipantsFilterAdmin {
-
   /**
    * Filters through the inputted data based on user input. If the search query is empty, it returns
    * the entire dataset.
@@ -23,9 +22,14 @@ class ListParticipantsFilterAdmin {
         list.push(data[i]);
       } else if (lastLowercase.includes(searchQuery.toString().toLowerCase())) {
         list.push(data[i]);
-      } else if (searchQuery.toString().toLowerCase() === `${firstLowercase} ${lastLowercase}`) {
+      } else if (
+        searchQuery.toString().toLowerCase() ===
+        `${firstLowercase} ${lastLowercase}`
+      ) {
         list.push(data[i]);
-      } else if (data[i].username.includes(searchQuery.toString().toLowerCase())) {
+      } else if (
+        data[i].username.includes(searchQuery.toString().toLowerCase())
+      ) {
         list.push(data[i]);
       }
     }
@@ -55,7 +59,6 @@ class ListParticipantsFilterAdmin {
    * @returns {[]|*} Returns the filtered array
    */
   filterBySkills(value, allSkills, participantSkill, participant) {
-
     // if there are no skills selected
     if (value.length === 0) {
       return participant;
@@ -107,7 +110,6 @@ class ListParticipantsFilterAdmin {
    * @returns {[]|*} Returns the filtered array
    */
   filterByTools(value, allTools, participantTools, participant) {
-
     // if there are no tools selected
     if (value.length === 0) {
       return participant;
@@ -158,7 +160,6 @@ class ListParticipantsFilterAdmin {
    * @returns {[]|*} Returns the filtered array
    */
   filterByChallenge(value, allChallenges, participantChallenge, participant) {
-
     // if there are no tools selected
     if (value.length === 0) {
       return participant;
@@ -213,7 +214,10 @@ class ListParticipantsFilterAdmin {
   filterMultipleTeams(teamParticipants, allParticipants) {
     const retVal = [];
     allParticipants.forEach((p, i) => {
-      const teams = _.uniqBy(_.filter(teamParticipants, { participantID: p._id }), 'teamID');
+      const teams = _.uniqBy(
+        _.filter(teamParticipants, { participantID: p._id }),
+        'teamID',
+      );
       if (teams.length > 1) {
         retVal.push(allParticipants[i]);
       }

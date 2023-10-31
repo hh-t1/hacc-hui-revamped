@@ -1,6 +1,5 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
-import { withTracker } from 'meteor/react-meteor-data';
+import { useTracker } from 'meteor/react-meteor-data';
 import { SubsManager } from 'meteor/meteorhacks:subs-manager';
 import { Loader } from 'semantic-ui-react';
 import { Challenges } from '../../api/challenge/ChallengeCollection';
@@ -33,52 +32,52 @@ const allSubs = new SubsManager({ cacheLimit: 25, expireIn: 30 });
 
 /**
  * Higher order component that waits for the subscriptions.
- * @param WrappedComponent {function(): *} the wrapped component.
+ * @param WrappedComponent {React.Component} the wrapped component.
  * @return {React.Component} The WrappedComponent with subscriptions.
  * @memberOf ui/layouts
  */
-function withAllSubscriptions(WrappedComponent) {
-  const AllSubscriptionsHOC = (props) => ((props.loading) ? (
-              <Loader active>Getting data.</Loader>
-          ) :
-          <WrappedComponent {...props} />
-  );
-  AllSubscriptionsHOC.propTypes = {
-    loading: PropTypes.bool,
+const withAllSubscriptions = (WrappedComponent) => {
+  const AllSubscriptionsHOC = (props) => {
+    const { loading } = useTracker(() => {
+      const handles = [
+        allSubs.subscribe(Administrators.getCollectionName()),
+        allSubs.subscribe(Challenges.getCollectionName()),
+        allSubs.subscribe(ChallengeInterests.getCollectionName()),
+        allSubs.subscribe(ParticipantChallenges.getCollectionName()),
+        allSubs.subscribe(ParticipantInterests.getCollectionName()),
+        allSubs.subscribe(ParticipantSkills.getCollectionName()),
+        allSubs.subscribe(Participants.getCollectionName()),
+        allSubs.subscribe(ParticipantTools.getCollectionName()),
+        allSubs.subscribe(Interests.getCollectionName()),
+        allSubs.subscribe(Skills.getCollectionName()),
+        allSubs.subscribe(Slugs.getCollectionName()),
+        allSubs.subscribe(TeamChallenges.getCollectionName()),
+        allSubs.subscribe(TeamParticipants.getCollectionName()),
+        allSubs.subscribe(Teams.getCollectionName()),
+        allSubs.subscribe(TeamSkills.getCollectionName()),
+        allSubs.subscribe(TeamTools.getCollectionName()),
+        allSubs.subscribe(Tools.getCollectionName()),
+        allSubs.subscribe(TeamInvitations.getCollectionName()),
+        allSubs.subscribe(Suggestions.getCollectionName()),
+        allSubs.subscribe(WantsToJoin.getCollectionName()),
+        allSubs.subscribe(CanCreateTeams.getCollectionName()),
+        allSubs.subscribe(CanChangeChallenges.getCollectionName()),
+        allSubs.subscribe(MinorParticipants.getCollectionName()),
+      ];
+      const isLoading = handles.some((handle) => !handle.ready());
+      return {
+        loading: isLoading,
+      };
+    });
+
+    return loading ? (
+      <Loader active>Getting data.</Loader>
+    ) : (
+      <WrappedComponent {...props} />
+    );
   };
 
-  return withTracker(() => {
-    const handles = [
-      allSubs.subscribe(Administrators.getCollectionName()),
-      allSubs.subscribe(Challenges.getCollectionName()),
-      allSubs.subscribe(ChallengeInterests.getCollectionName()),
-      allSubs.subscribe(ParticipantChallenges.getCollectionName()),
-      allSubs.subscribe(ParticipantInterests.getCollectionName()),
-      allSubs.subscribe(ParticipantSkills.getCollectionName()),
-      allSubs.subscribe(Participants.getCollectionName()),
-      allSubs.subscribe(ParticipantTools.getCollectionName()),
-      allSubs.subscribe(Interests.getCollectionName()),
-      allSubs.subscribe(Skills.getCollectionName()),
-      allSubs.subscribe(Slugs.getCollectionName()),
-      allSubs.subscribe(TeamChallenges.getCollectionName()),
-      allSubs.subscribe(TeamParticipants.getCollectionName()),
-      allSubs.subscribe(Teams.getCollectionName()),
-      allSubs.subscribe(TeamSkills.getCollectionName()),
-      allSubs.subscribe(TeamTools.getCollectionName()),
-      allSubs.subscribe(Tools.getCollectionName()),
-      allSubs.subscribe(TeamInvitations.getCollectionName()),
-      allSubs.subscribe(Suggestions.getCollectionName()),
-      allSubs.subscribe(WantsToJoin.getCollectionName()),
-      allSubs.subscribe(CanCreateTeams.getCollectionName()),
-      allSubs.subscribe(CanChangeChallenges.getCollectionName()),
-      allSubs.subscribe(MinorParticipants.getCollectionName()),
-    ];
-    const loading = handles.some((handle) => !handle.ready());
-    return {
-      loading,
-    };
-
-  })(AllSubscriptionsHOC);
-}
+  return AllSubscriptionsHOC;
+};
 
 export default withAllSubscriptions;

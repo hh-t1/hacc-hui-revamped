@@ -1,8 +1,3 @@
-/**
- * The defined routes for HACC-Hui
- * @type {{SIGN_IN: string,
- * UNDERAGE_PARTICIPATION: string, LANDING: string, AGE_CONSENT: string, PARTICIPATION: string}}
- */
 export const ROUTES = {
   LANDING: '/',
   SIGN_IN: '/signin',
