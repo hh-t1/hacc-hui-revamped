@@ -23,6 +23,9 @@
     "plugin:react/recommended",
     "plugin:prettier/recommended"
   ],
+  "env": {
+    "browser": true
+  },
   "rules": {
     // Conflicting rules with Prettier:
     // "arrow-parens": "error",
