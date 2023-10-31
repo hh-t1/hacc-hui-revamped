@@ -37,12 +37,13 @@ class DeleteFormWidget extends React.Component {
     };
     userInteractionDefineMethod.call(userInteraction, (error) =>
       error
-      swal('Error', error.message, 'error') :
-      swal('Account deleted', 'We hope to see you again!', 'success')
-        .then(() => {
+        ? swal('Error', error.message, 'error')
+        : swal('Account deleted', 'We hope to see you again!', 'success').then(
+            () => {
               // eslint-disable-next-line no-undef
-          window.location = '/';
-        })
+              window.location = '/';
+            },
+          ),
     );
     const selector = { owner: this.props.participant._id };
     const ownedTeams = Teams.find(selector).fetch();
@@ -100,10 +101,10 @@ class DeleteFormWidget extends React.Component {
                 dangerMode: true,
               }).then((willDelete) => {
                 if (willDelete) {
-                    this.submit(data);
+                  this.submit(data);
                 } else {
-                    swal('Canceled deleting your account');
-                  }
+                  swal('Canceled deleting your account');
+                }
               });
             }}
           >

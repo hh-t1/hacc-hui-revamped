@@ -69,9 +69,20 @@ class ParticipantCollection extends BaseSlugCollection {
    * @return {{password: *, profileID: any}|undefined}
    */
   define({
-    username, firstName, lastName, demographicLevel, lookingForTeam,
-    challenges = [], interests = [], skills = [], tools = [],
-    linkedIn = '', gitHub = '', website = '', aboutMe = '', slackUsername = '',
+    username,
+    firstName,
+    lastName,
+    demographicLevel,
+    lookingForTeam,
+    challenges = [],
+    interests = [],
+    skills = [],
+    tools = [],
+    linkedIn = '',
+    gitHub = '',
+    website = '',
+    aboutMe = '',
+    slackUsername = '',
     isCompliant = false,
   }) {
     if (Meteor.isServer) {
@@ -329,7 +340,7 @@ class ParticipantCollection extends BaseSlugCollection {
       return false;
     }
     return (
-      !!this._collection.findOne(name)
+      !!this._collection.findOne(name) ||
       !!this._collection.findOne({ name }) ||
       !!this._collection.findOne({ _id: name }) ||
       !!this._collection.findOne({ userID: name })

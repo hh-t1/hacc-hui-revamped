@@ -90,7 +90,7 @@ class YourTeamsWidget extends React.Component {
                     key={teams._id}
                     teams={teams}
                     teamParticipants={getTeamParticipants(
-                                                                      this.props.teamParticipants)}
+                      this.props.teamParticipants,
                     )}
                     teamInvitation={this.props.teamInvitation}
                   />
@@ -113,8 +113,8 @@ class YourTeamsWidget extends React.Component {
                     key={team._id}
                     team={team}
                     teamParticipants={getTeamParticipants(
-                                                                            team._id,
-                                                                            this.props.teamParticipants,
+                      team._id,
+                      this.props.teamParticipants,
                     )}
                   />
                 ))}

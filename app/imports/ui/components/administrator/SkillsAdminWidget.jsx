@@ -22,14 +22,16 @@ const SkillsAdminWidget = (props) => {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        removeItMethod.call({
-          collectionName: Skills.getCollectionName(),
-          instance: Skills.getID(docID),
-        },
+        removeItMethod.call(
+          {
+            collectionName: Skills.getCollectionName(),
+            instance: Skills.getID(docID),
+          },
           (error) =>
             error
-          swal('Error', error.message, 'error') :
-          swal('Success', 'Skill removed', 'success')));
+              ? swal('Error', error.message, 'error')
+              : swal('Success', 'Skill removed', 'success'),
+        );
       } else {
         swal('You canceled the deletion!');
       }

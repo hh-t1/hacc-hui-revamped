@@ -84,7 +84,7 @@ class UpdateMinorParticipantsWidget extends React.Component {
   submitData() {
     let Error = false;
 
-    this.selected.forEach(((MP) => {
+    this.selected.forEach((MP) => {
       const collectionName = Participants.getCollectionName();
       const updateData = {
         id: MP,
