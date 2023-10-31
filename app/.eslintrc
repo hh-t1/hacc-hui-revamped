@@ -24,7 +24,10 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
-    "arrow-parens": "error",
+    // Conflicting rules with Prettier:
+    // "arrow-parens": "error",
+    // "no-confusing-arrow": ["error", { "allowParens": true }],
+    // "indent": "error",
     "camelcase": "off",
     "class-methods-use-this": "off",
     "func-names": "off",
@@ -42,7 +45,6 @@
       { "eventParamName": "event", "templateInstanceParamName": "instance" }
     ],
     "meteor/template-names": "off",
-    "no-confusing-arrow": ["error", { "allowParens": true }],
     "no-plusplus": "off",
     "no-underscore-dangle": "off",
     "object-curly-newline": "off",
@@ -50,7 +52,6 @@
     "object-shorthand": "off",
     "operator-linebreak": "off",
     "padded-blocks": "off",
-    "indent": "error",
     "prefer-arrow-callback": "off",
     "prefer-destructuring": "off",
     "prefer-promise-reject-errors": "off"

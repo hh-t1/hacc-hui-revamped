@@ -11,13 +11,12 @@ import {
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { ListGroup } from 'react-bootstrap';
 import { TeamInvitations } from '../../../api/team/TeamInvitationCollection';
 
-class ListParticipantCardAdmin extends React.Component {
+class ListParticipantsCardAdmin extends React.Component {
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
   render() {
-    // console.log(this.props.teams);
-
     function changeBackground(e) {
       e.currentTarget.style.backgroundColor = '#fafafa';
       e.currentTarget.style.cursor = 'pointer';
@@ -26,11 +25,9 @@ class ListParticipantCardAdmin extends React.Component {
     function onLeave(e) {
       e.currentTarget.style.backgroundColor = 'transparent';
     }
-    // console.log(this.props);
     const isMinor = this.props.participants.minor;
-    // console.log(isMinor);
     return (
-      <Item
+      <ListGroup.Item
         onMouseEnter={changeBackground}
         onMouseLeave={onLeave}
         style={{ padding: '0rem 1.5rem 0.5rem 1.5rem' }}
@@ -214,12 +211,12 @@ class ListParticipantCardAdmin extends React.Component {
             </Modal.Description>
           </Modal.Content>
         </Modal>
-      </Item>
+      </ListGroup.Item>
     );
   }
 }
 
-ListParticipantCardAdmin.propTypes = {
+ListParticipantsCardAdmin.propTypes = {
   participantID: PropTypes.string.isRequired,
   skills: PropTypes.array.isRequired,
   tools: PropTypes.array.isRequired,
@@ -234,4 +231,4 @@ export default withTracker(() => {
   return {
     teamInvitations,
   };
-})(ListParticipantCardAdmin);
+})(ListParticipantsCardAdmin);
