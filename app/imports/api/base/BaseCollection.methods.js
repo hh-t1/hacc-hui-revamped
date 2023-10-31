@@ -39,7 +39,9 @@ export const dumpDatabaseMethod = new ValidatedMethod({
       const collections = _.sortBy(
         HACCHui.collectionLoadSequence.map((collection) =>
           collection.dumpAll(),
-        (entry) => entry.name);
+        ),
+        (entry) => entry.name,
+      );
       const timestamp = new Date();
       return { timestamp, collections };
     }

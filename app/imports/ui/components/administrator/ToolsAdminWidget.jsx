@@ -22,14 +22,16 @@ const ToolsAdminWidget = (props) => {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        removeItMethod.call({
-          collectionName: Tools.getCollectionName(),
-          instance: Tools.getID(docID),
-        },
+        removeItMethod.call(
+          {
+            collectionName: Tools.getCollectionName(),
+            instance: Tools.getID(docID),
+          },
           (error) =>
             error
-          swal('Error', error.message, 'error') :
-          swal('Success', 'Tool removed', 'success')));
+              ? swal('Error', error.message, 'error')
+              : swal('Success', 'Tool removed', 'success'),
+        );
       } else {
         swal('You canceled the deletion!');
       }

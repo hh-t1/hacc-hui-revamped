@@ -92,7 +92,7 @@ class BaseCollection {
       throw new Meteor.Error(`${name} is not a defined ${this.type}`);
     }
     const doc =
-      this._collection.findOne(name)
+      this._collection.findOne(name) ||
       this._collection.findOne({ name }) ||
       this._collection.findOne({ _id: name });
     // console.log(name, doc);
@@ -168,7 +168,7 @@ class BaseCollection {
       return false;
     }
     return (
-      !!this._collection.findOne(name)
+      !!this._collection.findOne(name) ||
       !!this._collection.findOne({ name }) ||
       !!this._collection.findOne({ _id: name })
     );
@@ -236,7 +236,8 @@ class BaseCollection {
    * @param docID {String} A docID from this collection.
    * @returns { Object } An object representing this document.
    */
-  dumpOne(docID) { // eslint-disable-line
+  dumpOne(docID) {
+    // eslint-disable-line
     throw new Meteor.Error(
       `Default dumpOne method invoked by collection ${this._collectionName}`,
       '',

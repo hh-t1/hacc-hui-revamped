@@ -202,9 +202,9 @@ class InterestedParticipantCard extends React.Component {
                 <Icon name="plus" />
                 Add member
               </Button>
-              ) : (
-                ''
-              )}
+            ) : (
+              ''
+            )}
             {this.isAdded(
               this.props.teams[0]._id,
               this.props.developers._id,
@@ -218,9 +218,9 @@ class InterestedParticipantCard extends React.Component {
                 <Icon name="plus" />
                 Member already added
               </Button>
-              ) : (
-                ''
-              )}
+            ) : (
+              ''
+            )}
             {/* eslint-disable-next-line max-len */}
             <Button
               id={this.props.teams._id}

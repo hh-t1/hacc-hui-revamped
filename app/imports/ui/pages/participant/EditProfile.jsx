@@ -138,8 +138,9 @@ class EditProfile extends React.Component {
       },
       (error) =>
         error
-      swal('Error', error.message, 'error') :
-      swal('Success', 'Item updated successfully', 'success')));
+          ? swal('Error', error.message, 'error')
+          : swal('Success', 'Item updated successfully', 'success'),
+    );
   }
 
   /** If the subscription(s) have been received, render the page, otherwise show a loading icon. */
@@ -165,20 +166,23 @@ class EditProfile extends React.Component {
     _.forEach(this.props.devChallenges, (c) =>
       _.forEach(this.props.challenges, (p) => {
         // eslint-disable-next-line no-unused-expressions
-      (c.challengeID === p._id) ? devChal.push(p.title) : '';
-    }));
+        c.challengeID === p._id ? devChal.push(p.title) : '';
+      }),
+    );
 
     _.forEach(this.props.devSkills, (c) =>
       _.forEach(this.props.skills, (p) => {
         // eslint-disable-next-line no-unused-expressions
-      (c.skillID === p._id) ? devSkill.push(p.name) : '';
-    }));
+        c.skillID === p._id ? devSkill.push(p.name) : '';
+      }),
+    );
 
     _.forEach(this.props.devTools, (c) =>
       _.forEach(this.props.tools, (p) => {
         // eslint-disable-next-line no-unused-expressions
-      (c.toolID === p._id) ? devTool.push(p.name) : '';
-    }));
+        c.toolID === p._id ? devTool.push(p.name) : '';
+      }),
+    );
 
     dev.tools = devTool;
     dev.skills = devSkill;

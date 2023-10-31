@@ -21,17 +21,20 @@ const ChallengesAdminWidget = (props) => {
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
-        if (willDelete) {
-          removeItMethod.call({
+      if (willDelete) {
+        removeItMethod.call(
+          {
             collectionName: Challenges.getCollectionName(),
             instance: Challenges.getID(docID),
-          }, (error) => (error ?
-            swal('Error', error.message, 'error') :
-            swal('Success', 'Challenge removed', 'success')));
+          },
+          (error) =>
+            error
+              ? swal('Error', error.message, 'error')
+              : swal('Success', 'Challenge removed', 'success'),
         );
       } else {
-          swal('You canceled the deletion!');
-        }
+        swal('You canceled the deletion!');
+      }
     });
   };
 

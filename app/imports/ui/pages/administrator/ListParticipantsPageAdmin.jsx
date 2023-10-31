@@ -14,6 +14,7 @@ import _ from 'lodash';
 import { useTracker } from 'meteor/react-meteor-data';
 import { ZipZap } from 'meteor/udondan:zipzap';
 import moment from 'moment';
+
 import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
 import { Teams } from '../../../api/team/TeamCollection';
 import { ParticipantChallenges } from '../../../api/user/ParticipantChallengeCollection';

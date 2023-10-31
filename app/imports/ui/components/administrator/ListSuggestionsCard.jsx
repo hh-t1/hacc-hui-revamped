@@ -22,14 +22,16 @@ class ListSuggestionsCard extends React.Component {
     }).then((willDelete) => {
       console.log(this.props.suggestionObj);
       if (willDelete) {
-        removeItMethod.call({
-          collectionName: Suggestions.getCollectionName(),
-          instance: this.props.suggestionObj._id,
-        },
+        removeItMethod.call(
+          {
+            collectionName: Suggestions.getCollectionName(),
+            instance: this.props.suggestionObj._id,
+          },
           (error) =>
             error
-          swal('Error', error.message, 'error') :
-          swal('Success', 'Suggestion removed', 'success')));
+              ? swal('Error', error.message, 'error')
+              : swal('Success', 'Suggestion removed', 'success'),
+        );
       } else {
         swal('You canceled the deletion!');
       }

@@ -119,19 +119,21 @@ class TeamCreation extends React.Component {
     };
     // console.log(collectionName, definitionData);
     defineMethod.call(
-      collectionName,
+      {
+        collectionName,
         definitionData,
-    },
+      },
       (error) => {
         if (error) {
           swal('Error', error.message, 'error');
           // console.error(error.message);
-      } else {
+        } else {
           swal('Success', 'Team created successfully', 'success');
-        formRef.reset();
+          formRef.reset();
           //   console.log('Success');
         }
-    });
+      },
+    );
     // console.log(docID);
   }
 

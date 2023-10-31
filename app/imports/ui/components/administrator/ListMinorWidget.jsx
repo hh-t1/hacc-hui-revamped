@@ -17,16 +17,19 @@ class ListMinorWidget extends React.Component {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-          removeItMethod.call({
+        removeItMethod.call(
           {
             collectionName: MinorParticipants.getCollectionName(),
             instance: MinorParticipants.getID(docID),
-          }, (error) => (error ?
-            swal('Error', error.message, 'error') :
-            swal('Success', 'Participant removed', 'success')));
-        } else {
+          },
+          (error) =>
+            error
+              ? swal('Error', error.message, 'error')
+              : swal('Success', 'Participant removed', 'success'),
+        );
+      } else {
         swal('You canceled the deletion!');
-        }
+      }
     });
   }
 
