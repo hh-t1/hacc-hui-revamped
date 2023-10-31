@@ -230,7 +230,7 @@ const ListParticipantsPageAdmin = () => {
   };
 
   return (
-    <Container className="mb-5">
+    <Container className="mb-5" id="list-participants-admin-page">
       <div
         style={{
           backgroundColor: '#E5F0FE',
