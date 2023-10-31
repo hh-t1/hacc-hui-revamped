@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Col,
-  Container,
-  ListGroup,
-  Row,
-  Button,
-  Form,
-  InputGroup,
-} from 'react-bootstrap';
+import { Col, Container, Row, Button, Form, InputGroup } from 'react-bootstrap';
 import Multiselect from 'multiselect-react-dropdown';
 import { FaSearch, FaUsers } from 'react-icons/fa';
 import _ from 'lodash';
@@ -27,6 +19,7 @@ import { Participants } from '../../../api/user/ParticipantCollection';
 import ListParticipantsCardAdmin from '../../components/administrator/ListParticipantsCardAdmin';
 import ListParticipantsFilterAdmin from '../../components/administrator/ListParticipantsFilterAdmin';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
+import { TeamInvitations } from '../../../api/team/TeamInvitationCollection';
 import { databaseFileDateFormat } from '../../pages/administrator/DumpDatabase';
 
 const ListParticipantsPageAdmin = () => {
@@ -40,6 +33,7 @@ const ListParticipantsPageAdmin = () => {
     universalChallenges,
     universalTools,
     participants,
+    teamInvitations,
   } = useTracker(() => {
     const participantChallengesDocs = ParticipantChallenges.find({}).fetch();
     const participantSkillsDocs = ParticipantSkills.find({}).fetch();
@@ -53,6 +47,7 @@ const ListParticipantsPageAdmin = () => {
       {},
       { sort: { lastName: 1, firstName: 1 } },
     ).fetch();
+    const teamInvitationsDocs = TeamInvitations.find({}).fetch();
     return {
       participantChallenges: participantChallengesDocs,
       participantSkills: participantSkillsDocs,
@@ -63,6 +58,7 @@ const ListParticipantsPageAdmin = () => {
       universalChallenges: challengesDocs,
       universalTools: toolsDocs,
       participants: participantsDocs,
+      teamInvitations: teamInvitationsDocs,
     };
   }, []);
 
@@ -347,21 +343,23 @@ const ListParticipantsPageAdmin = () => {
           </div>
         </Col>
         <Col xs={9}>
-          <ListGroup variant="flush">
+          <div>
             {_.orderBy(result, ['lastName', 'firstName'], ['asc', 'asc']).map(
-              (participant) => (
-                <ListParticipantsCardAdmin
-                  key={participant._id}
-                  participantID={participant._id}
-                  participants={participant}
-                  skills={getParticipantSkills(participant._id)}
-                  tools={getParticipantTools(participant._id)}
-                  challenges={getParticipantChallenges(participant._id)}
-                  teams={getParticipantTeams(participant._id)}
-                />
-              ),
+              (participant) =>
+                participant ? (
+                  <ListParticipantsCardAdmin
+                    key={participant._id}
+                    participantID={participant._id}
+                    participant={participant}
+                    skills={getParticipantSkills(participant._id)}
+                    tools={getParticipantTools(participant._id)}
+                    challenges={getParticipantChallenges(participant._id)}
+                    teams={getParticipantTeams(participant._id)}
+                    teamInvitations={teamInvitations}
+                  />
+                ) : undefined,
             )}
-          </ListGroup>
+          </div>
         </Col>
       </Row>
     </Container>

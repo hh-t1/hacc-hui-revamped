@@ -55,3 +55,8 @@ h1 {
     margin-left: -1rem !important;
   }
 }
+
+.modal-80w {
+  max-width: none !important;
+  width: 90% !important;
+}
