@@ -19,6 +19,7 @@ import { editToolPageTest } from './editToolPage.e2e';
 import { editChallengePageTest } from './editChallengePage.e2e';
 import { yourProfilePageTest } from './profilePage.e2e';
 import { suggestToolSkillTest } from './SuggestToolSkill.e2e';
+import { listParticipantsAdminPageTest } from './listParticipantsAdminPage.e2e';
 
 fixture('HACC-Hui').page('http://localhost:3400');
 
@@ -95,4 +96,8 @@ test('Test your profile page', async (tc) => {
 
 test('Test suggest tool/skill page', async (tc) => {
   await suggestToolSkillTest.test(tc);
+});
+
+test('Test list participants admin page', async (tc) => {
+  await listParticipantsAdminPageTest.test(tc);
 });
