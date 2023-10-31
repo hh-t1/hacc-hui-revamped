@@ -25,6 +25,19 @@ export const makeSampleParticipant = () => {
   const gitHub = faker.internet.url();
   const website = faker.internet.url();
   const aboutMe = faker.lorem.paragraph();
-  return Participants.define({ username, firstName, lastName, demographicLevel,
-    lookingForTeam, challenges, interests, skills, tools, linkedIn, gitHub, website, aboutMe });
+  return Participants.define({
+    username,
+    firstName,
+    lastName,
+    demographicLevel,
+    lookingForTeam,
+    challenges,
+    interests,
+    skills,
+    tools,
+    linkedIn,
+    gitHub,
+    website,
+    aboutMe,
+  });
 };

@@ -11,7 +11,6 @@ import { Challenges } from './ChallengeCollection';
 
 if (Meteor.isServer) {
   describe('ChallengeCollection', function testSuite() {
-
     before(function setup() {
       resetDatabase();
     });
@@ -23,18 +22,28 @@ if (Meteor.isServer) {
     it('Can define and removeIt', function test1(done) {
       this.timeout(15000);
       fc.assert(
-          fc.property(fc.lorem(3), fc.lorem(24), fc.lorem(3),
-              fc.lorem(3),
-              (fcTitle, description, submissionDetail, pitch) => {
-                const title = `${fcTitle}${moment().format('YYYYMMDDHHmmssSSS')}`;
-                const interests = makeSampleInterestSlugArray(3);
-                const docID = Challenges.define({ title, description, pitch, interests, submissionDetail });
-                expect(Challenges.isDefined(docID)).to.be.true;
-                const doc = Challenges.findDoc(docID);
-                expect(doc.interests).to.have.lengthOf(3);
-                Challenges.removeIt(docID);
-                expect(Challenges.isDefined(docID)).to.be.false;
-              }),
+        fc.property(
+          fc.lorem(3),
+          fc.lorem(24),
+          fc.lorem(3),
+          fc.lorem(3),
+          (fcTitle, description, submissionDetail, pitch) => {
+            const title = `${fcTitle}${moment().format('YYYYMMDDHHmmssSSS')}`;
+            const interests = makeSampleInterestSlugArray(3);
+            const docID = Challenges.define({
+              title,
+              description,
+              pitch,
+              interests,
+              submissionDetail,
+            });
+            expect(Challenges.isDefined(docID)).to.be.true;
+            const doc = Challenges.findDoc(docID);
+            expect(doc.interests).to.have.lengthOf(3);
+            Challenges.removeIt(docID);
+            expect(Challenges.isDefined(docID)).to.be.false;
+          },
+        ),
       );
       done();
     });
@@ -44,8 +53,20 @@ if (Meteor.isServer) {
       const pitch = faker.lorem.words();
       const submissionDetail = faker.lorem.words();
       const interests = makeSampleInterestSlugArray(2);
-      const docID1 = Challenges.define({ title, description, interests, pitch, submissionDetail });
-      const docID2 = Challenges.define({ title, description, interests, pitch, submissionDetail });
+      const docID1 = Challenges.define({
+        title,
+        description,
+        interests,
+        pitch,
+        submissionDetail,
+      });
+      const docID2 = Challenges.define({
+        title,
+        description,
+        interests,
+        pitch,
+        submissionDetail,
+      });
       expect(docID1).to.equal(docID2);
       expect(Challenges.isDefined(docID1)).to.be.true;
     });

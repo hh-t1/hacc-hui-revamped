@@ -27,7 +27,10 @@ export const sendDM2AdministratorsMethod = new ValidatedMethod({
   validate: null,
   run({ message }) {
     console.log(`sendDM2Admininistrators ${message}`);
-    const administrators = _.map(Administrators.find({}).fetch(), (admin) => admin.username);
+    const administrators = _.map(
+      Administrators.find({}).fetch(),
+      (admin) => admin.username,
+    );
     _.forEach(administrators, (username) => {
       const { slackUser, dmChannel } = SlackUsers.findDoc({ username });
       const text = `<@${slackUser}> ${message}`;
@@ -55,7 +58,9 @@ export const sendDM2ParticipantMethod = new ValidatedMethod({
   validate: null,
   run({ participant, message }) {
     console.log(`sendDM2Participant ${participant} ${message}`);
-    const { slackUser, dmChannel } = SlackUsers.findDoc({ username: participant });
+    const { slackUser, dmChannel } = SlackUsers.findDoc({
+      username: participant,
+    });
     if (slackUser) {
       const text = `<@${slackUser}> ${message}`;
       (async () => {

@@ -14,11 +14,14 @@ class InterestCollection extends BaseSlugCollection {
    * Creates the Interest collection.
    */
   constructor() {
-    super('Interest', new SimpleSchema({
-      name: { type: String },
-      slugID: { type: SimpleSchema.RegEx.Id },
-      description: { type: String },
-    }));
+    super(
+      'Interest',
+      new SimpleSchema({
+        name: { type: String },
+        slugID: { type: SimpleSchema.RegEx.Id },
+        description: { type: String },
+      }),
+    );
   }
 
   /**
@@ -32,16 +35,15 @@ class InterestCollection extends BaseSlugCollection {
    * @throws {Meteor.Error} If the interest definition includes a defined slug.
    * @returns {string} The newly created docID.
    */
-  define({
-           name,
-           description,
-         }) {
+  define({ name, description }) {
     const slug = slugify(name); // we automatically build the slug from the name.
     // Get SlugID, throw error if found.
     const slugID = Slugs.define({ name: slug });
     // Define the Interest and get its ID
     const interestID = this._collection.insert({
-      name, description, slugID,
+      name,
+      description,
+      slugID,
     });
     // Connect the Slug to this Interest
     Slugs.updateEntityID(slugID, interestID);
@@ -55,9 +57,7 @@ class InterestCollection extends BaseSlugCollection {
    * @param description {string} The new description (optional).
    * @throws { Meteor.Error } If docID is not defined.
    */
-  update(docID, {
-    name, description,
-  }) {
+  update(docID, { name, description }) {
     this.assertDefined(docID);
     const updateData = {};
     if (name) {

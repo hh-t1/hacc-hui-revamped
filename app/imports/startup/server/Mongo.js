@@ -9,7 +9,9 @@ import { CanChangeChallenges } from '../../api/team/CanChangeChallengeCollection
 // global Assets
 
 function documentCounts() {
-  return _.map(HACCHui.collectionLoadSequence, (collection) => collection.count());
+  return _.map(HACCHui.collectionLoadSequence, (collection) =>
+    collection.count(),
+  );
 }
 
 function totalDocuments() {
@@ -44,7 +46,10 @@ function getRestoreFileAge(loadFileName) {
  * @memberOf startup/server
  */
 export function getDefinitions(loadJSON, collection) {
-  const definitionObj = _.find(loadJSON.collections, (obj) => obj.name === collection);
+  const definitionObj = _.find(
+    loadJSON.collections,
+    (obj) => obj.name === collection,
+  );
   return definitionObj ? definitionObj.contents : [];
 }
 
@@ -58,7 +63,9 @@ export function getDefinitions(loadJSON, collection) {
 export function loadCollection(collection, loadJSON, consolep) {
   const definitions = getDefinitions(loadJSON, collection._collectionName);
   if (consolep) {
-    console.log(`Defining ${definitions.length} ${collection._collectionName} documents.`);
+    console.log(
+      `Defining ${definitions.length} ${collection._collectionName} documents.`,
+    );
   }
   _.each(definitions, (definition) => collection.define(definition));
   if (consolep) {
@@ -86,22 +93,32 @@ function loadDatabase() {
   const loadFileName = Meteor.settings.databaseRestoreFileName;
   if (loadFileName && totalDocuments() === 0) {
     const loadFileAge = getRestoreFileAge(loadFileName);
-    console.log(`Loading database from file ${loadFileName}, dumped ${loadFileAge}.`);
+    console.log(
+      `Loading database from file ${loadFileName}, dumped ${loadFileAge}.`,
+    );
     const loadJSON = JSON.parse(Assets.getText(loadFileName));
     // The list of collections, ordered so that they can be sequentially restored.
     const collectionList = HACCHui.collectionLoadSequence;
     const loadNames = _.map(loadJSON.collections, (obj) => obj.name);
-    const collectionNames = _.map(collectionList, (collection) => collection.getCollectionName());
+    const collectionNames = _.map(collectionList, (collection) =>
+      collection.getCollectionName(),
+    );
     const extraRestoreNames = _.difference(loadNames, collectionNames);
     const extraCollectionNames = _.difference(collectionNames, loadNames);
     if (extraRestoreNames.length) {
-      console.log(`Error: Expected collections are missing from collection list: ${extraRestoreNames}`);
+      console.log(
+        `Error: Expected collections are missing from collection list: ${extraRestoreNames}`,
+      );
     }
     if (extraCollectionNames.length) {
-      console.log(`Error: Expected collections are missing from restore JSON file: ${extraCollectionNames}`);
+      console.log(
+        `Error: Expected collections are missing from restore JSON file: ${extraCollectionNames}`,
+      );
     }
     if (!extraRestoreNames.length && !extraCollectionNames.length) {
-      _.each(collectionList, (collection) => loadCollection(collection, loadJSON, true));
+      _.each(collectionList, (collection) =>
+        loadCollection(collection, loadJSON, true),
+      );
     }
     console.log('Finished loading database.');
   }

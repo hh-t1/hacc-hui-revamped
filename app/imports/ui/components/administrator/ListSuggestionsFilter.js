@@ -1,7 +1,6 @@
 import { _ } from 'lodash';
 
 class ListSuggestionsFilter {
-
   /**
    * Filters through the inputted data based on user input. If the search query is empty, it returns
    * the entire dataset.
@@ -19,14 +18,23 @@ class ListSuggestionsFilter {
       const suggestionName = data[i].name;
       const suggestionDescription = data[i].description;
       const nameLowercase = suggestionName.toString().toLowerCase();
-      const descriptionLowercase = suggestionDescription.toString().toLowerCase();
+      const descriptionLowercase = suggestionDescription
+        .toString()
+        .toLowerCase();
       if (nameLowercase.includes(searchQuery.toString().toLowerCase())) {
         list.push(data[i]);
-      } else if (descriptionLowercase.includes(searchQuery.toString().toLowerCase())) {
+      } else if (
+        descriptionLowercase.includes(searchQuery.toString().toLowerCase())
+      ) {
         list.push(data[i]);
-      } else if (searchQuery.toString().toLowerCase() === `${nameLowercase} ${descriptionLowercase}`) {
+      } else if (
+        searchQuery.toString().toLowerCase() ===
+        `${nameLowercase} ${descriptionLowercase}`
+      ) {
         list.push(data[i]);
-      } else if (data[i].username.includes(searchQuery.toString().toLowerCase())) {
+      } else if (
+        data[i].username.includes(searchQuery.toString().toLowerCase())
+      ) {
         list.push(data[i]);
       }
     }
@@ -57,7 +65,6 @@ class ListSuggestionsFilter {
    * @returns {[]|*} Returns the filtered array
    */
   typeResults(suggestions, type) {
-
     // if there are no skills selected
     if (type.length === 0) {
       return suggestions;

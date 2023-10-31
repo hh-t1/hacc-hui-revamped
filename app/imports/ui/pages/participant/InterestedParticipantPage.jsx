@@ -4,9 +4,7 @@ import InterestedParticipants from '../../components/participant/InterestedParti
 
 class InterestedParticipantPage extends React.Component {
   render() {
-    return (
-        <InterestedParticipants />
-    );
+    return <InterestedParticipants />;
   }
 }
 

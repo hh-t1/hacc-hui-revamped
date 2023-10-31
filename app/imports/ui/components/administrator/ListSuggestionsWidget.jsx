@@ -22,13 +22,16 @@ const ListSuggestionsWidget = ({ suggestions }) => {
     return (
       <Container align={'center'} id="list-suggestions-page">
         <Row>
-          <Col> <FaUsers size={200} /></Col>
+          <Col>
+            {' '}
+            <FaUsers size={200} />
+          </Col>
         </Row>
         <Row>
-          <Col as='h1'>There are no suggestions at the moment.</Col>
+          <Col as="h1">There are no suggestions at the moment.</Col>
         </Row>
         <Row>
-          <Col as='h2'>Please check back later.</Col>
+          <Col as="h2">Please check back later.</Col>
         </Row>
       </Container>
     );
@@ -89,71 +92,70 @@ const ListSuggestionsWidget = ({ suggestions }) => {
   ];
 
   return (
-      <Container
-        id="list-suggestions-page"
-        style={{ paddingBottom: '4rem' }}
-      >
-        <Row align={'center'} as={'h1'}>
-          <div style={{ paddingTop: '2rem' }}>
-            Suggestions
-          </div>
-        </Row>
-        <Row>
-          <Col xs={3}>
-            <Card border="secondary" style={{ width: '18rem' }}>
-              <Card.Body>
-                <Row as={'h2'}>
-                  <div style={{ paddingTop: '2rem' }}>
-                    Total Suggestions: {result.length}
-                  </div>
-                  <div style={{ paddingTop: '1rem' }}>
-                    <InputGroup>
-                      <InputGroup.Text>
-                        <FaSearch />
-                      </InputGroup.Text>
-                      <Form.Control type='text'
-                        name='search'
-                        placeholder='Search...'
-                        onChange={handleSearchChange}
-                      />
-                    </InputGroup>
-                  </div>
-                </Row>
-                <Row>
-                  <div style={{ paddingTop: '2rem' }}>
-                    <h2>Suggestion Types</h2>
-                    <Dropdown
-                      items={typeOptions}
-                      onItemSelect={getType}
-                      label="Types"
-                      style={{
-                        backgroundColor: '#ffffff',
-                        color: '#000000',
-                      }}/>
-                  </div>
-                </Row>
-                <Row>
-                  <div style={{ paddingTop: '2rem' }}>
-                    <SuggestToolSkillWidgetAdmin />
-                  </div>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col width={12}>
-            <ListGroup>
-              {result.map((suggestion) => <ListSuggestionsCard
+    <Container id="list-suggestions-page" style={{ paddingBottom: '4rem' }}>
+      <Row align={'center'} as={'h1'}>
+        <div style={{ paddingTop: '2rem' }}>Suggestions</div>
+      </Row>
+      <Row>
+        <Col xs={3}>
+          <Card border="secondary" style={{ width: '18rem' }}>
+            <Card.Body>
+              <Row as={'h2'}>
+                <div style={{ paddingTop: '2rem' }}>
+                  Total Suggestions: {result.length}
+                </div>
+                <div style={{ paddingTop: '1rem' }}>
+                  <InputGroup>
+                    <InputGroup.Text>
+                      <FaSearch />
+                    </InputGroup.Text>
+                    <Form.Control
+                      type="text"
+                      name="search"
+                      placeholder="Search..."
+                      onChange={handleSearchChange}
+                    />
+                  </InputGroup>
+                </div>
+              </Row>
+              <Row>
+                <div style={{ paddingTop: '2rem' }}>
+                  <h2>Suggestion Types</h2>
+                  <Dropdown
+                    items={typeOptions}
+                    onItemSelect={getType}
+                    label="Types"
+                    style={{
+                      backgroundColor: '#ffffff',
+                      color: '#000000',
+                    }}
+                  />
+                </div>
+              </Row>
+              <Row>
+                <div style={{ paddingTop: '2rem' }}>
+                  <SuggestToolSkillWidgetAdmin />
+                </div>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col width={12}>
+          <ListGroup>
+            {result.map((suggestion) => (
+              <ListSuggestionsCard
                 key={suggestion._id}
                 type={suggestion.type}
                 username={suggestion.username}
                 name={suggestion.name}
                 description={suggestion.description}
                 suggestionObj={suggestion}
-              />)}
-            </ListGroup>
-          </Col>
-        </Row>
-      </Container>
+              />
+            ))}
+          </ListGroup>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

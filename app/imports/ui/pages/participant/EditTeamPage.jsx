@@ -5,9 +5,7 @@ import EditTeamWidget from '../../components/participant/EditTeamWidget';
 
 class EditTeamPage extends React.Component {
   render() {
-    return (
-        <EditTeamWidget />
-    );
+    return <EditTeamWidget />;
   }
 }
 

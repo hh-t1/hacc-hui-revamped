@@ -7,12 +7,12 @@ import { Container } from 'react-bootstrap';
  * @memberOf ui/pages
  */
 function Signout() {
-    Meteor.logout();
-    return (
-        <Container id="signout-page" as="h2" className="text-center">
-            <p>You are signed out.</p>
-        </Container>
-    );
+  Meteor.logout();
+  return (
+    <Container id="signout-page" as="h2" className="text-center">
+      <p>You are signed out.</p>
+    </Container>
+  );
 }
 
 export default Signout;

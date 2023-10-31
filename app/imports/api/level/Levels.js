@@ -28,7 +28,7 @@ export const demographicLevels = _.values(demographicLevel);
  * @memberOf api/level
  */
 export const skillAndToolLevel = {
-  DONT_KNOW: 'Don\'t know, but would like to learn',
+  DONT_KNOW: "Don't know, but would like to learn",
   NOVICE: 'Novice',
   EXPERIENCED: 'Experienced',
 };
@@ -46,7 +46,10 @@ export const skillAndToolLevels = _.values(skillAndToolLevel);
  * @memberOf api/test-utilities
  */
 export const getRandomDemographicLevel = () => {
-  const index = faker.random.number({ min: 0, max: demographicLevels.length - 1 });
+  const index = faker.random.number({
+    min: 0,
+    max: demographicLevels.length - 1,
+  });
   return demographicLevels[index];
 };
 
@@ -56,6 +59,9 @@ export const getRandomDemographicLevel = () => {
  * @memberOf api/test-utilities
  */
 export const getRandomSkillAndToolLevel = () => {
-  const index = faker.random.number({ min: 0, max: skillAndToolLevels.length - 1 });
+  const index = faker.random.number({
+    min: 0,
+    max: skillAndToolLevels.length - 1,
+  });
   return skillAndToolLevels[index];
 };

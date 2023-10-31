@@ -7,12 +7,12 @@ import {
 } from 'uniforms-bootstrap5';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
-import { defineMethod } from '../../../api/base/BaseCollection.methods';
-import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import Swal from 'sweetalert2';
 import Container from 'react-bootstrap/Container';
-import { ROUTES } from '../../../startup/client/route-constants';
 import { Redirect } from 'react-router-dom';
+import { defineMethod } from '../../../api/base/BaseCollection.methods';
+import { Challenges } from '../../../api/challenge/ChallengeCollection';
+import { ROUTES } from '../../../startup/client/route-constants';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const schema = new SimpleSchema({
@@ -36,31 +36,30 @@ const AddChallenge = () => {
    * @param data {Object} the results from the form.
    */
   const handleSubmit = useCallback(
-      (data) => {
-        const { title, description, submissionDetail, pitch } = data;
-        const definitionData = { title, description, submissionDetail, pitch };
-        const collectionName = Challenges.getCollectionName();
-        // console.log(collectionName);
-        defineMethod.call({ collectionName, definitionData }, (error) => {
-          if (error) {
-            Swal.fire('Error', error.message, 'error').then(() => {});
-            console.error(error.message);
-          } else {
-            Swal.fire({
-              title: '<strong>Success!</strong>',
-              icon: 'success',
-              showCloseButton: true,
-              focusConfirm: false,
-              confirmButtonText:
-                  'OK'
-            }).then(() => {
-                setRedirect(true);
-            })
-            formRef.current.reset();
-          }
-        });
-      },
-      [formRef],
+    (data) => {
+      const { title, description, submissionDetail, pitch } = data;
+      const definitionData = { title, description, submissionDetail, pitch };
+      const collectionName = Challenges.getCollectionName();
+      // console.log(collectionName);
+      defineMethod.call({ collectionName, definitionData }, (error) => {
+        if (error) {
+          Swal.fire('Error', error.message, 'error').then(() => {});
+          console.error(error.message);
+        } else {
+          Swal.fire({
+            title: '<strong>Success!</strong>',
+            icon: 'success',
+            showCloseButton: true,
+            focusConfirm: false,
+            confirmButtonText: 'OK',
+          }).then(() => {
+            setRedirect(true);
+          });
+          formRef.current.reset();
+        }
+      });
+    },
+    [formRef],
   );
 
   if (redirect) {
@@ -68,19 +67,19 @@ const AddChallenge = () => {
   }
 
   return (
-      <Container id="add-challenge-page">
-        <h2 className="text-center fw-bold">Add a Challenge</h2>
-        <AutoForm ref={formRef} schema={formSchema} onSubmit={handleSubmit}>
-          <div className="border p-3">
-            <TextField name="title" />
-            <TextField name="description" />
-            <TextField name="submissionDetail" />
-            <TextField name="pitch" />
-            <SubmitField value="Submit" />
-            <ErrorsField />
-          </div>
-        </AutoForm>
-      </Container>
+    <Container id="add-challenge-page">
+      <h2 className="text-center fw-bold">Add a Challenge</h2>
+      <AutoForm ref={formRef} schema={formSchema} onSubmit={handleSubmit}>
+        <div className="border p-3">
+          <TextField name="title" />
+          <TextField name="description" />
+          <TextField name="submissionDetail" />
+          <TextField name="pitch" />
+          <SubmitField value="Submit" />
+          <ErrorsField />
+        </div>
+      </AutoForm>
+    </Container>
   );
 };
 

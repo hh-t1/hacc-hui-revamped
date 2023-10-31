@@ -4,9 +4,7 @@ import EditSkillWidget from '../../components/administrator/EditSkillWidget';
 
 class EditToolPage extends React.Component {
   render() {
-    return (
-        <EditSkillWidget />
-    );
+    return <EditSkillWidget />;
   }
 }
 

@@ -2,8 +2,10 @@ import React from 'react';
 import { Header, Segment, Form } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import {
-  AutoForm, BoolField,
-  LongTextField, SelectField,
+  AutoForm,
+  BoolField,
+  LongTextField,
+  SelectField,
   SubmitField,
   TextField,
 } from 'uniforms-semantic';
@@ -38,7 +40,11 @@ class CreateProfileWidget extends React.Component {
       firstName: String,
       lastName: String,
       username: String,
-      demographicLevel: { type: String, allowedValues: demographicLevels, optional: true },
+      demographicLevel: {
+        type: String,
+        allowedValues: demographicLevels,
+        optional: true,
+      },
       linkedIn: { type: String, optional: true },
       gitHub: { type: String, optional: true },
       slackUsername: { type: String, optional: true },
@@ -131,52 +137,53 @@ class CreateProfileWidget extends React.Component {
       return <Redirect to={from} />;
     }
     return (
-        <Segment>
-          <Header dividing>Hello {firstname}, this is your first time to login, so please fill out your profile</Header>
-          <AutoForm schema={formSchema} model={model} onSubmit={data => {
+      <Segment>
+        <Header dividing>
+          Hello {firstname}, this is your first time to login, so please fill
+          out your profile
+        </Header>
+        <AutoForm
+          schema={formSchema}
+          model={model}
+          onSubmit={(data) => {
             this.submit(data);
-          }}>
-            <Form.Group widths="equal">
-              <TextField name="username" disabled />
-              <BoolField name="isCompliant" disabled />
-            </Form.Group>
-            <Form.Group widths="equal">
-              <TextField name="firstName" />
-              <TextField name="lastName" />
-              <SelectField name="demographicLevel" />
-            </Form.Group>
-            <Form.Group widths="equal">
-              <TextField name="linkedIn" />
-              <TextField name="gitHub" />
-              <TextField name="slackUsername" />
-            </Form.Group>
-            <Form.Group widths="equal">
-              <TextField name="website" />
-              <LongTextField name="aboutMe" />
-            </Form.Group>
-            <MultiSelectField name="challenges" />
-            <Form.Group widths="equal">
-              <MultiSelectField name="skills" />
-              <MultiSelectField name="tools" />
-            </Form.Group>
-            <SubmitField />
-          </AutoForm>
-        </Segment>
+          }}
+        >
+          <Form.Group widths="equal">
+            <TextField name="username" disabled />
+            <BoolField name="isCompliant" disabled />
+          </Form.Group>
+          <Form.Group widths="equal">
+            <TextField name="firstName" />
+            <TextField name="lastName" />
+            <SelectField name="demographicLevel" />
+          </Form.Group>
+          <Form.Group widths="equal">
+            <TextField name="linkedIn" />
+            <TextField name="gitHub" />
+            <TextField name="slackUsername" />
+          </Form.Group>
+          <Form.Group widths="equal">
+            <TextField name="website" />
+            <LongTextField name="aboutMe" />
+          </Form.Group>
+          <MultiSelectField name="challenges" />
+          <Form.Group widths="equal">
+            <MultiSelectField name="skills" />
+            <MultiSelectField name="tools" />
+          </Form.Group>
+          <SubmitField />
+        </AutoForm>
+      </Segment>
     );
   }
 }
 
 CreateProfileWidget.propTypes = {
   participant: PropTypes.object.isRequired,
-  skills: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  challenges: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  tools: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
+  skills: PropTypes.arrayOf(PropTypes.object).isRequired,
+  challenges: PropTypes.arrayOf(PropTypes.object).isRequired,
+  tools: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default withTracker(() => {

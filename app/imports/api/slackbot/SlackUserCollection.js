@@ -10,11 +10,14 @@ import { Slugs } from '../slug/SlugCollection';
  */
 class SlackUserCollection extends BaseCollection {
   constructor() {
-    super('SlackUser', new SimpleSchema({
-      username: { type: String },
-      slackUser: { type: String },
-      dmChannel: { type: String },
-    }));
+    super(
+      'SlackUser',
+      new SimpleSchema({
+        username: { type: String },
+        slackUser: { type: String },
+        dmChannel: { type: String },
+      }),
+    );
   }
 
   /**

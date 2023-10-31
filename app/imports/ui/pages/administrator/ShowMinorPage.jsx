@@ -4,9 +4,7 @@ import ManageMinorWidget from '../../components/administrator/ManageMinorWidget'
 
 class ShowMinorPage extends React.Component {
   render() {
-    return (
-        <ManageMinorWidget />
-        );
+    return <ManageMinorWidget />;
   }
 }
 

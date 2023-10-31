@@ -4,9 +4,7 @@ import TeamInvitationsWidget from '../../components/participant/TeamInvitationsW
 
 class TeamInvitationsPage extends React.Component {
   render() {
-    return (
-        <TeamInvitationsWidget />
-    );
+    return <TeamInvitationsWidget />;
   }
 }
 

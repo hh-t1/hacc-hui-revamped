@@ -48,7 +48,11 @@ class EditProfileWidget extends React.Component {
       firstName: String,
       lastName: String,
       username: String,
-      demographicLevel: { type: String, allowedValues: demographicLevels, optional: true },
+      demographicLevel: {
+        type: String,
+        allowedValues: demographicLevels,
+        optional: true,
+      },
       linkedIn: { type: String, optional: true },
       gitHub: { type: String, optional: true },
       slackUsername: { type: String, optional: true },
@@ -158,83 +162,86 @@ class EditProfileWidget extends React.Component {
     const schema = this.buildTheFormSchema();
     const formSchema = new SimpleSchema2Bridge(schema);
     return (
-        <div style={{ paddingBottom: '50px' }}>
-          <Grid container centered>
-            <Grid.Column>
-              <div style={{
-                backgroundColor: '#E5F0FE', padding: '1rem 0rem', margin: '2rem 0rem',
+      <div style={{ paddingBottom: '50px' }}>
+        <Grid container centered>
+          <Grid.Column>
+            <div
+              style={{
+                backgroundColor: '#E5F0FE',
+                padding: '1rem 0rem',
+                margin: '2rem 0rem',
                 borderRadius: '2rem',
-              }}>
-                <Header as="h2" textAlign="center">Edit Profile</Header>
-              </div>
-              <AutoForm schema={formSchema} model={model} onSubmit={data => {
+              }}
+            >
+              <Header as="h2" textAlign="center">
+                Edit Profile
+              </Header>
+            </div>
+            <AutoForm
+              schema={formSchema}
+              model={model}
+              onSubmit={(data) => {
                 // console.log(data);
                 this.submitData(data);
-              }}>
-                <Segment style={{
+              }}
+            >
+              <Segment
+                style={{
                   borderRadius: '1rem',
                   backgroundColor: '#E5F0FE',
-                }}>
-                  <Form.Group widths="equal">
-                    <TextField name="username" disabled />
-                    <BoolField name="isCompliant" disabled />
-                  </Form.Group>
-                  <Form.Group widths="equal">
-                    <TextField name="firstName" />
-                    <TextField name="lastName" />
-                    <SelectField name="demographicLevel" />
-                  </Form.Group>
-                  <Form.Group widths="equal">
-                    <TextField name="linkedIn" />
-                    <TextField name="gitHub" />
-                    <TextField name="slackUsername" />
-                  </Form.Group>
-                  <Form.Group widths="equal">
-                    <TextField name="website" />
-                    <LongTextField name="aboutMe" />
-                  </Form.Group>
-                  <Form.Group widths="equal">
-                    <MultiSelectField name="challenges" />
-                    <MultiSelectField name="skills" />
-                    <MultiSelectField name="tools" />
-                  </Form.Group>
-                  <div align='center'>
-                    <SubmitField value='Submit'
-                                 style={{
-                                   color: 'white', backgroundColor: '#DB2828',
-                                   margin: '2rem 0rem',
-                                 }}/>
-                  </div>
-                  <ErrorsField />
-                </Segment>
-              </AutoForm>
-            </Grid.Column>
-          </Grid>
-        </div>
+                }}
+              >
+                <Form.Group widths="equal">
+                  <TextField name="username" disabled />
+                  <BoolField name="isCompliant" disabled />
+                </Form.Group>
+                <Form.Group widths="equal">
+                  <TextField name="firstName" />
+                  <TextField name="lastName" />
+                  <SelectField name="demographicLevel" />
+                </Form.Group>
+                <Form.Group widths="equal">
+                  <TextField name="linkedIn" />
+                  <TextField name="gitHub" />
+                  <TextField name="slackUsername" />
+                </Form.Group>
+                <Form.Group widths="equal">
+                  <TextField name="website" />
+                  <LongTextField name="aboutMe" />
+                </Form.Group>
+                <Form.Group widths="equal">
+                  <MultiSelectField name="challenges" />
+                  <MultiSelectField name="skills" />
+                  <MultiSelectField name="tools" />
+                </Form.Group>
+                <div align="center">
+                  <SubmitField
+                    value="Submit"
+                    style={{
+                      color: 'white',
+                      backgroundColor: '#DB2828',
+                      margin: '2rem 0rem',
+                    }}
+                  />
+                </div>
+                <ErrorsField />
+              </Segment>
+            </AutoForm>
+          </Grid.Column>
+        </Grid>
+      </div>
     );
   }
 }
 
 EditProfileWidget.propTypes = {
-  allChallenges: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  allSkills: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  allTools: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
+  allChallenges: PropTypes.arrayOf(PropTypes.object).isRequired,
+  allSkills: PropTypes.arrayOf(PropTypes.object).isRequired,
+  allTools: PropTypes.arrayOf(PropTypes.object).isRequired,
   participant: PropTypes.object.isRequired,
-  devChallenges: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-  devSkills: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-  devTools: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
+  devChallenges: PropTypes.arrayOf(PropTypes.object),
+  devSkills: PropTypes.arrayOf(PropTypes.object),
+  devTools: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default withTracker(() => {

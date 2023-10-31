@@ -1,11 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react';
-import {
-  Grid,
-  Header,
-  Item,
-  Icon,
-} from 'semantic-ui-react';
+import { Grid, Header, Item, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { _ } from 'lodash';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -25,20 +20,16 @@ import InterestedParticipantCard from './InterestedParticipantCard';
  * @memberOf ui/pages
  */
 class InterestedParticipants extends React.Component {
-
   render() {
-
     if (this.props.interestedDevs.length === 0) {
       return (
-          <div align={'center'}>
-            <Header as='h2' icon>
-              <Icon name='users'/>
-              There are no interested partcipants at the moment.
-              <Header.Subheader>
-                Please check back later.
-              </Header.Subheader>
-            </Header>
-          </div>
+        <div align={'center'}>
+          <Header as="h2" icon>
+            <Icon name="users" />
+            There are no interested partcipants at the moment.
+            <Header.Subheader>Please check back later.</Header.Subheader>
+          </Header>
+        </div>
       );
     }
 
@@ -93,7 +84,9 @@ class InterestedParticipants extends React.Component {
 
     function getDeveloperChallenges(developerID, developerChallenges) {
       const data = [];
-      const challenges = _.filter(developerChallenges, { developerID: developerID });
+      const challenges = _.filter(developerChallenges, {
+        developerID: developerID,
+      });
       for (let i = 0; i < challenges.length; i++) {
         for (let j = 0; j < universalChallenges.length; j++) {
           if (challenges[i].challengeID === universalChallenges[j]._id) {
@@ -105,25 +98,47 @@ class InterestedParticipants extends React.Component {
     }
 
     return (
-        <Grid container doubling relaxed stackable style={{ marginBottom: '2rem' }}>
-          <Grid.Row centered>
-            <Header as={'h2'} style={{ paddingTop: '2rem' }}>
-              Interested Participants for Team: {this.props.teams[0].name}
-            </Header>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-              <Item.Group divided>
-                {/* eslint-disable-next-line max-len */}
-                {getInterestedDevelopers(this.props.interestedDevs).map((developers) => <InterestedParticipantCard key={developers._id} developers={developers} teams={this.props.teams}
-                                               skills={getDeveloperSkills(developers._id, this.props.developerSkills)}
-                                               tools={getDeveloperTools(developers._id, this.props.developerTools)}
-                                               challenges={getDeveloperChallenges(developers._id, this.props.developerChallenges)}
-                />)}
-              </Item.Group>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+      <Grid
+        container
+        doubling
+        relaxed
+        stackable
+        style={{ marginBottom: '2rem' }}
+      >
+        <Grid.Row centered>
+          <Header as={'h2'} style={{ paddingTop: '2rem' }}>
+            Interested Participants for Team: {this.props.teams[0].name}
+          </Header>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column>
+            <Item.Group divided>
+              {/* eslint-disable-next-line max-len */}
+              {getInterestedDevelopers(this.props.interestedDevs).map(
+                (developers) => (
+                  <InterestedParticipantCard
+                    key={developers._id}
+                    developers={developers}
+                    teams={this.props.teams}
+                    skills={getDeveloperSkills(
+                      developers._id,
+                      this.props.developerSkills,
+                    )}
+                    tools={getDeveloperTools(
+                      developers._id,
+                      this.props.developerTools,
+                    )}
+                    challenges={getDeveloperChallenges(
+                      developers._id,
+                      this.props.developerChallenges,
+                    )}
+                  />
+                ),
+              )}
+            </Item.Group>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     );
   }
 }
@@ -163,6 +178,5 @@ export default withTracker(() => {
     challenges: Challenges.find({}).fetch(),
     tools: Tools.find({}).fetch(),
     // developers: Developers.find({}).fetch(),
-
   };
 })(InterestedParticipants);

@@ -5,9 +5,7 @@ import CreateTeamWidget from '../../components/participant/CreateTeamWidget';
 
 class CreateTeamPage extends React.Component {
   render() {
-    return (
-        <CreateTeamWidget />
-    );
+    return <CreateTeamWidget />;
   }
 }
 

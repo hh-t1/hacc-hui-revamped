@@ -5,9 +5,7 @@ import EditProfileWidget from '../../components/participant/EditProfileWidget';
 
 class EditProfilePage extends React.Component {
   render() {
-    return (
-        <EditProfileWidget />
-    );
+    return <EditProfileWidget />;
   }
 }
 

@@ -1,11 +1,6 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import {
-  Grid,
-  Header,
-  Item,
-  Icon, Segment, Card,
-} from 'semantic-ui-react';
+import { Grid, Header, Item, Icon, Segment, Card } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { _ } from 'lodash';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -27,22 +22,18 @@ import { paleBlueStyle } from '../../styles';
  * @memberOf ui/pages
  */
 class TeamInvitationsWidget extends React.Component {
-
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
 
   render() {
-
     if (this.props.teamInvitations.length === 0) {
       return (
-          <div align={'center'} style={{ margin: '3rem 0' }}>
-            <Header as='h2' icon>
-              <Icon name='users'/>
-              You have no invitations at the moment.
-              <Header.Subheader>
-                Please check back later.
-              </Header.Subheader>
-            </Header>
-          </div>
+        <div align={'center'} style={{ margin: '3rem 0' }}>
+          <Header as="h2" icon>
+            <Icon name="users" />
+            You have no invitations at the moment.
+            <Header.Subheader>Please check back later.</Header.Subheader>
+          </Header>
+        </div>
       );
     }
 
@@ -132,33 +123,52 @@ class TeamInvitationsWidget extends React.Component {
     }
 
     return (
-        <div style={{ paddingBottom: '50px', paddingTop: '40px',
-        }}>
-          <Grid container doubling relaxed stackable style={{ display: 'block',
-            marginLeft: 'auto', marginRight: 'auto' }}>
-            <Segment style = {paleBlueStyle} >
-              <Grid.Row centered>
-                <Header as='h2' textAlign="center" style={{ paddingBottom: '1rem' }}>
-                  Team Invitations
-                </Header>
-              </Grid.Row>
-              <Grid.Column width={15}>
-                <Card fluid>
-                  <Item.Group divided>
-                    {/* eslint-disable-next-line max-len */}
-                    {getTeamInvitations(this.props.teamInvitations).map((teams) => <TeamInvitationCard key={teams._id}
-                                       teams={teams}
-                                       skills={getTeamSkills(teams._id, this.props.teamSkills)}
-                                       tools={getTeamTools(teams._id, this.props.teamTools)}
-                                       challenges={getTeamChallenges(teams._id, this.props.teamChallenges)}
-                                       participants={getTeamDevelopers(teams._id, this.props.teamParticipants)}
-                    />)}
-                  </Item.Group>
-                </Card>
-              </Grid.Column>
-            </Segment>
-          </Grid>
-        </div>
+      <div style={{ paddingBottom: '50px', paddingTop: '40px' }}>
+        <Grid
+          container
+          doubling
+          relaxed
+          stackable
+          style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
+        >
+          <Segment style={paleBlueStyle}>
+            <Grid.Row centered>
+              <Header
+                as="h2"
+                textAlign="center"
+                style={{ paddingBottom: '1rem' }}
+              >
+                Team Invitations
+              </Header>
+            </Grid.Row>
+            <Grid.Column width={15}>
+              <Card fluid>
+                <Item.Group divided>
+                  {/* eslint-disable-next-line max-len */}
+                  {getTeamInvitations(this.props.teamInvitations).map(
+                    (teams) => (
+                      <TeamInvitationCard
+                        key={teams._id}
+                        teams={teams}
+                        skills={getTeamSkills(teams._id, this.props.teamSkills)}
+                        tools={getTeamTools(teams._id, this.props.teamTools)}
+                        challenges={getTeamChallenges(
+                          teams._id,
+                          this.props.teamChallenges,
+                        )}
+                        participants={getTeamDevelopers(
+                          teams._id,
+                          this.props.teamParticipants,
+                        )}
+                      />
+                    ),
+                  )}
+                </Item.Group>
+              </Card>
+            </Grid.Column>
+          </Segment>
+        </Grid>
+      </div>
     );
   }
 }
@@ -174,13 +184,14 @@ TeamInvitationsWidget.propTypes = {
   tools: PropTypes.array.isRequired,
   teamParticipants: PropTypes.array.isRequired,
   teamInvitations: PropTypes.array.isRequired,
-
 };
 
 export default withTracker(() => ({
   teamChallenges: TeamChallenges.find({}).fetch(),
   // eslint-disable-next-line max-len
-  teamInvitations: TeamInvitations.find({ participantID: Participants.findDoc({ userID: Meteor.userId() })._id }).fetch(),
+  teamInvitations: TeamInvitations.find({
+    participantID: Participants.findDoc({ userID: Meteor.userId() })._id,
+  }).fetch(),
   teamSkills: TeamSkills.find({}).fetch(),
   teamTools: TeamTools.find({}).fetch(),
   // eslint-disable-next-line max-len

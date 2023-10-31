@@ -10,13 +10,16 @@ import { ROLE } from '../role/Role';
  */
 class UserInteractionCollection extends BaseCollection {
   constructor() {
-    super('UserInteraction', new SimpleSchema({
-      username: { type: String },
-      type: { type: String },
-      typeData: { type: Array },
-      'typeData.$': { type: String },
-      timestamp: { type: Date },
-    }));
+    super(
+      'UserInteraction',
+      new SimpleSchema({
+        username: { type: String },
+        type: { type: String },
+        typeData: { type: Array },
+        'typeData.$': { type: String },
+        timestamp: { type: Date },
+      }),
+    );
   }
 
   /**
@@ -28,7 +31,12 @@ class UserInteractionCollection extends BaseCollection {
    * @return {String} the ID of the user interaction.
    */
   define({ username, type, typeData, timestamp = moment().toDate() }) {
-    const doc = this._collection.findOne({ username, type, typeData, timestamp });
+    const doc = this._collection.findOne({
+      username,
+      type,
+      typeData,
+      timestamp,
+    });
     if (doc) {
       return doc._id;
     }
@@ -61,7 +69,6 @@ class UserInteractionCollection extends BaseCollection {
   assertValidRoleForMethod(userId) {
     this.assertRole(userId, [ROLE.ADMIN, ROLE.PARTICIPANT]);
   }
-
 }
 
 /**

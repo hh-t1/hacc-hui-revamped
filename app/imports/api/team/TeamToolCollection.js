@@ -12,11 +12,18 @@ import { ROLE } from '../role/Role';
  */
 class TeamToolCollection extends BaseCollection {
   constructor() {
-    super('TeamTool', new SimpleSchema({
-      teamID: { type: SimpleSchema.RegEx.Id },
-      toolID: { type: SimpleSchema.RegEx.Id },
-      toolLevel: { type: String, allowedValues: skillAndToolLevels, optional: true },
-    }));
+    super(
+      'TeamTool',
+      new SimpleSchema({
+        teamID: { type: SimpleSchema.RegEx.Id },
+        toolID: { type: SimpleSchema.RegEx.Id },
+        toolLevel: {
+          type: String,
+          allowedValues: skillAndToolLevels,
+          optional: true,
+        },
+      }),
+    );
   }
 
   /**
@@ -88,7 +95,6 @@ class TeamToolCollection extends BaseCollection {
   assertValidRoleForMethod(userId) {
     this.assertRole(userId, [ROLE.ADMIN, ROLE.PARTICIPANT]);
   }
-
 }
 
 /**

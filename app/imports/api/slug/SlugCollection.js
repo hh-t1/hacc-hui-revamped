@@ -15,10 +15,13 @@ class SlugCollection extends BaseCollection {
    * Creates the Slug collection.
    */
   constructor() {
-    super('Slug', new SimpleSchema({
-      name: { type: String },
-      entityID: { type: SimpleSchema.RegEx.Id, optional: true },
-    }));
+    super(
+      'Slug',
+      new SimpleSchema({
+        name: { type: String },
+        entityID: { type: SimpleSchema.RegEx.Id, optional: true },
+      }),
+    );
   }
 
   /**
@@ -32,10 +35,18 @@ class SlugCollection extends BaseCollection {
   define({ name }) {
     check(name, String);
     if (super.isDefined(name)) {
-      throw new Meteor.Error(`Attempt to redefine slug: ${name}`, '', Error().stack);
+      throw new Meteor.Error(
+        `Attempt to redefine slug: ${name}`,
+        '',
+        Error().stack,
+      );
     }
     if (!this.isValidSlugName(name)) {
-      throw new Meteor.Error(`Slug is not a-zA-Z0-9 or dash, period, underscore, or @: ${name}`, '', Error().stack);
+      throw new Meteor.Error(
+        `Slug is not a-zA-Z0-9 or dash, period, underscore, or @: ${name}`,
+        '',
+        Error().stack,
+      );
     }
     const docID = this._collection.insert({ name });
     return docID;
@@ -48,7 +59,11 @@ class SlugCollection extends BaseCollection {
    */
   isValidSlugName(slugName) {
     const slugRegEx = new RegExp('^[a-zA-Z0-9@.]+(?:[_-][a-zA-Z0-9@.]+)*$');
-    return (typeof slugName === 'string') && slugName.length > 0 && slugRegEx.test(slugName);
+    return (
+      typeof slugName === 'string' &&
+      slugName.length > 0 &&
+      slugRegEx.test(slugName)
+    );
   }
 
   /**
@@ -118,7 +133,8 @@ class SlugCollection extends BaseCollection {
    * Returns an empty array (no integrity checking done on Slugs.)
    * @returns {Array} An empty array.
    */
-  checkIntegrity() { // eslint-disable-line class-methods-use-this
+  checkIntegrity() {
+    // eslint-disable-line class-methods-use-this
     return [];
   }
 
@@ -148,11 +164,12 @@ export const Slugs = new SlugCollection();
  * @memberOf api/slug
  */
 export function slugify(text) {
-  return text.toString()
-      .toLowerCase()
-      .replace(/\s+/g, '-') // Replace spaces with -
-      .replace(/[^\w-]+/g, '') // Remove all non-word chars
-      .replace(/--+/g, '-') // Replace multiple - with single -
-      .replace(/^-+/, '') // Trim - from start of text
-      .replace(/-+$/, ''); // Trim - from end of text
+  return text
+    .toString()
+    .toLowerCase()
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(/[^\w-]+/g, '') // Remove all non-word chars
+    .replace(/--+/g, '-') // Replace multiple - with single -
+    .replace(/^-+/, '') // Trim - from start of text
+    .replace(/-+$/, ''); // Trim - from end of text
 }

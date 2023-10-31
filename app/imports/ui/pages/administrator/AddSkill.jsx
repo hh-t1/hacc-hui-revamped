@@ -8,10 +8,10 @@ import {
 import { Container } from 'react-bootstrap';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
-import { defineMethod } from '../../../api/base/BaseCollection.methods';
-import { Skills } from '../../../api/skill/SkillCollection';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
+import { defineMethod } from '../../../api/base/BaseCollection.methods';
+import { Skills } from '../../../api/skill/SkillCollection';
 import { ROUTES } from '../../../startup/client/route-constants';
 
 // Create a schema to specify the structure of the data to appear in the form.
@@ -34,31 +34,30 @@ const AddSkill = () => {
    * @param data {Object} the results from the form.
    */
   const handleSubmit = useCallback(
-      (data) => {
-        const { name, description } = data;
-        const definitionData = { name, description };
-        const collectionName = Skills.getCollectionName();
-        defineMethod.call({ collectionName, definitionData }, (error) => {
-          if (error) {
-            Swal.fire('Error', error.message, 'error').then(() => {});
-            console.error(error.message);
-          } else {
-            Swal.fire({
-              title: '<strong>Success!</strong>',
-              icon: 'success',
-              showCloseButton: true,
-              focusConfirm: false,
-              confirmButtonText:
-                  'OK'
-            }).then(() => {
-              setRedirect(true);
-            })
-            formRef.current.reset();
-            // console.log('Success');
-          }
-        });
-      },
-      [formRef],
+    (data) => {
+      const { name, description } = data;
+      const definitionData = { name, description };
+      const collectionName = Skills.getCollectionName();
+      defineMethod.call({ collectionName, definitionData }, (error) => {
+        if (error) {
+          Swal.fire('Error', error.message, 'error').then(() => {});
+          console.error(error.message);
+        } else {
+          Swal.fire({
+            title: '<strong>Success!</strong>',
+            icon: 'success',
+            showCloseButton: true,
+            focusConfirm: false,
+            confirmButtonText: 'OK',
+          }).then(() => {
+            setRedirect(true);
+          });
+          formRef.current.reset();
+          // console.log('Success');
+        }
+      });
+    },
+    [formRef],
   );
 
   if (redirect) {
@@ -66,17 +65,17 @@ const AddSkill = () => {
   }
 
   return (
-      <Container id="add-skill-page">
-        <h2 className="text-center fw-bold">Add a Skill</h2>
-        <AutoForm ref={formRef} schema={formSchema} onSubmit={handleSubmit}>
-          <div className="border p-3">
-            <TextField name="name" />
-            <TextField name="description" />
-            <SubmitField value="Submit" />
-            <ErrorsField />
-          </div>
-        </AutoForm>
-      </Container>
+    <Container id="add-skill-page">
+      <h2 className="text-center fw-bold">Add a Skill</h2>
+      <AutoForm ref={formRef} schema={formSchema} onSubmit={handleSubmit}>
+        <div className="border p-3">
+          <TextField name="name" />
+          <TextField name="description" />
+          <SubmitField value="Submit" />
+          <ErrorsField />
+        </div>
+      </AutoForm>
+    </Container>
   );
 };
 

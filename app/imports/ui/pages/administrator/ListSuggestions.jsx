@@ -4,9 +4,7 @@ import ListSuggestionsWidget from '../../components/administrator/ListSuggestion
 
 class ListSuggestions extends React.Component {
   render() {
-    return (
-        <ListSuggestionsWidget />
-    );
+    return <ListSuggestionsWidget />;
   }
 }
 

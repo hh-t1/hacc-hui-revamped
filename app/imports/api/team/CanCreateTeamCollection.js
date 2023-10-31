@@ -3,9 +3,12 @@ import BaseCollection from '../base/BaseCollection';
 
 class CanCreateTeamCollection extends BaseCollection {
   constructor() {
-    super('CanCreateTeam', new SimpleSchema({
-      canCreateTeams: { type: Boolean },
-    }));
+    super(
+      'CanCreateTeam',
+      new SimpleSchema({
+        canCreateTeams: { type: Boolean },
+      }),
+    );
   }
 
   /**

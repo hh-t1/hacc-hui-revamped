@@ -14,7 +14,13 @@ export const makeSampleChallenge = () => {
   const submissionDetail = faker.internet.url();
   const interests = makeSampleInterestSlugArray(2);
   const pitch = faker.internet.url();
-  return Challenges.define({ title, description, interests, submissionDetail, pitch });
+  return Challenges.define({
+    title,
+    description,
+    interests,
+    submissionDetail,
+    pitch,
+  });
 };
 
 /**

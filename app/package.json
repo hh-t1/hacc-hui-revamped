@@ -63,6 +63,7 @@
   "scripts": {
     "start": "cross-env METEOR_NO_RELEASE_CHECK=1 meteor --exclude-archs web.browser.legacy,web.cordova --settings ../config/settings.development.json --port 3400",
     "lint": "eslint --quiet --ext .jsx --ext .js ./imports",
+    "lint-fix": "eslint --quiet --fix --ext .jsx --ext .js ./imports",
     "test-unit": "cross-env METEOR_NO_RELEASE_CHECK=1 TEST_BROWSER_DRIVER=puppeteer MOCHA_TIMEOUT=150000 meteor test --exclude-archs web.browser.legacy,web.cordova --once --driver-package meteortesting:mocha --port 3500",
     "test-integration": "cross-env METEOR_NO_RELEASE_CHECK=1 TEST_BROWSER_DRIVER=puppeteer MOCHA_TIMEOUT=150000 meteor test --exclude-archs web.browser.legacy,web.cordova --full-app --once --driver-package meteortesting:mocha --port 3500",
     "testcafe": "testcafe chrome tests/*.testcafe.js",

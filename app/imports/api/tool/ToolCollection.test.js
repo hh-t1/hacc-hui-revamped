@@ -10,7 +10,6 @@ import { Tools } from './ToolCollection';
 
 if (Meteor.isServer) {
   describe('ToolCollection', function testSuite() {
-
     before(function setup() {
       resetDatabase();
     });
@@ -22,12 +21,12 @@ if (Meteor.isServer) {
     it('Can define and removeIt', function test1(done) {
       this.timeout(5000);
       fc.assert(
-          fc.property(fc.lorem(3), fc.lorem(24), (name, description) => {
-            const docID = Tools.define({ name, description });
-            expect(Tools.isDefined(docID)).to.be.true;
-            Tools.removeIt(docID);
-            expect(Tools.isDefined(docID)).to.be.false;
-          }),
+        fc.property(fc.lorem(3), fc.lorem(24), (name, description) => {
+          const docID = Tools.define({ name, description });
+          expect(Tools.isDefined(docID)).to.be.true;
+          Tools.removeIt(docID);
+          expect(Tools.isDefined(docID)).to.be.false;
+        }),
       );
       done();
     });
@@ -43,12 +42,12 @@ if (Meteor.isServer) {
       let ToolDoc = Tools.findOne({});
       const docID = ToolDoc._id;
       fc.assert(
-          fc.property(fc.lorem(4), fc.lorem(24), (fcName, fcDescription) => {
-            Tools.update(docID, { name: fcName, description: fcDescription });
-            ToolDoc = Tools.findDoc(docID);
-            expect(ToolDoc.name).to.equal(fcName);
-            expect(ToolDoc.description).to.equal(fcDescription);
-          }),
+        fc.property(fc.lorem(4), fc.lorem(24), (fcName, fcDescription) => {
+          Tools.update(docID, { name: fcName, description: fcDescription });
+          ToolDoc = Tools.findDoc(docID);
+          expect(ToolDoc.name).to.equal(fcName);
+          expect(ToolDoc.description).to.equal(fcDescription);
+        }),
       );
       done();
     });
