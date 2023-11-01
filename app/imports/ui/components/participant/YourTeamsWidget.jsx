@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Grid, Header, Item, Icon, Segment } from 'semantic-ui-react';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { _ } from 'lodash';
@@ -10,7 +10,6 @@ import { Participants } from '../../../api/user/ParticipantCollection';
 import { TeamInvitations } from '../../../api/team/TeamInvitationCollection';
 import YourTeamsCard from './YourTeamsCard';
 import MemberTeamCard from './MemberTeamCard';
-import { paleBlueStyle } from '../../styles';
 
 /**
  * Widget to list teams
@@ -43,48 +42,41 @@ class YourTeamsWidget extends React.Component {
     if (!this.props.participant.isCompliant) {
       return (
         <div align={'center'}>
-          <Header as="h2" icon>
-            <Icon name="thumbs down outline" />
+          <h2>
             You have not agreed to the{' '}
             <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>
             &nbsp;or we&apos;ve haven&apos;t received the signed form yet.
-            <Header.Subheader>
+            <h4>
               You can&apos;t be the owner of a team until you do. Please check
               back later.
-            </Header.Subheader>
-          </Header>
+            </h4>
+          </h2>
         </div>
       );
     }
     if (this.props.teams.length + this.props.memberTeams.length === 0) {
       return (
         <div align={'center'}>
-          <Header as="h2" icon>
-            <Icon name="users" />
+          <h2>
             You are not the owner or member of any teams
-            <Header.Subheader>Please check back later.</Header.Subheader>
-          </Header>
+            <h4>Please check back later.</h4>
+          </h2>
         </div>
       );
     }
 
     return (
-      <Grid container doubling relaxed stackable style={{ paddingBottom: 50 }}>
-        <Grid.Row centered>
-          <Header as="h2" textAlign="center" style={{ paddingBottom: '1rem' }}>
-            Your Teams
-          </Header>
-        </Grid.Row>
+      <Container className="justify-content-center">
+        <Row className="justify-content-center">
+          <h2 align="center">Your Teams</h2>
+        </Row>
         {this.props.teams.length === 0 ? (
           ''
         ) : (
-          <Grid.Column width={15}>
-            <Segment style={paleBlueStyle}>
-              <Header as="h4" textAlign="center">
-                Owner
-              </Header>
-              <Item.Group divided>
-                {/* eslint-disable-next-line max-len */}
+          <Col width={15}>
+            <Card>
+              <h4 align="center">Owner</h4>
+              <Card.Body divided>
                 {this.props.teams.map((teams) => (
                   <YourTeamsCard
                     key={teams._id}
@@ -95,19 +87,17 @@ class YourTeamsWidget extends React.Component {
                     teamInvitation={this.props.teamInvitation}
                   />
                 ))}
-              </Item.Group>
-            </Segment>
-          </Grid.Column>
+              </Card.Body>
+            </Card>
+          </Col>
         )}
         {this.props.memberTeams.length === 0 ? (
           ''
         ) : (
-          <Grid.Column width={15}>
-            <Segment>
-              <Header as="h4" textAlign="center">
-                Member
-              </Header>
-              <Item.Group divided>
+          <Col width={15}>
+            <Card>
+              <h4 align="center">Member</h4>
+              <Card.Body divided>
                 {this.props.memberTeams.map((team) => (
                   <MemberTeamCard
                     key={team._id}
@@ -118,11 +108,11 @@ class YourTeamsWidget extends React.Component {
                     )}
                   />
                 ))}
-              </Item.Group>
-            </Segment>
-          </Grid.Column>
+              </Card.Body>
+            </Card>
+          </Col>
         )}
-      </Grid>
+      </Container>
     );
   }
 }
