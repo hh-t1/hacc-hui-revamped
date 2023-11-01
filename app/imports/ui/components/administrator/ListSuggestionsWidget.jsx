@@ -15,7 +15,7 @@ import { Suggestions } from '../../../api/suggestions/SuggestionCollection';
 import Dropdown from '../Dropdown';
 import ListSuggestionsCard from './ListSuggestionsCard';
 import ListSuggestionsFilter from './ListSuggestionsFilter';
-import SuggestToolSkillWidgetAdmin from '../../components/administrator/SuggestToolSkillWidgetAdmin';
+import SuggestToolSkillAdmin from './SuggestToolSkillAdmin';
 
 const ListSuggestionsWidget = ({ suggestions }) => {
   if (suggestions.length === 0) {
@@ -134,7 +134,7 @@ const ListSuggestionsWidget = ({ suggestions }) => {
                 </Row>
                 <Row>
                   <div style={{ paddingTop: '2rem' }}>
-                    <SuggestToolSkillWidgetAdmin />
+                    <SuggestToolSkillAdmin />
                   </div>
                 </Row>
               </Card.Body>
