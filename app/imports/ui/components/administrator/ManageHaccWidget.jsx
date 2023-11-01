@@ -208,9 +208,32 @@ ManageHaccWidget.propTypes = {
   tools: PropTypes.array.isRequired,
 };
 
+function propSort (array) {
+  return array.sort(function (a, b) {
+    let nameA = a.name.toLowerCase();
+    let nameB = b.name.toLowerCase();
+  if (nameA < nameB) {
+    return -1;
+  }
+  if (nameA > nameB) {
+    return 1;
+  }
+  return 0;
+})}
+
 // withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
 export default withTracker(() => ({
-  challenges: Challenges.find({}).fetch(),
-  skills: Skills.find({}).fetch(),
-  tools: Tools.find({}).fetch(),
+  challenges: Challenges.find({}).fetch().sort(function (a, b) {
+    let titleA = a.title.toLowerCase();
+    let titleB = b.title.toLowerCase();
+    if (titleA < titleB) {
+      return -1;
+    }
+    if (titleA > titleB) {
+      return 1;
+    }
+    return 0;
+  }),
+  skills: propSort(Skills.find({}).fetch()),
+  tools: propSort(Tools.find({}).fetch()),
 }))(ManageHaccWidget);
