@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
 import { AutoForm, ErrorsField, LongTextField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import swal from 'sweetalert';
@@ -133,7 +133,7 @@ class TeamCreation extends React.Component {
   }
 
   renderPage() {
-    let fRef = null;
+    const fRef = null;
     const formSchema = new SimpleSchema2Bridge(schema);
     const challengeArr = this.props.challenges.map('title');
     const skillArr = this.props.skills.map('name');
@@ -143,9 +143,7 @@ class TeamCreation extends React.Component {
         <Container centered>
           <Row>
             <hr />
-            <AutoForm ref={ref => {
-              fRef = ref;
-            }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}
+            <AutoForm ref={useRef(fRef)} schema={formSchema} onSubmit={data => this.submit(data, fRef)}
                       style={{
                         paddingBottom: '40px',
                       }}>
@@ -160,8 +158,8 @@ class TeamCreation extends React.Component {
                     <Col className='doubleLine'>
                       <TextField name='name' />
                       <div className="form-check">
-                        <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-                        <label className="form-check-label" htmlFor="flexCheckDefault">
+                        <input className="form-check-input" type="radio" value="" id="flexRadioDefault"/>
+                        <label className="form-check-label" htmlFor="flexRadioDefault">
                           open
                         </label>
                       </div>
@@ -178,7 +176,7 @@ class TeamCreation extends React.Component {
                     <TextField name="devpostPage" />
                   </Col>
                 </Row>
-                <div align='center'>
+                <div style={{ justifyContent: 'center', alignItems: 'center' }}>
                   <SubmitField value='Submit'
                                style={{
                                  color: 'white', backgroundColor: '#dd000a',
