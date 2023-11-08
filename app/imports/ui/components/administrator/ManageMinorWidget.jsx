@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
-import ListMinorWidget from './ListMinorWidget';
+import ListMinor from './ListMinor';
 import { MinorParticipants } from '../../../api/user/MinorParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 
@@ -52,7 +52,7 @@ const ManageMinorWidget = () => {
               {/* eslint-disable-next-line max-len */}
               <tbody>
                 {this.props.minorParticipants.map((minorParticipants) => (
-                  <ListMinorWidget
+                  <ListMinor
                     key={minorParticipants._id}
                     minorParticipants={minorParticipants}
                   />
