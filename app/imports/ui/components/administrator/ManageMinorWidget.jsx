@@ -9,7 +9,7 @@ import { MinorParticipants } from '../../../api/user/MinorParticipantCollection'
 import { Participants } from '../../../api/user/ParticipantCollection';
 
 /**
- * Renders the Page for Managing HACC. **deprecated**
+ * Renders the Page for Managing HACC **deprecated**
  * @memberOf ui/pages
  */
 const ManageMinorWidget = () => {
@@ -21,9 +21,9 @@ const ManageMinorWidget = () => {
             style={{
               textAlign: 'center',
               backgroundColor: '#393B44',
-              padding: '1rem 0rem',
-              margin: '2rem 0rem',
-              borderRadius: '2rem',
+              padding:  '1rem 0rem',
+              margin:  '2rem 0rem',
+              borderRadius:  '2rem',
             }}
           >
             <h2>Minor Participant</h2>
