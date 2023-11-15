@@ -3,7 +3,7 @@ import { adminCredentials, signInAs } from './_helpers';
 
 class CreateTeamTest {
   constructor() {
-    this.pageId = '#create-team';
+    this.pageId = '#create-team-page';
     this.pageSelector = Selector(this.pageId);
   }
 
