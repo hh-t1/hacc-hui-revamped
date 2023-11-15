@@ -11,7 +11,7 @@ import { MinorParticipants } from '../../../api/user/MinorParticipantCollection'
 import { ROUTES } from '../../../startup/client/route-constants';
 import { databaseFileDateFormat } from '../../pages/administrator/DumpDatabase';
 
-const UpdateMinorParticipantsWidget = (MinorParticipantsID) => {
+const UpdateMinorParticipantsWidget = ({ MinorParticipantsID }) => {
   const [redirectToReferer, setRedirectToReferer] = useState(false);
   const [selected, setSelected] = useState([]);
 
