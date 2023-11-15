@@ -1,8 +1,8 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Form, Header, Message, Segment } from 'semantic-ui-react';
+import { Form } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
-import { AutoForm, BoolField, SubmitField, TextField } from 'uniforms-semantic';
+import { AutoForm, BoolField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import { ROUTES } from '../../../startup/client/route-constants';
@@ -64,24 +64,24 @@ class ParticipationForm extends React.Component {
       return <Redirect to={from}/>;
     }
     return (
-        <Segment style={darkerBlueStyle}>
-          <Header>HACC Registration</Header>
+        <ul style={darkerBlueStyle}>
+          <h1>HACC Registration</h1>
           <AutoForm schema={formSchema} onSubmit={data => this.submit(data)}>
-              <Segment>
-                <Message>
+              <ul>
+                <div>
                   Read the <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>.
                   <br />
                   Then agree to the terms.
-                </Message>
+                </div>
                 <Form.Group widths="equal">
                   <TextField name="firstName" />
                   <TextField name="lastName" />
                 </Form.Group>
                 <BoolField name="agree" label="I have read the rules and agree to the terms" />
                 <SubmitField />
-              </Segment>
+              </ul>
             </AutoForm>
-        </Segment>
+        </ul>
     );
   }
 }
