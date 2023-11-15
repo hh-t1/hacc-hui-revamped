@@ -1,19 +1,17 @@
-import React from 'react';
-import { Header, Segment, Form } from 'semantic-ui-react';
-import { withTracker } from 'meteor/react-meteor-data';
+import React, { useState } from 'react';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { useTracker } from 'meteor/react-meteor-data';
 import {
   AutoForm,
   BoolField,
   LongTextField,
   SelectField,
-  SubmitField,
   TextField,
-} from 'uniforms-semantic';
+} from 'uniforms-bootstrap5';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
-import _ from 'lodash';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
 import { Skills } from '../../../api/skill/SkillCollection';
@@ -26,16 +24,26 @@ import { ROUTES } from '../../../startup/client/route-constants';
 import { Slugs } from '../../../api/slug/SlugCollection';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 
-class CreateProfileWidget extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { redirectToReferer: false };
-  }
+const CreateProfileWidget = (props) => {
+  const [redirectToReferer, setRedirectToReferer] = useState(false);
+  const { participant, challenges, skills, tools } = useTracker(() => {
+    const participant = Participants.findDoc({ userID: Meteor.userId() });
+    const challenges = Challenges.find({}).fetch();
+    const skills = Skills.find({}).fetch();
+    const tools = Tools.find({}).fetch();
 
-  buildTheFormSchema() {
-    const challengeNames = _.map(this.props.challenges, (c) => c.title);
-    const skillNames = _.map(this.props.skills, (s) => s.name);
-    const toolNames = _.map(this.props.tools, (t) => t.name);
+    return {
+      participant,
+      challenges,
+      skills,
+      tools,
+    };
+  }, []);
+
+  const buildTheFormSchema = () => {
+    const challengeNames = this.props.challenges.map((c) => c.challenge);
+    const skillNames = this.props.skills.map((s) => s.name);
+    const toolNames = this.props.tools.map((t) => t.name);
     const schema = new SimpleSchema({
       firstName: String,
       lastName: String,
@@ -61,9 +69,9 @@ class CreateProfileWidget extends React.Component {
       'tools.$': { type: String, allowedValues: toolNames },
     });
     return schema;
-  }
+  };
 
-  submit(data) {
+  const submit = (data) => {
     const collectionName = Participants.getCollectionName();
     const updateData = {};
     updateData.id = data._id;
@@ -73,7 +81,6 @@ class CreateProfileWidget extends React.Component {
       updateData.demographicLevel = data.demographicLevel;
     }
     if (data.challenges) {
-      // build an array of challenge slugs
       updateData.challenges = data.challenges.map((title) => {
         const doc = Challenges.findDoc({ title });
         return Slugs.getNameFromID(doc.slugID);
@@ -107,7 +114,6 @@ class CreateProfileWidget extends React.Component {
       updateData.aboutMe = data.aboutMe;
     }
     updateData.editedProfile = true;
-    // console.log(collectionName, updateData);
     updateMethod.call({ collectionName, updateData }, (error) => {
       if (error) {
         console.error(error);
@@ -124,60 +130,79 @@ class CreateProfileWidget extends React.Component {
         });
       }
     });
-    this.setState({ redirectToReferer: true });
+    setRedirectToReferer(true);
+  };
+
+  if (redirectToReferer) {
+    return <Redirect to={ROUTES.YOUR_PROFILE} />;
   }
 
-  render() {
-    const model = this.props.participant;
-    const schema = this.buildTheFormSchema();
-    const formSchema = new SimpleSchema2Bridge(schema);
-    const firstname = model.firstName;
-    if (this.state.redirectToReferer) {
-      const from = { pathname: ROUTES.YOUR_PROFILE };
-      return <Redirect to={from} />;
-    }
-    return (
-      <Segment>
-        <Header dividing>
-          Hello {firstname}, this is your first time to login, so please fill
-          out your profile
-        </Header>
-        <AutoForm
-          schema={formSchema}
-          model={model}
-          onSubmit={(data) => {
-            this.submit(data);
-          }}
-        >
-          <Form.Group widths="equal">
-            <TextField name="username" disabled />
-            <BoolField name="isCompliant" disabled />
-          </Form.Group>
-          <Form.Group widths="equal">
-            <TextField name="firstName" />
-            <TextField name="lastName" />
-            <SelectField name="demographicLevel" />
-          </Form.Group>
-          <Form.Group widths="equal">
-            <TextField name="linkedIn" />
-            <TextField name="gitHub" />
-            <TextField name="slackUsername" />
-          </Form.Group>
-          <Form.Group widths="equal">
-            <TextField name="website" />
-            <LongTextField name="aboutMe" />
-          </Form.Group>
-          <MultiSelectField name="challenges" />
-          <Form.Group widths="equal">
-            <MultiSelectField name="skills" />
-            <MultiSelectField name="tools" />
-          </Form.Group>
-          <SubmitField />
-        </AutoForm>
-      </Segment>
-    );
-  }
-}
+  const formSchema = new SimpleSchema2Bridge(buildTheFormSchema());
+
+  return (
+    <Container>
+      <Row>
+        <Col>
+          <h2>Hello {firstname}, this is your first time to login, so please fill out your profile</h2>
+          <AutoForm schema={formSchema} model={model} onSubmit={onSubmit}>
+            <Form.Group as={Row}>
+              <Col>
+                <TextField name="username" disabled />
+              </Col>
+              <Col>
+                <BoolField name="isCompliant" disabled />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row}>
+              <Col>
+                <TextField name="firstName" />
+              </Col>
+              <Col>
+                <TextField name="lastName" />
+              </Col>
+              <Col>
+                <SelectField name="demographicLevel" />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row}>
+              <Col>
+                <TextField name="linkedIn" />
+              </Col>
+              <Col>
+                <TextField name="gitHub" />
+              </Col>
+              <Col>
+                <TextField name="slackUsername" />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row}>
+              <Col>
+                <TextField name="website" />
+              </Col>
+              <Col>
+                <LongTextField name="aboutMe" />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row}>
+              <Col>
+                <MultiSelectField name="challenges" />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row}>
+              <Col>
+                <MultiSelectField name="skills" />
+              </Col>
+              <Col>
+                <MultiSelectField name="tools" />
+              </Col>
+            </Form.Group>
+            <Button type="submit">Submit</Button>
+          </AutoForm>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
 CreateProfileWidget.propTypes = {
   participant: PropTypes.object.isRequired,
@@ -186,15 +211,4 @@ CreateProfileWidget.propTypes = {
   tools: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default withTracker(() => {
-  const participant = Participants.findDoc({ userID: Meteor.userId() });
-  const challenges = Challenges.find({}).fetch();
-  const skills = Skills.find({}).fetch();
-  const tools = Tools.find({}).fetch();
-  return {
-    participant,
-    challenges,
-    skills,
-    tools,
-  };
-})(CreateProfileWidget);
+export default CreateProfileWidget;
