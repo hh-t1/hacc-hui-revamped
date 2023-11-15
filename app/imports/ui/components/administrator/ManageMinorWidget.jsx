@@ -4,12 +4,12 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
-import ListMinorWidget from './ListMinorWidget';
+import ListMinor from './ListMinor';
 import { MinorParticipants } from '../../../api/user/MinorParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 
 /**
- * Renders the Page for Managing HACC. **deprecated**
+ * Renders the Page for Managing HACC **deprecated**
  * @memberOf ui/pages
  */
 const ManageMinorWidget = () => {
@@ -21,9 +21,9 @@ const ManageMinorWidget = () => {
             style={{
               textAlign: 'center',
               backgroundColor: '#393B44',
-              padding: '1rem 0rem',
-              margin: '2rem 0rem',
-              borderRadius: '2rem',
+              padding:  '1rem 0rem',
+              margin:  '2rem 0rem',
+              borderRadius:  '2rem',
             }}
           >
             <h2>Minor Participant</h2>
@@ -52,7 +52,7 @@ const ManageMinorWidget = () => {
               {/* eslint-disable-next-line max-len */}
               <tbody>
                 {this.props.minorParticipants.map((minorParticipants) => (
-                  <ListMinorWidget
+                  <ListMinor
                     key={minorParticipants._id}
                     minorParticipants={minorParticipants}
                   />

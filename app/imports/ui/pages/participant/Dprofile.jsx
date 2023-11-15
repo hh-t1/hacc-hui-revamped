@@ -1,13 +1,12 @@
 import React from 'react';
 import {
-  Grid,
-  Header,
-  Segment,
-  Dropdown,
+  Container,
+  Row,
+  Col,
   Button,
-  Loader,
   Checkbox,
-} from 'semantic-ui-react';
+  Dropdown,
+} from 'react-bootstrap';
 import { withTracker } from 'meteor/react-meteor-data';
 import {
   AutoForm,
@@ -15,7 +14,7 @@ import {
   LongTextField,
   SubmitField,
   TextField,
-} from 'uniforms-semantic';
+} from 'uniforms-bootstrap5';
 import _ from 'underscore';
 import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
@@ -31,8 +30,6 @@ import { ParticipantTools } from '../../../api/user/ParticipantToolCollection';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 // Create a schema to specify the structure of the data to appear in the form.
 const schema = new SimpleSchema({
-  // challenges: { type: Array, label: 'Challenge', optional: true },
-  //  'challenges.$': { type: String, allowedValues: allChallenges },
   linkedIn: { type: String, optional: true },
   gitHub: { type: String, optional: true },
   slackUsername: { type: String, optional: true },
@@ -100,9 +97,9 @@ class Dprofile extends React.Component {
     return _.map(ChallengesOptions, function (challenge) {
       //  const name = `${challenge.title}   ( ${challenge.description} )`;
       return (
-        <Grid.Row key={challenge._id}>
+        <Row key={challenge._id}>
           <Checkbox label={challenge.title} onChange={handleOnChange} />
-        </Grid.Row>
+        </Row>
       );
     });
   }
@@ -113,7 +110,6 @@ class Dprofile extends React.Component {
       console.log(this.skill);
     };
     const SkillArray = this.props.skills;
-    // console.log(SkillArray);
     const Skillname = [];
     for (let i = 0; i < SkillArray.length; i++) {
       const sn = {
@@ -137,10 +133,8 @@ class Dprofile extends React.Component {
   renderTools() {
     const handleOnChange = (e, data) => {
       this.tool = _.findWhere(data.options, { value: data.value });
-      // console.log(this.skill);
     };
     const ToolsArray = this.props.tools;
-    // console.log(SkillArray);
     const Toolname = [];
     for (let i = 0; i < ToolsArray.length; i++) {
       const sn = {
@@ -200,35 +194,33 @@ class Dprofile extends React.Component {
       this.skillSet = _.filter(this.skillSet, function (skill) {
         return skill.name !== removeskill.name;
       });
-      // console.log(removeSkill);
       const newState = { Skilladded: true };
       this.setState(newState);
     };
     if (this.skillSet.length > 0) {
-      // console.log(this.skillSet.length);
       return _.map(this.skillSet, function (skill) {
         return (
-          <Grid.Row key={skill.docID}>
-            <Grid.Column width={1} style={{ marginTop: `${10}px` }}>
-              <Header as="h3">Skill:</Header>{' '}
-            </Grid.Column>
-            <Grid.Column width={4} style={{ marginTop: `${10}px` }}>
-              <Header as="h3">{skill.name}</Header>
-            </Grid.Column>
+          <Row key={skill.docID}>
+            <Col width={1} style={{ marginTop: `${10}px` }}>
+              <h3>Skill:</h3>{' '}
+            </Col>
+            <Col width={4} style={{ marginTop: `${10}px` }}>
+              <h3>{skill.name}</h3>
+            </Col>
             {/* eslint-disable-next-line max-len */}
-            <Grid.Column width={1} style={{ marginTop: `${10}px` }}>
-              <Header as="h3">Level:</Header>{' '}
-            </Grid.Column>
-            <Grid.Column width={5} style={{ marginTop: `${10}px` }}>
-              <Header as="h3">{skill.level}</Header>
-            </Grid.Column>
+            <Col width={1} style={{ marginTop: `${10}px` }}>
+              <h3>Level:</h3>{' '}
+            </Col>
+            <Col width={5} style={{ marginTop: `${10}px` }}>
+              <h3>{skill.level}</h3>
+            </Col>
             {/* eslint-disable-next-line max-len */}
-            <Grid.Column width={3}>
-              <Button type="button" onClick={() => deleteSkill(skill)}>
+            <Col width={3}>
+              <Button onClick={() => deleteSkill(skill)}>
                 delete the skill
               </Button>
-            </Grid.Column>
-          </Grid.Row>
+            </Col>
+          </Row>
         );
       });
     }
@@ -243,35 +235,31 @@ class Dprofile extends React.Component {
       this.toolset = _.filter(this.toolset, function (tool) {
         return tool.name !== removeTool.name;
       });
-      // console.log(removeSkill);
       const newState = { Skilladded: true };
       this.setState(newState);
     };
     if (this.toolset.length > 0) {
-      // console.log(this.skillSet.length);
       return _.map(this.toolset, function (tool) {
         return (
-          <Grid.Row key={tool.docID}>
-            <Grid.Column width={1} style={{ marginTop: `${10}px` }}>
-              <Header as="h3">Tool:</Header>{' '}
-            </Grid.Column>
-            <Grid.Column width={4} style={{ marginTop: `${10}px` }}>
-              <Header as="h3">{tool.name}</Header>
-            </Grid.Column>
+          <Row key={tool.docID}>
+            <Col width={1} style={{ marginTop: `${10}px` }}>
+              <h3>Tool:</h3>{' '}
+            </Col>
+            <Col width={4} style={{ marginTop: `${10}px` }}>
+              <h3>{tool.name}</h3>
+            </Col>
             {/* eslint-disable-next-line max-len */}
-            <Grid.Column width={1} style={{ marginTop: `${10}px` }}>
-              <Header as="h3">Level:</Header>{' '}
-            </Grid.Column>
-            <Grid.Column width={5} style={{ marginTop: `${10}px` }}>
-              <Header as="h3">{tool.level}</Header>
-            </Grid.Column>
+            <Col width={1} style={{ marginTop: `${10}px` }}>
+              <h3>Level:</h3>{' '}
+            </Col>
+            <Col width={5} style={{ marginTop: `${10}px` }}>
+              <h3>{tool.level}</h3>
+            </Col>
             {/* eslint-disable-next-line max-len */}
-            <Grid.Column width={3}>
-              <Button type="button" onClick={() => deleteTool(tool)}>
-                delete the tool
-              </Button>
-            </Grid.Column>
-          </Grid.Row>
+            <Col width={3}>
+              <Button onClick={() => deleteTool(tool)}>delete the tool</Button>
+            </Col>
+          </Row>
         );
       });
     }
@@ -324,7 +312,6 @@ class Dprofile extends React.Component {
     const participant = this.getParticipant();
     const docID = participant._id;
     console.log(docID);
-    // const docID = Meteor.userId();
     const { linkedIn, gitHub, website, aboutMe } = data;
     console.log(linkedIn);
     console.log(gitHub);
@@ -409,9 +396,6 @@ class Dprofile extends React.Component {
     }
 
     // eslint-disable-next-line max-len
-
-    // const test = ParticipantSkills._collection.find({ participantID: docID }).fetch();
-    // console.log(test);
   }
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
@@ -419,12 +403,13 @@ class Dprofile extends React.Component {
     return this.props.ready ? (
       this.renderPage()
     ) : (
-      <Loader active>Getting data</Loader>
+      <div className="spinner-border" role="status">
+        <span className="sr-only">Getting data</span>
+      </div>
     );
   }
 
   renderPage() {
-    // const ChallengesOptions = this.props.challenges;
     const participant = this.getParticipant();
     let fRef = null;
     const formSchema = new SimpleSchema2Bridge(schema);
@@ -432,12 +417,12 @@ class Dprofile extends React.Component {
     const firstname = participant.firstName;
 
     return (
-      <Grid container centered>
-        <Grid.Column>
-          <Header>
+      <Container>
+        <Col>
+          <h1>
             Hello {firstname}, this is your first time to login, so please fill
             out your profile
-          </Header>
+          </h1>
 
           <AutoForm
             ref={(ref) => {
@@ -446,50 +431,48 @@ class Dprofile extends React.Component {
             schema={formSchema}
             onSubmit={(data) => this.submit(data, fRef)}
           >
-            <Segment>
-              <Header as="h3">
+            <ul>
+              <h3>
                 Challenge(s) you want to participate in: (please select at least
                 one)
-              </Header>
-              <Grid style={{ marginLeft: `${10}px` }}>
+              </h3>
+              <Row style={{ marginLeft: `${10}px` }}>
                 {this.renderChallenge()}
-              </Grid>
-              <Grid>
-                <Grid.Row>
-                  <Grid.Column width={1} style={{ marginTop: `${10}px` }}>
-                    <Header as="h4">Skill:</Header>{' '}
-                  </Grid.Column>
-                  <Grid.Column width={4}>{this.renderSkill()}</Grid.Column>
+              </Row>
+              <Row>
+                <Row>
+                  <Col width={1} style={{ marginTop: `${10}px` }}>
+                    <h4>Skill:</h4>{' '}
+                  </Col>
+                  <Col width={4}>{this.renderSkill()}</Col>
                   {/* eslint-disable-next-line max-len */}
-                  <Grid.Column width={1} style={{ marginTop: `${10}px` }}>
-                    <Header as="h4">Level:</Header>
-                  </Grid.Column>
-                  <Grid.Column width={5}>{this.renderLevel()}</Grid.Column>
-                  <Grid.Column width={3}>
-                    <Button type="button" onClick={() => this.addSkill()}>
+                  <Col width={1} style={{ marginTop: `${10}px` }}>
+                    <h4>Level:</h4>
+                  </Col>
+                  <Col width={5}>{this.renderLevel()}</Col>
+                  <Col width={3}>
+                    <Button onClick={() => this.addSkill()}>
                       Add the skill
                     </Button>
-                  </Grid.Column>
-                </Grid.Row>
+                  </Col>
+                </Row>
                 {this.state.Skilladded ? this.renderSkill_level() : ''}
-                <Grid.Row>
-                  <Grid.Column width={1} style={{ marginTop: `${10}px` }}>
-                    <Header as="h4">Tool:</Header>{' '}
-                  </Grid.Column>
-                  <Grid.Column width={4}>{this.renderTools()}</Grid.Column>
+                <Row>
+                  <Col width={1} style={{ marginTop: `${10}px` }}>
+                    <h4>Tool:</h4>{' '}
+                  </Col>
+                  <Col width={4}>{this.renderTools()}</Col>
                   {/* eslint-disable-next-line max-len */}
-                  <Grid.Column width={1} style={{ marginTop: `${10}px` }}>
-                    <Header as="h4">Level:</Header>
-                  </Grid.Column>
-                  <Grid.Column width={5}>{this.renderLevel()}</Grid.Column>
-                  <Grid.Column width={3}>
-                    <Button type="button" onClick={() => this.addTool()}>
-                      Add the tool
-                    </Button>
-                  </Grid.Column>
-                </Grid.Row>
+                  <Col width={1} style={{ marginTop: `${10}px` }}>
+                    <h4>Level:</h4>
+                  </Col>
+                  <Col width={5}>{this.renderLevel()}</Col>
+                  <Col width={3}>
+                    <Button onClick={() => this.addTool()}>Add the tool</Button>
+                  </Col>
+                </Row>
                 {this.state.Skilladded ? this.renderTool_level() : ''}
-              </Grid>
+              </Row>
               <TextField name="linkedIn" />
               <TextField name="gitHub" />
               <TextField name="slackUsername" />
@@ -497,10 +480,10 @@ class Dprofile extends React.Component {
               <LongTextField name="aboutMe" />
               <SubmitField value="Submit" />
               <ErrorsField />
-            </Segment>
+            </ul>
           </AutoForm>
-        </Grid.Column>
-      </Grid>
+        </Col>
+      </Container>
     );
   }
 }

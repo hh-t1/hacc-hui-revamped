@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Table } from 'semantic-ui-react';
+import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import swal from 'sweetalert';
 import { Link } from 'react-router-dom';
@@ -7,8 +7,8 @@ import { removeItMethod } from '../../../api/base/BaseCollection.methods';
 import { MinorParticipants } from '../../../api/user/MinorParticipantCollection';
 
 /** Renders a single row in the table. See pages/Listmenuitemss.jsx. */
-class ListMinorWidget extends React.Component {
-  removeItem(docID) {
+const ListMinor = (props) => {
+  const removeItem = (docID) => {
     swal({
       title: 'Are you sure?',
       text: 'Once deleted, you will not be able to recover this participant!',
@@ -28,58 +28,56 @@ class ListMinorWidget extends React.Component {
               : swal('Success', 'Participant removed', 'success'),
         );
       } else {
-        swal('You canceled the deletion!');
+        swal('You canceled the deletion!').then();
       }
     });
   }
 
-  render() {
     // const challengeInterestArray = this.findInterests();
     // console.log(challengeInterestArray);
     return (
-      <Table.Row>
-        <Table.Cell width={2}>
-          {this.props.minorParticipants.username}
-        </Table.Cell>
-        <Table.Cell width={5}>
-          {this.props.minorParticipants.parentFirstName}
-        </Table.Cell>
-        <Table.Cell width={5}>
-          {this.props.minorParticipants.parentLastName}
-        </Table.Cell>
-        <Table.Cell width={5}>
-          {this.props.minorParticipants.parentEmail}
-        </Table.Cell>
+      <tr>
+        <th width={2}>
+          {props.minorParticipants.username}
+        </th>
+        <th width={5}>
+          {props.minorParticipants.parentFirstName}
+        </th>
+        <th width={5}>
+          {props.minorParticipants.parentLastName}
+        </th>
+        <th width={5}>
+          {props.minorParticipants.parentEmail}
+        </th>
         {/* eslint-disable-next-line max-len */}
-        <Table.Cell width={2}>
+        <th width={2}>
           <Button>
             <Link
-              to={`/edit-challenge/${this.props.minorParticipants._id}`}
+              to={`/edit-challenge/${props.minorParticipants._id}`}
               style={{ color: 'rgba(0, 0, 0, 0.6)' }}
             >
               Edit
             </Link>
           </Button>
-        </Table.Cell>
+        </th>
         {/* eslint-disable-next-line max-len */}
-        <Table.Cell width={2}>
+        <th width={2}>
           <Button
             negative
-            onClick={() => this.removeItem(this.props.minorParticipants._id)}
+            onClick={() => removeItem(props.minorParticipants._id)}
           >
             Delete
           </Button>
-        </Table.Cell>
-      </Table.Row>
+        </th>
+      </tr>
     );
-  }
 }
 
 /** Require a document to be passed to this component. */
-ListMinorWidget.propTypes = {
+ListMinor.propTypes = {
   minorParticipants: PropTypes.object.isRequired,
 };
 
 /** Wrap this component in withRouter since we use the <Link> React Router element. */
 
-export default ListMinorWidget;
+export default ListMinor;

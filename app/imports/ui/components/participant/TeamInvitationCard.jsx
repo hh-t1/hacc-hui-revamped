@@ -1,15 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import React from 'react';
-import {
-  Grid,
-  Header,
-  Image,
-  Popup,
-  Item,
-  Modal,
-  Icon,
-  Button,
-} from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { FaUsers, FaPlus } from 'react-icons/fa';
+import { Card, Col, Modal, Row, Image, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import swal from 'sweetalert';
 import { Participants } from '../../../api/user/ParticipantCollection';
@@ -20,12 +12,18 @@ import {
 import { TeamInvitations } from '../../../api/team/TeamInvitationCollection';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 
-class TeamInvitationCard extends React.Component {
-  removeClick(tID, e) {
-    console.log(e);
+const TeamInvitationCard = ({
+  teams,
+  skills,
+  tools,
+  challenges,
+  participants,
+}) => {
+  const [show, setShow] = useState(false);
+
+  const handleDecline = (tID) => {
     const thisTeamID = tID;
     const collectionName2 = TeamInvitations.getCollectionName();
-    // eslint-disable-next-line max-len
     const intID = TeamInvitations.findDoc({
       teamID: thisTeamID,
       participantID: Participants.findDoc({ userID: Meteor.userId() })._id,
@@ -40,10 +38,9 @@ class TeamInvitationCard extends React.Component {
         }
       },
     );
-  }
+  };
 
-  handleClick(tID, e) {
-    console.log(e);
+  const handleAccept = (tID) => {
     const thisTeam = tID;
     const devID = Participants.findDoc({ userID: Meteor.userId() })._id;
     const definitionData = { team: thisTeam, participant: devID };
@@ -64,7 +61,6 @@ class TeamInvitationCard extends React.Component {
       );
     }
     const collectionName2 = TeamInvitations.getCollectionName();
-    // eslint-disable-next-line max-len
     const intID = TeamInvitations.findDoc({
       teamID: thisTeam,
       participantID: Participants.findDoc({ userID: Meteor.userId() })._id,
@@ -77,152 +73,124 @@ class TeamInvitationCard extends React.Component {
         }
       },
     );
-  }
+  };
 
-  /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
-  render() {
-    function changeBackground(e) {
-      e.currentTarget.style.backgroundColor = '#fafafa';
-      e.currentTarget.style.cursor = 'pointer';
-    }
+  const changeBackground = (e) => {
+    e.currentTarget.style.backgroundColor = '#fafafa';
+    e.currentTarget.style.cursor = 'pointer';
+  };
 
-    function onLeave(e) {
-      e.currentTarget.style.backgroundColor = 'transparent';
-    }
+  const onLeave = (e) => {
+    e.currentTarget.style.backgroundColor = 'transparent';
+  };
 
-    return (
-      <Item
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  return (
+    <>
+      <Card
         onMouseEnter={changeBackground}
         onMouseLeave={onLeave}
+        onClick={handleShow}
         style={{ padding: '0rem 2rem 0rem 2rem' }}
       >
-        <Modal
-          closeIcon
-          trigger={
-            <Item.Content>
-              <Item.Header>
-                <Header
-                  as={'h3'}
-                  style={{ color: '#263763', paddingTop: '2rem' }}
-                >
-                  <Icon name="users" size="tiny" />
-                  {this.props.teams.name}
-                </Header>
-              </Item.Header>
-              <Item.Meta>
-                <Item.Meta>
-                  <Grid doubling columns={4}>
-                    <Grid.Column>
-                      <Image
-                        src={this.props.teams.image}
-                        rounded
-                        size="small"
-                      />
-                      <Grid.Column
-                        floated={'left'}
-                        style={{ paddingBottom: '0.3rem' }}
-                      >
-                        {this.props.challenges.slice(0, 3).map((challenge) => (
-                          <p
-                            style={{ color: 'rgb(89, 119, 199)' }}
-                            key={challenge}
-                          >
-                            {challenge}
-                          </p>
-                        ))}
-                      </Grid.Column>
-                    </Grid.Column>
-                    <Grid.Column>
-                      <Header>Skills</Header>
-                      {this.props.skills.slice(0, 3).map((skill) => (
-                        <p key={skill}>{skill}</p>
-                      ))}
-                    </Grid.Column>
-                    <Grid.Column>
-                      <Header>Tools</Header>
-                      {this.props.tools.slice(0, 3).map((tool) => (
-                        <p key={tool}>{tool}</p>
-                      ))}
-                    </Grid.Column>
-                  </Grid>
-                </Item.Meta>
-              </Item.Meta>
-            </Item.Content>
-          }
-        >
-          <Modal.Header>{this.props.teams.name}</Modal.Header>
-          <Modal.Content image scrolling>
-            <Image size="medium" src={this.props.teams.image} wrapped />
-            <Modal.Description>
-              <Header>Description</Header>
-              <p>{this.props.teams.description}</p>
-              <Header>Challenges</Header>
-              {this.props.challenges.map((challenge) => (
-                <p key={challenge}>{challenge}</p>
-              ))}
-              <Header>Skills</Header>
-              {this.props.skills.map((skill) => (
-                <p key={skill}>{skill}</p>
-              ))}
-              <Header>Tools</Header>
-              {this.props.tools.map((tool) => (
-                <p key={tool}>{tool}</p>
-              ))}
-              <Header>Members</Header>
-              {this.props.participants.map((participant) => (
-                <p key={participant}>
-                  {participant.firstName} {participant.lastName}
+        <Card.Body>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <FaUsers size={36} />
+            {teams.name}
+          </h3>
+
+          <Row>
+            <Col>
+              <Image src={teams.image} rounded size="small" />
+            </Col>
+            <Col>
+              {challenges.slice(0, 3).map((challenge) => (
+                <p style={{ color: 'rgb(89, 119, 199)' }} key={challenge}>
+                  {challenge}
                 </p>
               ))}
-            </Modal.Description>
-          </Modal.Content>
-          <Modal.Actions>
-            {/* eslint-disable-next-line max-len */}
-            <Button
-              id={this.props.teams._id}
-              style={{ backgroundColor: 'rgb(89, 119, 199)', color: 'white' }}
-              onClick={this.handleClick.bind(this, this.props.teams._id)}
-            >
-              <Icon name="plus" />
-              Accept Request
-            </Button>
-            {/* eslint-disable-next-line max-len */}
-            <Button
-              id={this.props.teams._id}
-              style={{ backgroundColor: 'rgb(245, 82, 82)', color: 'white' }}
-              onClick={this.removeClick.bind(this, this.props.teams._id)}
-            >
-              Decline Request
-            </Button>
-          </Modal.Actions>
-        </Modal>
-        <Popup
-          content="Request Accepted!"
-          mouseLeaveDelay={200}
-          on="click"
-          trigger={
-            // eslint-disable-next-line max-len
-            <Button
-              id={this.props.teams._id}
-              style={{ backgroundColor: 'transparent' }}
-              onClick={this.handleClick.bind(this, this.props.teams._id)}
-            >
-              Accept Request
-            </Button>
-          }
-        />
-        {/* eslint-disable-next-line max-len */}
-        <Button
-          id={this.props.teams._id}
-          style={{ backgroundColor: 'transparent' }}
-          onClick={this.removeClick.bind(this, this.props.teams._id)}
-        >
-          Decline Request
-        </Button>
-      </Item>
-    );
-  }
-}
+            </Col>
+            <Col>
+              <h4>Skills</h4>
+              {skills.slice(0, 3).map((skill) => (
+                <p key={skill}>{skill}</p>
+              ))}
+            </Col>
+            <Col>
+              <h4>Tools</h4>
+              {tools.slice(0, 3).map((tool) => (
+                <p key={tool}>{tool}</p>
+              ))}
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>{teams.name}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Image src={teams.image} />
+          <hr />
+          <h4>Description</h4>
+          <p>{teams.description}</p>
+          <hr />
+          <h4>Challenges</h4>
+          {challenges.map((challenge) => (
+            <p key={challenge}>{challenge}</p>
+          ))}
+          <hr />
+          <h4>Skills</h4>
+          {skills.map((skill) => (
+            <p key={skill}>{skill}</p>
+          ))}
+          <hr />
+          <h4>Tools</h4>
+          {tools.map((tool) => (
+            <p key={tool}>{tool}</p>
+          ))}
+          <hr />
+          <h4>Members</h4>
+          {participants.map((participant) => (
+            <p key={participant}>
+              {participant.firstName} {participant.lastName}
+            </p>
+          ))}
+          <hr />
+          <Row>
+            <Col>
+              <Button
+                id={teams._id}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  width: '100%',
+                }}
+                onClick={() => handleAccept(teams._id)}
+              >
+                <FaPlus />
+                Accept Request
+              </Button>
+            </Col>
+            <Col>
+              <Button
+                id={teams._id}
+                variant="danger"
+                style={{ width: '100%' }}
+                onClick={() => handleDecline(teams._id)}
+              >
+                Decline Request
+              </Button>
+            </Col>
+          </Row>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+};
 
 TeamInvitationCard.propTypes = {
   teams: PropTypes.object.isRequired,
