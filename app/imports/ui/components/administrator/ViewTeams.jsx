@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import _ from 'lodash';
 import { ZipZap } from 'meteor/udondan:zipzap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -28,7 +27,7 @@ const getTeamMembers = (team) => {
     const gitHub = participant.gitHub;
     return `${fullName}, (${gitHub})`;
   });
-  return _.uniq(memberNames);
+  return [...new Set(memberNames)];
 };
 
 const ViewTeams = ({

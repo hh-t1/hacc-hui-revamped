@@ -203,7 +203,7 @@ class ListParticipantsFilterAdmin {
   filterNoTeam(teamParticipants, allParticipants) {
     const retVal = [];
     allParticipants.forEach((p, i) => {
-      const teams = _.filter(teamParticipants, { participantID: p._id });
+      const teams = teamParticipants.filter((tp) => tp.participantID === p._id);
       if (teams.length === 0) {
         retVal.push(allParticipants[i]);
       }
@@ -215,7 +215,7 @@ class ListParticipantsFilterAdmin {
     const retVal = [];
     allParticipants.forEach((p, i) => {
       const teams = _.uniqBy(
-        _.filter(teamParticipants, { participantID: p._id }),
+        teamParticipants.filter((tp) => tp.participantID === p._id),
         'teamID',
       );
       if (teams.length > 1) {
