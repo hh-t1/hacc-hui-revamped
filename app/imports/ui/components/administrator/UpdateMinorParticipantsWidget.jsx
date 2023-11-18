@@ -18,8 +18,12 @@ function UpdateMinorParticipantsWidget({ MinorParticipantsID }) {
   const getMinorParticipants = () => {
     const MinorParticipantsList = [];
     MinorParticipantsID.forEach((ParticipantsID) => {
-      const MinorParticipant = Participants._collection.findOne({ _id: ParticipantsID });
-      const MinorP = MinorParticipants._collection.findOne({ participantID: ParticipantsID });
+      const MinorParticipant = Participants._collection.findOne({
+        _id: ParticipantsID,
+      });
+      const MinorP = MinorParticipants._collection.findOne({
+        participantID: ParticipantsID,
+      });
       const ParentName = `${MinorP.parentFirstName} ${MinorP.parentLastName} (${MinorP.parentEmail})`;
       MinorParticipant.ParentName = ParentName;
       MinorParticipantsList.push(MinorParticipant);
@@ -29,13 +33,16 @@ function UpdateMinorParticipantsWidget({ MinorParticipantsID }) {
 
   const download = () => {
     const minors = getMinorParticipants();
-    let csv = 'Minor Participant Name, Participant email, Parent/Guardian Name (Parent/Guardian email)\n';
+    let csv =
+      'Minor Participant Name, Participant email, Parent/Guardian Name (Parent/Guardian email)\n';
     minors.forEach((m) => {
       csv += `${m.firstName} ${m.lastName},${m.username},${m.ParentName}\n`;
     });
     const zip = new ZipZap();
     const dir = 'hacchui-minor-participants';
-    const fileName = `${dir}/${moment().format(databaseFileDateFormat)}-minor-participants.csv`;
+    const fileName = `${dir}/${moment().format(
+      databaseFileDateFormat,
+    )}-minor-participants.csv`;
     zip.file(fileName, csv);
     zip.saveAs(`${dir}.zip`);
   };
@@ -117,14 +124,14 @@ function UpdateMinorParticipantsWidget({ MinorParticipantsID }) {
       >
         <Table striped bordered hover responsive="sm">
           <thead style={{ backgroundColor: 'gray', color: 'white' }}>
-          <tr>
-            <th>Minor Participant Name</th>
-            <th>Parent Name (Email)</th>
-            <th>Compliant</th>
-          </tr>
+            <tr>
+              <th>Minor Participant Name</th>
+              <th>Parent Name (Email)</th>
+              <th>Compliant</th>
+            </tr>
           </thead>
           <tbody style={{ backgroundColor: 'white' }}>
-          {renderMinorParticipants()}
+            {renderMinorParticipants()}
           </tbody>
         </Table>
         <Container>

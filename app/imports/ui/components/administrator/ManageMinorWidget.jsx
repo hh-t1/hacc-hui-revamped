@@ -21,9 +21,9 @@ const ManageMinorWidget = () => {
             style={{
               textAlign: 'center',
               backgroundColor: '#393B44',
-              padding:  '1rem 0rem',
-              margin:  '2rem 0rem',
-              borderRadius:  '2rem',
+              padding: '1rem 0rem',
+              margin: '2rem 0rem',
+              borderRadius: '2rem',
             }}
           >
             <h2>Minor Participant</h2>

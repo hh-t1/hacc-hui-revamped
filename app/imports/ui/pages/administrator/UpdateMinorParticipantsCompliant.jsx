@@ -1,31 +1,29 @@
 import React from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
+import { FaBirthdayCake } from 'react-icons/fa';
 import { MinorParticipants } from '../../../api/user/MinorParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import UpdateMinorParticipantsWidget from '../../components/administrator/UpdateMinorParticipantsWidget';
-import { FaBirthdayCake } from 'react-icons/fa';
 
 const UpdateMinorParticipantsCompliant = () => {
   const getMinorParticipants = () => {
     return MinorParticipants._collection.find({}).fetch();
-  }
+  };
 
   const getCFParticipants = () => {
-    return Participants._collection
-      .find({ isCompliant: false })
-      .fetch();
-  }
+    return Participants._collection.find({ isCompliant: false }).fetch();
+  };
 
   const getMinorCFParticipants = () => {
     const CFParticipantsID = getCFParticipants().map(
-      participant => participant._id
+      (participant) => participant._id,
     );
     const AllMinorParticipantsID = getMinorParticipants().map(
-      participant => participant.participantID
+      (participant) => participant.participantID,
     );
     const CFParticipantsIDSet = new Set(CFParticipantsID);
-    return AllMinorParticipantsID.filter(id => CFParticipantsIDSet.has(id));
-  }
+    return AllMinorParticipantsID.filter((id) => CFParticipantsIDSet.has(id));
+  };
 
   const renderMinorCFParticipants = () => {
     const MinorCFParticipantsID = getMinorCFParticipants();
@@ -55,9 +53,13 @@ const UpdateMinorParticipantsCompliant = () => {
         />
       </div>
     );
-  }
+  };
 
-  return <Container id="update-minor-participants">{renderMinorCFParticipants()}</Container>;
-}
+  return (
+    <Container id="update-minor-participants">
+      {renderMinorCFParticipants()}
+    </Container>
+  );
+};
 
 export default UpdateMinorParticipantsCompliant;
