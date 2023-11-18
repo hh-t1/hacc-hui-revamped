@@ -300,7 +300,7 @@ class YourTeamsCard extends React.Component {
                     </ListField>
                   </Grid.Column>
                 </Grid>
-                <div align="center">
+                <div style={{ textAlign: 'center' }}>
                   <Button
                     content="Invite"
                     labelPosition="right"

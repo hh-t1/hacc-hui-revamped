@@ -41,7 +41,7 @@ class YourTeamsWidget extends React.Component {
 
     if (!this.props.participant.isCompliant) {
       return (
-        <div align={'center'}>
+        <div style={{ textAlign: 'center' }}>
           <h2>
             You have not agreed to the{' '}
             <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>
@@ -56,7 +56,7 @@ class YourTeamsWidget extends React.Component {
     }
     if (this.props.teams.length + this.props.memberTeams.length === 0) {
       return (
-        <div align={'center'}>
+        <div style={{ textAlign: 'center' }}>
           <h2>
             You are not the owner or member of any teams
             <h4>Please check back later.</h4>
@@ -68,14 +68,14 @@ class YourTeamsWidget extends React.Component {
     return (
       <Container className="justify-content-center">
         <Row className="justify-content-center">
-          <h2 align="center">Your Teams</h2>
+          <h2 style={{ textAlign: 'center' }}>Your Teams</h2>
         </Row>
         {this.props.teams.length === 0 ? (
           ''
         ) : (
           <Col width={15}>
             <Card>
-              <h4 align="center">Owner</h4>
+              <h4 style={{ textAlign: 'center' }}>Owner</h4>
               <Card.Body divided>
                 {this.props.teams.map((teams) => (
                   <YourTeamsCard
@@ -96,7 +96,7 @@ class YourTeamsWidget extends React.Component {
         ) : (
           <Col width={15}>
             <Card>
-              <h4 align="center">Member</h4>
+              <h4 style={{ textAlign: 'center' }}>Member</h4>
               <Card.Body divided>
                 {this.props.memberTeams.map((team) => (
                   <MemberTeamCard

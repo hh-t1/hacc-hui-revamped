@@ -53,7 +53,6 @@ const DeleteForm = () => {
         ? swal('Error', error.message, 'error')
         : swal('Account deleted', 'We hope to see you again!', 'success').then(
             () => {
-              // eslint-disable-next-line no-undef
               window.location = '/';
             },
           ),

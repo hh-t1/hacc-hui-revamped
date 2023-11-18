@@ -235,7 +235,7 @@ class CreateTeamWidget extends React.Component {
   render() {
     if (!this.props.participant.isCompliant) {
       return (
-        <div align={'center'}>
+        <div style={{ textAlign: 'center' }}>
           <Container as="h2">
             <i className="bi bi-hand-thumbs-down"></i>
             You have not agreed to the{' '}
@@ -312,7 +312,7 @@ class CreateTeamWidget extends React.Component {
                   </ListField>
                 </Row>
               </Row>
-              <div align="center">
+              <div style={{ textAlign: 'center' }}>
                 <SubmitField
                   value="Submit"
                   style={{
@@ -341,7 +341,7 @@ class CreateTeamWidget extends React.Component {
               </Modal.Description>
             </Modal.Content>
             <Modal.Actions>
-              <b floated="left">
+              <b style={{ float: 'left' }}>
                 Slackbot will only send invites to registered members, please
                 confirm.
               </b>

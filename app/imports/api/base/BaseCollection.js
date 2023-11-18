@@ -236,8 +236,8 @@ class BaseCollection {
    * @param docID {String} A docID from this collection.
    * @returns { Object } An object representing this document.
    */
+  // eslint-disable-next-line
   dumpOne(docID) {
-    // eslint-disable-line
     throw new Meteor.Error(
       `Default dumpOne method invoked by collection ${this._collectionName}`,
       '',

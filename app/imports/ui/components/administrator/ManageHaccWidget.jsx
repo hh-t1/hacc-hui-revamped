@@ -122,8 +122,7 @@ const ManageHaccWidget = (props) => {
                 ))}
               </tbody>
             </Table>
-            {/* eslint-disable-next-line max-len */}
-            <div align="center">
+            <div style={{ textAlign: 'center' }}>
               <Button
                 style={{
                   color: 'white',
@@ -146,14 +145,13 @@ const ManageHaccWidget = (props) => {
                   <th width={2}>Delete</th>
                 </tr>
               </thead>
-              {/* eslint-disable-next-line max-len */}
               <tbody>
                 {props.skills.map((skills) => (
                   <SkillsAdminWidget key={skills._id} skills={skills} />
                 ))}
               </tbody>
             </Table>
-            <div align="center">
+            <div style={{ textAlign: 'center' }}>
               <Button
                 style={{
                   color: 'white',
@@ -182,7 +180,7 @@ const ManageHaccWidget = (props) => {
                 ))}
               </tbody>
             </Table>
-            <div align="center">
+            <div style={{ textAlign: 'center' }}>
               <Button
                 style={{
                   color: 'white',

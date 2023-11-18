@@ -214,7 +214,7 @@ class EditProfileWidget extends React.Component {
                   <MultiSelectField name="skills" />
                   <MultiSelectField name="tools" />
                 </Form.Group>
-                <div align="center">
+                <div style={{ textAlign: 'center' }}>
                   <SubmitField
                     value="Submit"
                     style={{

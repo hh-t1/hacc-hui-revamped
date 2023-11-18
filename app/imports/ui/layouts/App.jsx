@@ -53,7 +53,6 @@ import InterestedParticipantPage from '../pages/participant/InterestedParticipan
 import AllTeamInvitationsPage from '../pages/administrator/AllTeamInvitationsPage';
 import ShowMinorPage from '../pages/administrator/ShowMinorPage';
 
-/* global window */
 /**
  * Top-level layout component for this application. Called in imports/startup/client/startup.jsx.
  * @memberOf ui/layouts
