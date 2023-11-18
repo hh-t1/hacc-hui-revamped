@@ -16,7 +16,7 @@ export const makeSampleParticipant = () => {
   const firstName = faker.name.firstName();
   const lastName = faker.name.lastName();
   const demographicLevel = getRandomDemographicLevel();
-  const lookingForTeam = faker.random.boolean();
+  const lookingForTeam = faker.datatype.boolean(0.5);
   const challenges = makeSampleChallengeSlugArray();
   const interests = makeSampleInterestSlugArray(2);
   const skills = makeSampleSkillSlugArray(3);

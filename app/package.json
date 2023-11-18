@@ -3,7 +3,6 @@
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.22.11",
-    "@faker-js/faker": "^7.6.0",
     "@slack/bolt": "^3.13.3",
     "bootstrap": "^5.3.1",
     "classnames": "^2.3.2",
@@ -35,6 +34,7 @@
     "xkpasswd": "^1.0.5"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.3.1",
     "@types/react-router-dom": "^5.3.3",
     "acorn": "^8.10.0",
     "babel-eslint": "^10.1.0",
