@@ -23,6 +23,7 @@ import { listParticipantsAdminPageTest } from './listParticipantsAdminPage.e2e';
 import { createTeamTest } from './createTeam.e2e';
 import { updateMinorParticipantsPageTest } from './UpdateMinorParticipantsPage.e2e';
 import { teamInvitationsPageTest } from './teamInvitationsPage.e2e';
+import { editTeamPageTest } from './editTeamPage.e2e';
 
 fixture('HACC-Hui').page('http://localhost:3400');
 
@@ -115,4 +116,8 @@ test('Test update minor participants page', async (testController) => {
 
 test('Test team invitations page', async (tc) => {
   await teamInvitationsPageTest.test(tc);
+});
+
+test('Test edit team page', async (tc) => {
+  await editTeamPageTest.test(tc);
 });

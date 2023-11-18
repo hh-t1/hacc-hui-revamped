@@ -29,7 +29,7 @@
     "sweetalert": "^2.1.2",
     "sweetalert2": "^10.16.11",
     "uniforms": "^3.10.2",
-    "uniforms-bootstrap5": "^4.0.0-alpha.5",
+    "uniforms-bootstrap5": "^3.10.2",
     "uniforms-bridge-simple-schema-2": "^3.10.2",
     "uniforms-semantic": "^3.10.2",
     "xkpasswd": "^1.0.5"
@@ -67,7 +67,7 @@
     "test-unit": "cross-env METEOR_NO_RELEASE_CHECK=1 TEST_BROWSER_DRIVER=puppeteer MOCHA_TIMEOUT=150000 meteor test --exclude-archs web.browser.legacy,web.cordova --once --driver-package meteortesting:mocha --port 3500",
     "test-integration": "cross-env METEOR_NO_RELEASE_CHECK=1 TEST_BROWSER_DRIVER=puppeteer MOCHA_TIMEOUT=150000 meteor test --exclude-archs web.browser.legacy,web.cordova --full-app --once --driver-package meteortesting:mocha --port 3500",
     "testcafe": "testcafe chrome tests/*.testcafe.js",
-    "testcafe-ci": "testcafe chrome:headless tests/*.testcafe.js -q",
+    "testcafe-ci": "testcafe chrome:headless tests/*.testcafe.js -q --concurrency 7",
     "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json",
     "move-docs": "cp -r ../docs/ ../../docusaurus/static/jsdoc/",
     "deploy": "cross-env DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy hacchui.meteorapp.com --settings ../config/settings.production.json",
