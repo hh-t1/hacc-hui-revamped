@@ -5,7 +5,7 @@ import { signoutPageTest } from './SignoutPage.e2e';
 import { notFoundPageTest } from './NotFoundPage.e2e';
 import { helpPageTest } from './HelpPage.e2e';
 import { addChallengePageTest } from './addChallengePage.e2e';
-import { addSkillPageTest } from './AddSkillPage.e2e';
+import { addSkillPageTest } from './addSkillPage.e2e';
 import { addToolPageTest } from './addToolPage.e2e';
 import { dumpDatabasePageTest } from './dumpDatabasePage.e2e';
 import { listSuggestionsPageTest } from './ListSuggestionsPage.e2e';
