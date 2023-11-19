@@ -208,7 +208,7 @@ class EditTeamWidget extends React.Component {
                   <MultiSelectField name="members" />
                 </Grid.Column>
               </Grid>
-              <div align="center">
+              <div style={{ textAlign: 'center' }}>
                 <SubmitField
                   value="Submit"
                   style={{

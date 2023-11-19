@@ -1,9 +1,9 @@
 import { Selector } from 'testcafe';
 import { compliantParticipantCredentials, signInAs } from './_helpers';
 
-class CreateTeamTest {
+class EditTeamPageTest {
   constructor() {
-    this.pageId = '#create-team-page';
+    this.pageId = '#edit-team-page';
     this.pageSelector = Selector(this.pageId);
   }
 
@@ -16,9 +16,10 @@ class CreateTeamTest {
   /** @type {(tc: TestController) => Promise<void>} */
   async test(tc) {
     await signInAs(tc, compliantParticipantCredentials);
-    await tc.navigateTo('/#/create-team');
+    await tc.navigateTo('/#/your-teams');
+    await tc.click(Selector('a').withExactText('Edit Team'));
     await this.isDisplayed(tc);
   }
 }
 
-export const createTeamTest = new CreateTeamTest();
+export const editTeamPageTest = new EditTeamPageTest();

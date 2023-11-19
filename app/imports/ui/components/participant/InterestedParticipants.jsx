@@ -23,7 +23,7 @@ class InterestedParticipants extends React.Component {
   render() {
     if (this.props.interestedDevs.length === 0) {
       return (
-        <div align={'center'}>
+        <div style={{ textAlign: 'center' }}>
           <Header as="h2" icon>
             <Icon name="users" />
             There are no interested partcipants at the moment.

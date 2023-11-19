@@ -40,7 +40,7 @@ class ListParticipantsWidget extends React.Component {
   render() {
     if (this.props.participants.length === 0) {
       return (
-        <div align={'center'}>
+        <div style={{ textAlign: 'center' }}>
           <Header as="h2" icon>
             <Icon name="users" />
             There are no participants at the moment.

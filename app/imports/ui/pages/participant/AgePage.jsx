@@ -11,7 +11,7 @@ class AgePage extends React.Component {
   render() {
     return (
       <div style={{ backgroundColor: '#393B44' }}>
-        <div align={'center'} style={{ backgroundColor: '#24252B' }}>
+        <div style={{ textAlign: 'center', backgroundColor: '#24252B' }}>
           <Container
             inverted
             style={{ color: 'white', padding: '5rem 10rem 5rem 10rem' }}

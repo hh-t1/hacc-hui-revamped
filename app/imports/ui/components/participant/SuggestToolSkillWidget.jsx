@@ -17,9 +17,8 @@ const SuggestToolSkillWidget = ({ participant }) => {
   const [isValid, setIsValid] = useState(false);
 
   const validateForm = () => {
-    type !== '' && name !== '' && description !== ''
-      ? setIsValid(true)
-      : setIsValid(false);
+    const valid = type !== '' && name !== '' && description !== '';
+    setIsValid(valid);
   };
 
   useEffect(() => {
