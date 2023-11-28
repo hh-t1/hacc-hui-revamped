@@ -115,6 +115,7 @@ const SuggestToolSkillWidget = ({ participant }) => {
   );
 };
 
+
 SuggestToolSkillWidget.propTypes = {
   participant: PropTypes.object.isRequired,
 };
