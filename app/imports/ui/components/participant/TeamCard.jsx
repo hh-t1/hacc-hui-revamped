@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Card, Grid, Header, List } from 'semantic-ui-react';
+import { Header, List } from 'semantic-ui-react';
+import { Button, Card, Col, Row } from 'react-bootstrap';
 import _ from 'lodash';
 import { Meteor } from 'meteor/meteor';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
@@ -61,33 +62,33 @@ class TeamCard extends React.Component {
           <Card.Content>
             <Card.Header>{team.name}</Card.Header>
             <Card.Description>
-              <Grid container stackable columns={5}>
-                <Grid.Column>
+              <Row container stackable columns={5}>
+                <Col>
                   <Header size="tiny">Challenges</Header>
                   {team.challenges.join(', ')}
-                </Grid.Column>
-                <Grid.Column>
+                </Col>
+                <Col>
                   <Header size="tiny">Desired Skills</Header>
                   <List bulleted>
                     {team.skills.map((item) => <SkillItem item={item} key={item._id} />)}
                   </List>
-                </Grid.Column>
-                <Grid.Column>
+                </Col>
+                <Col>
                   <Header size="tiny">Desired Tools</Header>
                   <List bulleted>
                     {team.tools.map((item) => <ToolItem item={item} key={item._id} />)}
                   </List>
-                </Grid.Column>
-                <Grid.Column>
+                </Col>
+                <Col>
                   <Header size="tiny">Members</Header>
                   <List>
                     {team.members.map((member, index) => <List.Item key={`${index}${member}`}>{member}</List.Item>)}
                   </List>
-                </Grid.Column>
-                <Grid.Column>
+                </Col>
+                <Col>
                   <Button team={team} disabled={isOwner} color="red" onClick={this.handleLeaveTeam}>Leave team</Button>
-                </Grid.Column>
-              </Grid>
+                </Col>
+              </Row>
             </Card.Description>
           </Card.Content>
         </Card>
