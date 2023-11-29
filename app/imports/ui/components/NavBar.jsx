@@ -183,6 +183,15 @@ class NavBar extends React.Component {
               >
                 Dump Database
               </Menu.Item>,
+              <Menu.Item
+                as={NavLink}
+                activeClassName="active"
+                exact
+                to={ROUTES.RESET_HACC}
+                key={ROUTES.RESET_HACC}
+              >
+                Reset HACC Hui
+              </Menu.Item>,
               // <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.SHOW_MINOR}
               //            key={ROUTES.SHOW_MINOR}>Show Minor</Menu.Item>,
             ]

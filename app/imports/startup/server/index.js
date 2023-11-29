@@ -4,3 +4,4 @@ import './CronJobs';
 import './Publications';
 import './Slack';
 import './Mongo';
+import './ResetHacc';
