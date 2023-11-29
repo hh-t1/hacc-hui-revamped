@@ -18,8 +18,8 @@ class AdminEditTeamPageTest {
     // await tc.debug();
     await signInAs(tc, adminCredentials);
     await tc.navigateTo('/#/view-teams');
-    await tc.click(Selector('.team-item'));
-    await tc.click(Selector('button').withExactText('Edit'));
+    await tc.click(Selector('.team-item button'));
+    await tc.click(Selector('a').withExactText('Edit'));
     await this.isDisplayed(tc);
   }
 }
