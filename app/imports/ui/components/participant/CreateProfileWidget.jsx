@@ -1,5 +1,4 @@
-import React from 'react';
-import { Header, Segment, Form } from 'semantic-ui-react';
+import React, { useState } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import {
   AutoForm,
@@ -8,7 +7,7 @@ import {
   SelectField,
   SubmitField,
   TextField,
-} from 'uniforms-semantic';
+} from 'uniforms-bootstrap5';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
@@ -16,12 +15,13 @@ import SimpleSchema from 'simpl-schema';
 import _ from 'lodash';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
+import { Container, Row, Col, Card } from 'react-bootstrap';
+import Multiselect from 'multiselect-react-dropdown';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
 import { demographicLevels } from '../../../api/level/Levels';
-import MultiSelectField from '../form-fields/MultiSelectField';
 import { ROUTES } from '../../../startup/client/route-constants';
 import { Slugs } from '../../../api/slug/SlugCollection';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
@@ -29,7 +29,12 @@ import { updateMethod } from '../../../api/base/BaseCollection.methods';
 class CreateProfileWidget extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { redirectToReferer: false };
+    this.state = {
+      redirectToReferer: false,
+      selectedChallenges: [], // State for selected challenges
+      selectedSkills: [], // State for selected skills
+      selectedTools: [], // State for selected tools
+    };
   }
 
   buildTheFormSchema() {
@@ -74,22 +79,13 @@ class CreateProfileWidget extends React.Component {
     }
     if (data.challenges) {
       // build an array of challenge slugs
-      updateData.challenges = data.challenges.map((title) => {
-        const doc = Challenges.findDoc({ title });
-        return Slugs.getNameFromID(doc.slugID);
-      });
+      updateData.challenges = this.state.selectedChallenges;
     }
     if (data.skills) {
-      updateData.skills = data.skills.map((name) => {
-        const doc = Skills.findDoc({ name });
-        return Slugs.getNameFromID(doc.slugID);
-      });
+      updateData.skills = this.state.selectedSkills;
     }
     if (data.tools) {
-      updateData.tools = data.tools.map((name) => {
-        const doc = Tools.findDoc({ name });
-        return Slugs.getNameFromID(doc.slugID);
-      });
+      updateData.tools = this.state.selectedTools;
     }
     if (data.linkedIn) {
       updateData.linkedIn = data.linkedIn;
@@ -137,44 +133,109 @@ class CreateProfileWidget extends React.Component {
       return <Redirect to={from} />;
     }
     return (
-      <Segment>
-        <Header dividing>
-          Hello {firstname}, this is your first time to login, so please fill
-          out your profile
-        </Header>
-        <AutoForm
-          schema={formSchema}
-          model={model}
-          onSubmit={(data) => {
-            this.submit(data);
-          }}
-        >
-          <Form.Group widths="equal">
-            <TextField name="username" disabled />
-            <BoolField name="isCompliant" disabled />
-          </Form.Group>
-          <Form.Group widths="equal">
-            <TextField name="firstName" />
-            <TextField name="lastName" />
-            <SelectField name="demographicLevel" />
-          </Form.Group>
-          <Form.Group widths="equal">
-            <TextField name="linkedIn" />
-            <TextField name="gitHub" />
-            <TextField name="slackUsername" />
-          </Form.Group>
-          <Form.Group widths="equal">
-            <TextField name="website" />
-            <LongTextField name="aboutMe" />
-          </Form.Group>
-          <MultiSelectField name="challenges" />
-          <Form.Group widths="equal">
-            <MultiSelectField name="skills" />
-            <MultiSelectField name="tools" />
-          </Form.Group>
-          <SubmitField />
-        </AutoForm>
-      </Segment>
+      <Container className="justify-content-center my-3">
+        <Row className="justify-content-center">
+          <Col className="text-center my-2">
+            <h2>
+              Hello {firstname}, this is your first time logging in, please
+              tells us more about yourself!{' '}
+            </h2>
+            <h2>You can always change this later</h2>
+          </Col>
+          <AutoForm
+            schema={formSchema}
+            model={model}
+            onSubmit={(data) => {
+              this.submit(data);
+            }}
+          >
+            <Card>
+              <Card.Body>
+                <Row>
+                  <Col>
+                    <TextField name="username" disabled />
+                    <BoolField name="isCompliant" disabled />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <TextField name="firstName" />
+                  </Col>
+                  <Col>
+                    <TextField name="lastName" />
+                  </Col>
+                  <Col>
+                    <SelectField name="demographicLevel" />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <TextField name="linkedIn" />
+                  </Col>
+                  <Col>
+                    <TextField name="gitHub" />
+                  </Col>
+                  <Col>
+                    <TextField name="slackUsername" />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Multiselect
+                      options={this.props.challenges}
+                      selectedValues={this.state.selectedChallenges}
+                      onSelect={(selectedList) =>
+                        this.setState({ selectedChallenges: selectedList })
+                      }
+                      onRemove={(selectedList) =>
+                        this.setState({ selectedChallenges: selectedList })
+                      }
+                      displayValue="title"
+                      closeIcon="cancel"
+                      placeholder="Select Challenges"
+                    />
+                  </Col>
+                  <Col>
+                    <Multiselect
+                      options={this.props.skills}
+                      selectedValues={this.state.selectedSkills}
+                      onSelect={(selectedList) =>
+                        this.setState({ selectedSkills: selectedList })
+                      }
+                      onRemove={(selectedList) =>
+                        this.setState({ selectedSkills: selectedList })
+                      }
+                      displayValue="name"
+                      closeIcon="cancel"
+                      placeholder="Select Skills"
+                    />
+                  </Col>
+                  <Col>
+                    <Multiselect
+                      options={this.props.tools}
+                      selectedValues={this.state.selectedTools}
+                      onSelect={(selectedList) =>
+                        this.setState({ selectedTools: selectedList })
+                      }
+                      onRemove={(selectedList) =>
+                        this.setState({ selectedTools: selectedList })
+                      }
+                      displayValue="name"
+                      closeIcon="cancel"
+                      placeholder="Select Tools"
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <TextField name="website" />
+                  <LongTextField name="aboutMe" />
+                </Row>
+                <SubmitField />
+              </Card.Body>
+            </Card>
+          </AutoForm>
+        </Row>
+      </Container>
     );
   }
 }
