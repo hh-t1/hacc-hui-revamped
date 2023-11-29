@@ -40,14 +40,21 @@ const schema = new SimpleSchema({
  * Renders the Page for adding stuff. **deprecated**
  * @memberOf ui/pages
  */
-class TeamCreation extends React.Component {
+const TeamCreation = ({
+  teams,
+  skills,
+  tools,
+  challenges,
+  participants,
+}) => {
 
   /** On submit, insert the data.
    * @param formData {Object} the results from the form.
    * @param formRef {FormRef} reference to the form.
    */
   // eslint-disable-next-line no-unused-vars
-  submit(formData, formRef) {
+  const submit = (e) => {
+      e.preventDefault();
 
     const skillsArr = this.props.skills;
     const skillsObj = [];
@@ -125,12 +132,12 @@ class TeamCreation extends React.Component {
   }
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
-  render() {
-    return (this.props.ready) ? this.renderPage() :
+  return (
+     (this.props.ready) ? this.renderPage() :
       <div className="spinner-border" role="status">
         <span className="sr-only">Getting data</span>
-      </div>;
-  }
+      </div>
+  );
 
   renderPage() {
     const fRef = null;
@@ -190,7 +197,7 @@ class TeamCreation extends React.Component {
         </Container>
     );
   }
-}
+};
 
 TeamCreation.propTypes = {
   challenges: PropTypes.array.isRequired,
