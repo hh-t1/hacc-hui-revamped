@@ -11,19 +11,27 @@ import ToolItem from './ToolItem';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { LeavingTeams } from '../../../api/team/LeavingTeamCollection';
-import { defineMethod, removeItMethod } from '../../../api/base/BaseCollection.methods';
+import {
+  defineMethod,
+  removeItMethod,
+} from '../../../api/base/BaseCollection.methods';
 
-const TeamCard = ({
+const TeamCard = {
   buildTheTeam() {
     const { team } = this.props;
     const teamID = team.id;
     const tCs = TeamChallenges.find({ teamID }).fetch();
-    const challengeTitles = tCs.map(tCs, (tc) => Challenges.findDoc(tc.challengeID).title);
+    const challengeTitles = tCs.map(
+      tCs,
+      (tc) => Challenges.findDoc(tc.challengeID).title,
+    );
     team.challenges = challengeTitles;
     team.skills = TeamSkills.find({ teamID }).fetch();
     team.tools = TeamTools.find({ teamID }).fetch();
     const teamPs = TeamParticipants.find({ teamID }).fetch();
-    team.members = teamPs.map(teamPs, (tp) => Participants.getFullName(tp.participantID));
+    team.members = teamPs.map(teamPs, (tp) =>
+      Participants.getFullName(tp.participantID),
+    );
     return team;
   },
 
@@ -41,7 +49,10 @@ const TeamCard = ({
         console.error('failed to define', error);
       }
     });
-    const teamPart = TeamParticipants.findDoc({ teamID: team.id, participantID: pDoc.id });
+    const teamPart = TeamParticipants.findDoc({
+      teamID: team.id,
+      participantID: pDoc.id,
+    });
     console.log(teamPart);
     collectionName = TeamParticipants.getCollectionName();
     const instance = teamPart.id;
@@ -68,23 +79,36 @@ const TeamCard = ({
               <Col>
                 <h4>Desired Skills</h4>
                 <List bulleted>
-                  {team.skills.map((item) => <SkillItem item={item} key={item.id} />)}
+                  {team.skills.map((item) => (
+                    <SkillItem item={item} key={item.id} />
+                  ))}
                 </List>
               </Col>
               <Col>
                 <h4>Desired Tools</h4>
                 <List bulleted>
-                  {team.tools.map((item) => <ToolItem item={item} key={item.id} />)}
+                  {team.tools.map((item) => (
+                    <ToolItem item={item} key={item.id} />
+                  ))}
                 </List>
               </Col>
               <Col>
                 <h4>Members</h4>
                 <List>
-                  {team.members.map((member, index) => <List.Item key={`${index}${member}`}>{member}</List.Item>)}
+                  {team.members.map((member, index) => (
+                    <List.Item key={`${index}${member}`}>{member}</List.Item>
+                  ))}
                 </List>
               </Col>
               <Col>
-                <Button team={team} disabled={isOwner} color="red" onClick={this.handleLeaveTeam}>Leave team</Button>
+                <Button
+                  team={team}
+                  disabled={isOwner}
+                  color="red"
+                  onClick={this.handleLeaveTeam}
+                >
+                  Leave team
+                </Button>
               </Col>
             </Row>
           </Card.Description>
@@ -92,7 +116,7 @@ const TeamCard = ({
       </Card>
     );
   },
-});
+};
 
 TeamCard.propTypes = {
   team: PropTypes.object.isRequired,
