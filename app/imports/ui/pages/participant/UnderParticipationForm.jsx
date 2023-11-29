@@ -1,10 +1,11 @@
 import React from 'react';
-import { Form, Header, Message, Segment } from 'semantic-ui-react';
+import { Alert, Container, Form, Col, Row } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
+import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
-import { AutoForm, SubmitField, TextField } from 'uniforms-semantic';
+import { AutoForm, SubmitField, TextField } from 'uniforms-bootstrap5';
 import { ROUTES } from '../../../startup/client/route-constants';
 import { darkerBlueStyle } from '../../styles';
 import { Participants } from '../../../api/user/ParticipantCollection';
@@ -28,20 +29,12 @@ const schema = new SimpleSchema({
  * A simple static component to render some text for the landing page.
  * @memberOf ui/pages
  */
-class UnderParticipationForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { redirectToReferer: false };
-  }
+const UnderParticipationForm = () => {
 
-  submit(formData) {
-    const {
-      firstName,
-      lastName,
-      parentFirstName,
-      parentLastName,
-      parentEmail,
-    } = formData;
+  const [redirect, setRedirect] = useState(false);
+
+  const submit = (formData) => {
+    const { firstName, lastName, parentFirstName, parentLastName, parentEmail } = formData;
     const dev = Participants.findDoc({ userID: Meteor.userId() });
     const username = dev.username;
     let collectionName = MinorParticipants.getCollectionName();
@@ -53,24 +46,17 @@ class UnderParticipationForm extends React.Component {
     };
     defineMethod.call({ collectionName, definitionData }, (error) => {
       if (error) {
-        console.error('Problem defining MinorParticipant', error);
+        swal('Error', error.message, 'Problem defining MinorParticipant');
       }
     });
     const interactionData = {
       username: dev.username,
       type: USER_INTERACTIONS.MINOR_SIGNED_CONSENT,
-      typeData: [
-        firstName,
-        lastName,
-        parentFirstName,
-        parentLastName,
-        parentEmail,
-      ],
+      typeData: [firstName, lastName, parentFirstName, parentLastName, parentEmail],
     };
-    console.log(interactionData);
     userInteractionDefineMethod.call(interactionData, (error) => {
       if (error) {
-        console.error('Could not define user interaction', error);
+        swal('Error', error.message, 'Could not define user interaction');
       }
     });
     collectionName = Participants.getCollectionName();
@@ -80,50 +66,45 @@ class UnderParticipationForm extends React.Component {
     };
     updateMethod.call({ collectionName, updateData }, (error) => {
       if (error) {
-        console.error('Could not update minor status', error);
+        swal('Error', error.message, 'Could not update minor status');
       }
     });
-    this.setState({ redirectToReferer: true });
+    setRedirect(true);
+  };
+
+  const formSchema = new SimpleSchema2Bridge(schema);
+  if (redirect) {
+    return <Redirect to={ROUTES.CREATE_PROFILE}/>;
   }
 
-  render() {
-    const formSchema = new SimpleSchema2Bridge(schema);
-    if (this.state.redirectToReferer) {
-      const from = { pathname: ROUTES.CREATE_PROFILE };
-      return <Redirect to={from} />;
-    }
-    return (
-      <Segment style={darkerBlueStyle}>
-        <Header>HACC Registration</Header>
-        <AutoForm schema={formSchema} onSubmit={(data) => this.submit(data)}>
-          <Segment>
-            <Message>
-              Read the{' '}
-              <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>.
-              <br />
-              Then agree to the terms.
-            </Message>
-            <Form.Group widths="equal">
-              <TextField name="yourFirstName" />
-              <TextField name="yourLastName" />
-            </Form.Group>
-            <Form.Group widths="equal">
-              <TextField
-                name="parentFirstName"
-                label="Parent/Guardian First Name"
-              />
-              <TextField
-                name="parentLastName"
-                label="Parent/Guardian Last Name"
-              />
-              <TextField name="parentEmail" label="Parent/Guardian Email" />
-            </Form.Group>
-            <SubmitField />
-          </Segment>
-        </AutoForm>
-      </Segment>
-    );
-  }
-}
+  return (
+  <Container style={darkerBlueStyle}>
+    <h2 className='text-center mt-3'>HACC Registration</h2>
+    <AutoForm schema={formSchema} onSubmit={data => submit(data)}>
+      <Alert className='text-center'>
+        <Alert.Heading>
+          Read the <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>.
+          <br />
+          Then agree to the terms.
+        </Alert.Heading>
+      </Alert>
+      <Form.Group widths="equal">
+        <Row>
+          <Col xs={6}><TextField name='yourFirstName' /></Col>
+          <Col xs={6}><TextField name='yourLastName' /></Col>
+        </Row>
+      </Form.Group>
+      <Form.Group widths="equal">
+        <Row>
+          <Col xs={4}><TextField name='parentFirstName' label="Parent/Guardian First Name" /></Col>
+          <Col xs={4}><TextField name='parentLastName' label="Parent/Guardian Last Name" /></Col>
+          <Col xs={4}><TextField name='parentEmail' label="Parent/Guardian Email" /></Col>
+        </Row>
+      </Form.Group>
+      <SubmitField />
+    </AutoForm>
+  </Container>
+);
+};
 
 export default UnderParticipationForm;
