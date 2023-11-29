@@ -1,8 +1,4 @@
 import React from 'react';
-import {
-  Dropdown,
-} from 'semantic-ui-react';
-import Select from 'react-select'
 import PropTypes from 'prop-types';
 import { _ } from 'lodash';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -17,11 +13,7 @@ import { Participants } from '../../../api/user/ParticipantCollection';
 import ListParticipantsCard from './ListParticipantsCard';
 import ListParticipantsFilter from './ListParticipantsFilter';
 import { BsFillPeopleFill } from 'react-icons/bs';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import { ListGroup } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
+import { Container, Row, Col, ListGroup, Form } from 'react-bootstrap';
 
 class ListParticipantsWidget extends React.Component {
   constructor(props) {
@@ -82,7 +74,6 @@ class ListParticipantsWidget extends React.Component {
         this.props.participantChallenges,
         toolResults,
       );
-      console.log('Challenge Results:', challengeResults);
 
       const sorted = filters.sortBy(challengeResults, 'participants');
       this.setState(
@@ -114,8 +105,6 @@ class ListParticipantsWidget extends React.Component {
         },
       );
     };
-
-    /*
     const getTools = (event, { value }) => {
       this.setState(
         {
@@ -127,36 +116,6 @@ class ListParticipantsWidget extends React.Component {
       );
     };
 
-     */
-
-    /*
-    const getTools = (selectedOptions) => {
-      const selectedValues = selectedOptions.map((option) => option.value);
-      this.setState(
-          {
-            tools: selectedValues,
-          },
-          () => {
-            setFilters();
-          },
-      );
-    };
-
-     */
-
-    const getTools = (selectedOptions) => {
-      const selectedValues = selectedOptions.map((option) => option.value);
-      this.setState(
-          {
-            tools: selectedValues,
-          },
-          () => {
-            setFilters();
-          },
-      );
-    };
-
-    /*
     const getChallenge = (event, { value }) => {
       this.setState(
         {
@@ -168,20 +127,6 @@ class ListParticipantsWidget extends React.Component {
       );
     };
 
-     */
-
-    const getChallenge = (selectedOptions) => {
-      const selectedValues = selectedOptions.map((option) => option.value);
-      this.setState(
-          {
-            challenges: selectedValues,
-          },
-          () => {
-            setFilters();
-          },
-      );
-    };
-    /*
     const getTeam = (event, { value }) => {
       this.setState(
         {
@@ -193,24 +138,9 @@ class ListParticipantsWidget extends React.Component {
       );
     };
 
-     */
-
-    const getTeam = (selectedOptions) => {
-      const selectedValues = selectedOptions.map((option) => option.value);
-      this.setState(
-          {
-            teams: selectedValues,
-          },
-          () => {
-            setFilters();
-          },
-      );
-      console.log(filters.dropdownValues(this.props.teams, 'name'));
-    };
-
     const universalSkills = this.props.skills;
 
-    const getParticipantSkills = (participantID, participantSkills) => {
+    function getParticipantSkills(participantID, participantSkills) {
       const data = [];
       const skills = _.filter(participantSkills, {
         participantID: participantID,
@@ -227,7 +157,7 @@ class ListParticipantsWidget extends React.Component {
 
     const universalTools = this.props.tools;
 
-    const getParticipantTools = (participantID, participantTools) => {
+    function getParticipantTools(participantID, participantTools) {
       const data = [];
       const tools = _.filter(participantTools, {
         participantID: participantID,
@@ -244,7 +174,7 @@ class ListParticipantsWidget extends React.Component {
 
     const universalChallenges = this.props.challenges;
 
-    const getParticipantChallenges = (participantID, participantChallenges) => {
+    function getParticipantChallenges(participantID, participantChallenges) {
       const data = [];
       const challenges = _.filter(participantChallenges, {
         participantID: participantID,
@@ -298,40 +228,54 @@ class ListParticipantsWidget extends React.Component {
                 </Form>
                 <div style={{ paddingTop: '2rem' }}>
                   <h3>Teams</h3>
-                  <Select
-                      isMulti
-                      options={filters.dropdownValues(this.props.teams, 'name')}
-                      onChange={getTeam}
-                  />
+                  <Form.Select onChange={getTeam}>
+                    {filters
+                        .dropdownValues(this.props.teams, 'name')
+                        .map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.text}
+                            </option>
+                        ))}
+                  </Form.Select>
                 </div>
 
                 <div style={{ paddingTop: '2rem' }}>
                   <h3>Challenges</h3>
-                  <Select
-                      isMulti
-                    options={filters.dropdownValues(
-                      this.props.challenges,
-                      'title',
+                  <Form.Select onChange={getChallenge}>
+                    {filters.dropdownValues(
+                        this.props.challenges,
+                        'title').map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.text}
+                      </option>
+                        )
                     )}
-                    onChange={getChallenge}
-                  />
+                  </Form.Select>
                 </div>
               </div>
               <div style={{ paddingTop: '2rem' }}>
                 <h3>Skills</h3>
-                <Select
-                    isMulti
-                  options={filters.dropdownValues(this.props.skills, 'name')}
-                  onChange={getSkills}
-                />
+                <Form.Select onChange={getSkills}>
+                  {filters
+                      .dropdownValues(this.props.skills, 'name')
+                      .map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.text}
+                          </option>
+                      ))}
+                </Form.Select>
               </div>
               <div style={{ paddingTop: '2rem' }}>
                 <h3>Tools</h3>
-                <Select
-                    isMulti
-                  options={filters.dropdownValues(this.props.tools, 'name')}
-                  onChange={getTools}
-                />
+                <Form.Select onChange={getTools}>
+                  {filters
+                      .dropdownValues(this.props.tools, 'name')
+                      .map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.text}
+                          </option>
+                      ))}
+                </Form.Select>
               </div>
             </div>
           </Col>
