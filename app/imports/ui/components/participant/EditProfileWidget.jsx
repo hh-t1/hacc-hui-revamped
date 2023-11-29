@@ -1,7 +1,7 @@
 import React from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
-import { Form, Grid, Header, Segment } from 'semantic-ui-react';
+import { Row, Col, Container, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import SimpleSchema from 'simpl-schema';
@@ -9,14 +9,14 @@ import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import {
   AutoForm,
   BoolField,
-  ErrorsField,
   LongTextField,
   SelectField,
   SubmitField,
   TextField,
-} from 'uniforms-semantic';
+} from 'uniforms-bootstrap5';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
+import Multiselect from 'multiselect-react-dropdown';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
@@ -24,9 +24,7 @@ import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { ParticipantChallenges } from '../../../api/user/ParticipantChallengeCollection';
 import { ParticipantSkills } from '../../../api/user/ParticipantSkillCollection';
 import { ParticipantTools } from '../../../api/user/ParticipantToolCollection';
-import { Slugs } from '../../../api/slug/SlugCollection';
 import { demographicLevels } from '../../../api/level/Levels';
-import MultiSelectField from '../form-fields/MultiSelectField';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { ROUTES } from '../../../startup/client/route-constants';
 
@@ -101,22 +99,13 @@ class EditProfileWidget extends React.Component {
     }
     if (data.challenges) {
       // build an array of challenge slugs
-      updateData.challenges = data.challenges.map((title) => {
-        const doc = Challenges.findDoc({ title });
-        return Slugs.getNameFromID(doc.slugID);
-      });
+      updateData.challenges = this.state.selectedChallenges; // Access from component state
     }
     if (data.skills) {
-      updateData.skills = data.skills.map((name) => {
-        const doc = Skills.findDoc({ name });
-        return Slugs.getNameFromID(doc.slugID);
-      });
+      updateData.skills = this.state.selectedSkills; // Access from component state
     }
     if (data.tools) {
-      updateData.tools = data.tools.map((name) => {
-        const doc = Tools.findDoc({ name });
-        return Slugs.getNameFromID(doc.slugID);
-      });
+      updateData.tools = this.state.selectedTools; // Access from component state
     }
     if (data.linkedIn) {
       updateData.linkedIn = data.linkedIn;
@@ -162,74 +151,105 @@ class EditProfileWidget extends React.Component {
     const schema = this.buildTheFormSchema();
     const formSchema = new SimpleSchema2Bridge(schema);
     return (
-      <div style={{ paddingBottom: '50px' }}>
-        <Grid container centered>
-          <Grid.Column>
-            <div
-              style={{
-                backgroundColor: '#E5F0FE',
-                padding: '1rem 0rem',
-                margin: '2rem 0rem',
-                borderRadius: '2rem',
-              }}
-            >
-              <Header as="h2" textAlign="center">
-                Edit Profile
-              </Header>
-            </div>
-            <AutoForm
-              schema={formSchema}
-              model={model}
-              onSubmit={(data) => {
-                // console.log(data);
-                this.submitData(data);
-              }}
-            >
-              <Segment
-                style={{
-                  borderRadius: '1rem',
-                  backgroundColor: '#E5F0FE',
-                }}
-              >
-                <Form.Group widths="equal">
-                  <TextField name="username" disabled />
-                  <BoolField name="isCompliant" disabled />
-                </Form.Group>
-                <Form.Group widths="equal">
-                  <TextField name="firstName" />
-                  <TextField name="lastName" />
-                  <SelectField name="demographicLevel" />
-                </Form.Group>
-                <Form.Group widths="equal">
-                  <TextField name="linkedIn" />
-                  <TextField name="gitHub" />
-                  <TextField name="slackUsername" />
-                </Form.Group>
-                <Form.Group widths="equal">
+      <Container className="justify-content-center my-3">
+        <Row className="justify-content-center">
+          <Col className="text-center my-2">
+            <h2>Edit Profile</h2>
+          </Col>
+          <AutoForm
+            schema={formSchema}
+            model={model}
+            onSubmit={(data) => {
+              this.submitData(data);
+            }}
+          >
+            <Card>
+              <Card.Body>
+                <Row>
+                  <Col>
+                    <TextField name="username" disabled />
+                    <BoolField name="isCompliant" disabled />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <TextField name="firstName" />
+                  </Col>
+                  <Col>
+                    <TextField name="lastName" />
+                  </Col>
+                  <Col>
+                    <SelectField name="demographicLevel" />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <TextField name="linkedIn" />
+                  </Col>
+                  <Col>
+                    <TextField name="gitHub" />
+                  </Col>
+                  <Col>
+                    <TextField name="slackUsername" />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Multiselect
+                      options={this.props.allChallenges}
+                      selectedValues={this.state.selectedChallenges}
+                      onSelect={(selectedList) =>
+                        this.setState({ selectedChallenges: selectedList })
+                      }
+                      onRemove={(selectedList) =>
+                        this.setState({ selectedChallenges: selectedList })
+                      }
+                      displayValue="title"
+                      closeIcon="cancel"
+                      placeholder="Select Challenges"
+                    />
+                  </Col>
+                  <Col>
+                    <Multiselect
+                      options={this.props.allSkills}
+                      selectedValues={this.state.selectedSkills}
+                      onSelect={(selectedList) =>
+                        this.setState({ selectedSkills: selectedList })
+                      }
+                      onRemove={(selectedList) =>
+                        this.setState({ selectedSkills: selectedList })
+                      }
+                      displayValue="name"
+                      closeIcon="cancel"
+                      placeholder="Select Skills"
+                    />
+                  </Col>
+                  <Col>
+                    <Multiselect
+                      options={this.props.allTools}
+                      selectedValues={this.state.selectedTools}
+                      onSelect={(selectedList) =>
+                        this.setState({ selectedTools: selectedList })
+                      }
+                      onRemove={(selectedList) =>
+                        this.setState({ selectedTools: selectedList })
+                      }
+                      displayValue="name"
+                      closeIcon="cancel"
+                      placeholder="Select Tools"
+                    />
+                  </Col>
+                </Row>
+                <Row>
                   <TextField name="website" />
                   <LongTextField name="aboutMe" />
-                </Form.Group>
-                <Form.Group widths="equal">
-                  <MultiSelectField name="challenges" />
-                  <MultiSelectField name="skills" />
-                  <MultiSelectField name="tools" />
-                </Form.Group>
-                <div style={{ textAlign: 'center' }}>
-                  <SubmitField
-                    value="Submit"
-                    style={{
-                      color: 'white',
-                      backgroundColor: '#DB2828',
-                      margin: '2rem 0rem',
-                    }}
-                  />
-                </div>
-                <ErrorsField />
-              </Segment>
-            </AutoForm>
-          </Grid.Column>
-        </Grid>
-      </div>
+                </Row>
+                <SubmitField />
+              </Card.Body>
+            </Card>
+          </AutoForm>
+        </Row>
+      </Container>
     );
   }
 }
