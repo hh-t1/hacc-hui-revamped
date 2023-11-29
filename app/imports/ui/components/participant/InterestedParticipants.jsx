@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 import React from 'react';
-import { Grid, Header, Item, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { _ } from 'lodash';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -14,28 +13,32 @@ import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { WantsToJoin } from '../../../api/team/WantToJoinCollection';
 import InterestedParticipantCard from './InterestedParticipantCard';
+import { BsFillPeopleFill } from "react-icons/bs";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from 'react-bootstrap/Col';
+import { ListGroup } from 'react-bootstrap';
 
 /**
  * Renders the interested participants
  * @memberOf ui/pages
  */
-class InterestedParticipants extends React.Component {
-  render() {
+const InterestedParticipants = () => {
     if (this.props.interestedDevs.length === 0) {
       return (
         <div style={{ textAlign: 'center' }}>
-          <Header as="h2" icon>
-            <Icon name="users" />
-            There are no interested partcipants at the moment.
-            <Header.Subheader>Please check back later.</Header.Subheader>
-          </Header>
+          <h2>
+            <BsFillPeopleFill/>
+            There are no interested participants at the moment.
+            <h4>Please check back later.</h4>
+          </h2>
         </div>
       );
     }
 
     const universalSkills = this.props.skills;
 
-    function getDeveloperSkills(developerID, developerSkills) {
+    const getDeveloperSkills = (developerID, developerSkills) => {
       const data = [];
       const skills = _.filter(developerSkills, { developerID: developerID });
       for (let i = 0; i < skills.length; i++) {
@@ -45,13 +48,12 @@ class InterestedParticipants extends React.Component {
           }
         }
       }
-      // console.log(data);
       return data;
     }
 
     const universalDevs = this.props.developers;
 
-    function getInterestedDevelopers(devs) {
+    const getInterestedDevelopers = (devs) => {
       const data = [];
       for (let i = 0; i < devs.length; i++) {
         for (let j = 0; j < universalDevs.length; j++) {
@@ -60,13 +62,12 @@ class InterestedParticipants extends React.Component {
           }
         }
       }
-      // console.log(data);
       return data;
     }
 
     const universalTools = this.props.tools;
 
-    function getDeveloperTools(developerID, developerTools) {
+    const getDeveloperTools = (developerID, developerTools) => {
       const data = [];
       const tools = _.filter(developerTools, { developerID: developerID });
       for (let i = 0; i < tools.length; i++) {
@@ -76,13 +77,12 @@ class InterestedParticipants extends React.Component {
           }
         }
       }
-      // console.log(data);
       return data;
     }
 
     const universalChallenges = this.props.challenges;
 
-    function getDeveloperChallenges(developerID, developerChallenges) {
+    const getDeveloperChallenges = (developerID, developerChallenges) => {
       const data = [];
       const challenges = _.filter(developerChallenges, {
         developerID: developerID,
@@ -98,21 +98,20 @@ class InterestedParticipants extends React.Component {
     }
 
     return (
-      <Grid
-        container
+      <Container
         doubling
         relaxed
         stackable
         style={{ marginBottom: '2rem' }}
       >
-        <Grid.Row centered>
-          <Header as={'h2'} style={{ paddingTop: '2rem' }}>
+        <Row centered>
+          <h2 style={{ paddingTop: '2rem' }}>
             Interested Participants for Team: {this.props.teams[0].name}
-          </Header>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column>
-            <Item.Group divided>
+          </h2>
+        </Row>
+        <Row>
+          <Col>
+            <ListGroup divided>
               {/* eslint-disable-next-line max-len */}
               {getInterestedDevelopers(this.props.interestedDevs).map(
                 (developers) => (
@@ -135,12 +134,11 @@ class InterestedParticipants extends React.Component {
                   />
                 ),
               )}
-            </Item.Group>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+            </ListGroup>
+          </Col>
+        </Row>
+      </Container>
     );
-  }
 }
 InterestedParticipants.propTypes = {
   developerChallenges: PropTypes.array.isRequired,
@@ -155,16 +153,12 @@ InterestedParticipants.propTypes = {
 };
 
 export default withTracker(() => {
-  // console.log(match);
   // const documentId = match.params._id;
   // eslint-disable-next-line no-undef
   let url = window.location.href;
   url = url.split('/');
-  // console.log(url);
   const documentId = url[url.length - 1];
-  // console.log(Teams.find({ _id: documentId }).fetch());
   // eslint-disable-next-line max-len
-  // console.log(InterestedDevs.find({ teamID: TeamDevelopers.findDoc({ developerID: Developers.findDoc({ userID: Meteor.userId() })._id }).teamID }).fetch());
   return {
     // eslint-disable-next-line max-len
     developers: Participants.find({}).fetch(),
@@ -177,6 +171,5 @@ export default withTracker(() => {
     skills: Skills.find({}).fetch(),
     challenges: Challenges.find({}).fetch(),
     tools: Tools.find({}).fetch(),
-    // developers: Developers.find({}).fetch(),
   };
 })(InterestedParticipants);
