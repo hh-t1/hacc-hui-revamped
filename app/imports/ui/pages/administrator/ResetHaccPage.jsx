@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import { FaSyncAlt } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
-import swal from "sweetalert";
+import {Redirect} from "react-router-dom";
+import {ROUTES} from "../../../startup/client/route-constants";
 
 const ResetHaccPage = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isConfirmDisabled, setIsConfirmDisabled] = useState(true);
+  const [redirect, setRedirect] = useState(false);
 
   const handleResetClick = () => {
     setShowConfirmation(true);
@@ -21,8 +24,21 @@ const ResetHaccPage = () => {
     Meteor.call('haccReset');
     setShowConfirmation(false);
 
-    swal('Success', 'HACC Hui has been reset.', 'success');
+    Swal.fire({
+      title: '<strong>Success!</strong>',
+      text: 'HACC Hui has been reset.',
+      icon: 'success',
+      showCloseButton: true,
+      focusConfirm: false,
+      confirmButtonText: 'OK',
+    }).then(() => {
+      setRedirect(true);
+    });
   };
+
+  if (redirect) {
+    return <Redirect to={ROUTES.LANDING} />;
+  }
 
   const beforePress = (
     <div
