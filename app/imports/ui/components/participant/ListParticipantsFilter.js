@@ -160,6 +160,7 @@ class ListParticipantsFilter {
    * @param participant The participants
    * @returns {[]|*} Returns the filtered array
    */
+
   filterByChallenge(value, allChallenges, participantChallenge, participant) {
     // if there are no tools selected
     if (value.length === 0) {
@@ -201,6 +202,8 @@ class ListParticipantsFilter {
     return participants;
   }
 
+
+
   /**
    * Filters through the data based on the user selection. By default, if no option is selected it
    * returns the original data
@@ -211,7 +214,6 @@ class ListParticipantsFilter {
    * @returns {[]|*} Returns the filtered array
    */
   filterByTeam(value, allTeams, participantTeam, participant) {
-    // if there are no tools selected
     if (value.length === 0) {
       return participant;
     }

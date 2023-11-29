@@ -1,13 +1,4 @@
 import React from 'react';
-import {
-  Grid,
-  Header,
-  Item,
-  Icon,
-  Segment,
-  Input,
-  Dropdown,
-} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { _ } from 'lodash';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -21,6 +12,8 @@ import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import ListParticipantsCard from './ListParticipantsCard';
 import ListParticipantsFilter from './ListParticipantsFilter';
+import { BsFillPeopleFill } from 'react-icons/bs';
+import { Container, Row, Col, ListGroup, Form } from 'react-bootstrap';
 
 class ListParticipantsWidget extends React.Component {
   constructor(props) {
@@ -41,11 +34,11 @@ class ListParticipantsWidget extends React.Component {
     if (this.props.participants.length === 0) {
       return (
         <div style={{ textAlign: 'center' }}>
-          <Header as="h2" icon>
-            <Icon name="users" />
+          <h2>
+            <BsFillPeopleFill/>
             There are no participants at the moment.
-            <Header.Subheader>Please check back later.</Header.Subheader>
-          </Header>
+            <h4>Please check back later.</h4>
+          </h2>
         </div>
       );
     }
@@ -81,6 +74,7 @@ class ListParticipantsWidget extends React.Component {
         this.props.participantChallenges,
         toolResults,
       );
+
       const sorted = filters.sortBy(challengeResults, 'participants');
       this.setState(
         {
@@ -111,7 +105,6 @@ class ListParticipantsWidget extends React.Component {
         },
       );
     };
-
     const getTools = (event, { value }) => {
       this.setState(
         {
@@ -159,7 +152,6 @@ class ListParticipantsWidget extends React.Component {
           }
         }
       }
-      // console.log(data);
       return data;
     }
 
@@ -199,9 +191,9 @@ class ListParticipantsWidget extends React.Component {
 
     return (
       <div style={{ paddingBottom: '50px' }}>
-        <Grid container doubling relaxed stackable centered>
-          <Grid.Row centered>
-            <Grid.Column width={16}>
+        <Container doubling relaxed stackable centered>
+          <Row>
+            <Col width={16}>
               <div
                 style={{
                   backgroundColor: '#E5F0FE',
@@ -210,86 +202,85 @@ class ListParticipantsWidget extends React.Component {
                   borderRadius: '2rem',
                 }}
               >
-                <Header as={'h2'} textAlign="center">
+                <h2 style={{textAlign: "center"}}>
                   All Participants
-                </Header>
+                </h2>
               </div>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Column width={4}>
-            <Segment style={sticky}>
+            </Col>
+          </Row>
+          <Row>
+          <Col width={3}>
+            <div style={sticky}>
               <div style={{ paddingTop: '2rem' }}>
-                <Header>
-                  <Header.Content>
+                <h3>
                     Total Participants: {this.state.result.length}
-                  </Header.Content>
-                </Header>
+                </h3>
               </div>
               <div style={{ paddingTop: '2rem' }}>
-                <Input
+                <Form>
+                <Form.Control
                   icon="search"
                   iconPosition="left"
                   placeholder="Search by participants name..."
                   onChange={handleSearchChange}
                   fluid
                 />
+                </Form>
                 <div style={{ paddingTop: '2rem' }}>
-                  <Header>Teams</Header>
-                  <Dropdown
-                    placeholder="Teams"
-                    fluid
-                    multiple
-                    search
-                    selection
-                    options={filters.dropdownValues(this.props.teams, 'name')}
-                    onChange={getTeam}
-                  />
+                  <h3>Teams</h3>
+                  <Form.Select onChange={getTeam}>
+                    {filters
+                        .dropdownValues(this.props.teams, 'name')
+                        .map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.text}
+                            </option>
+                        ))}
+                  </Form.Select>
                 </div>
 
                 <div style={{ paddingTop: '2rem' }}>
-                  <Header>Challenges</Header>
-                  <Dropdown
-                    placeholder="Challenges"
-                    fluid
-                    multiple
-                    search
-                    selection
-                    options={filters.dropdownValues(
-                      this.props.challenges,
-                      'title',
+                  <h3>Challenges</h3>
+                  <Form.Select onChange={getChallenge}>
+                    {filters.dropdownValues(
+                        this.props.challenges,
+                        'title').map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.text}
+                      </option>
+                        )
                     )}
-                    onChange={getChallenge}
-                  />
+                  </Form.Select>
                 </div>
               </div>
               <div style={{ paddingTop: '2rem' }}>
-                <Header>Skills</Header>
-                <Dropdown
-                  placeholder="Skills"
-                  fluid
-                  multiple
-                  search
-                  selection
-                  options={filters.dropdownValues(this.props.skills, 'name')}
-                  onChange={getSkills}
-                />
+                <h3>Skills</h3>
+                <Form.Select onChange={getSkills}>
+                  {filters
+                      .dropdownValues(this.props.skills, 'name')
+                      .map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.text}
+                          </option>
+                      ))}
+                </Form.Select>
               </div>
               <div style={{ paddingTop: '2rem' }}>
-                <Header>Tools</Header>
-                <Dropdown
-                  placeholder="Tools"
-                  fluid
-                  multiple
-                  search
-                  selection
-                  options={filters.dropdownValues(this.props.tools, 'name')}
-                  onChange={getTools}
-                />
+                <h3>Tools</h3>
+                <Form.Select onChange={getTools}>
+                  {filters
+                      .dropdownValues(this.props.tools, 'name')
+                      .map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.text}
+                          </option>
+                      ))}
+                </Form.Select>
               </div>
-            </Segment>
-          </Grid.Column>
-          <Grid.Column width={12}>
-            <Item.Group divided>
+            </div>
+          </Col>
+          <Col xs={9}>
+            <ListGroup divided>
               {this.state.result.map((participants) => (
                 <ListParticipantsCard
                   key={participants._id}
@@ -309,9 +300,10 @@ class ListParticipantsWidget extends React.Component {
                   )}
                 />
               ))}
-            </Item.Group>
-          </Grid.Column>
-        </Grid>
+            </ListGroup>
+          </Col>
+          </Row>
+        </Container>
       </div>
     );
   }
