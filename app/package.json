@@ -31,7 +31,8 @@
     "uniforms-bootstrap5": "^3.10.2",
     "uniforms-bridge-simple-schema-2": "^3.10.2",
     "uniforms-semantic": "^3.10.2",
-    "xkpasswd": "^1.0.5"
+    "xkpasswd": "^1.0.5",
+    "@faker-js/faker": "^8.3.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.3.1",

@@ -1,16 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Grid,
-  Header,
-  Item,
-  List,
-  Button,
-  Modal,
-  Icon,
-} from 'semantic-ui-react';
+import { Modal, ListGroup, Col, Row, Container, Button } from 'react-bootstrap';
 import _ from 'lodash';
 import { withTracker } from 'meteor/react-meteor-data';
+import { CiCircleCheck } from 'react-icons/ci';
+import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
@@ -24,100 +18,108 @@ const ViewTeam = ({
   team,
   teamMembers,
 }) => {
+  const [showModal, setShowModal] = useState(false);
   const allParticipants = participants;
   const captain = allParticipants.filter((p) => team.owner === p._id)[0];
   const challenge = teamChallenges[0];
-
   function changeBackground(e) {
     e.currentTarget.style.backgroundColor = '#fafafa';
     e.currentTarget.style.cursor = 'pointer';
   }
-
   function onLeave(e) {
     e.currentTarget.style.backgroundColor = 'transparent';
   }
+  const handleClose = () => {
+    setShowModal(false);
+  };
+
+  const handleShow = () => {
+    setShowModal(true);
+  };
 
   // console.log(team, captain, teamChallenges);
   return (
-    <Item
+    <Container
       className={`team-item team-${team.name}`}
       onMouseEnter={changeBackground}
       onMouseLeave={onLeave}
       style={{ padding: '1.0rem 1.5rem 1.0rem 1.5rem' }}
     >
-      <Modal
-        closeIcon
-        trigger={
-          <Item.Content>
-            <Item.Header>
-              {team.name}{' '}
-              {isCompliant ? (
-                <Icon className="green check" />
-              ) : (
-                <Icon name="exclamation circle" color="red" />
-              )}
-            </Item.Header>
-            <Item.Description>
-              <strong>Captain:</strong>{' '}
-              {captain
-                ? `${captain.firstName} ${captain.lastName}: ${captain.username}   `
-                : '   '}
-              ,<strong>Challenge:</strong>{' '}
-              {challenge ? challenge.title : 'None yet.'}
-            </Item.Description>
-          </Item.Content>
-        }
-      >
-        <Grid padded>
-          <Grid.Row>
-            <Grid.Column width={4}>
-              <Header>{team.name}</Header>
-              <List>
+      <Row>
+        <b>Captain</b>
+        {captain
+          ? `${captain.firstName} ${captain.lastName}: ${captain.username}`
+          : ''}
+        <b>Challenge:</b>
+        {challenge ? challenge.title : 'None yet.'}
+      </Row>
+      <Button variant="primary" onClick={handleShow}>
+        {team.name}{' '}
+      </Button>
+      <Modal show={showModal} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {team.name}{' '}
+            {isCompliant ? <CiCircleCheck /> : <AiOutlineExclamationCircle />}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Row>
+            <Col xs={4}>
+              <h4>{team.name}</h4>
+              <ListGroup>
                 {teamChallenges.map((c) => (
-                  <List.Item key={c._id}>{c.title}</List.Item>
+                  <ListGroup.Item key={c._id}>{c.title}</ListGroup.Item>
                 ))}
-              </List>
-              <Header as="h4">Captain</Header>
+              </ListGroup>
+              <h4>Captain</h4>
               {captain
                 ? `${captain.firstName} ${captain.lastName}: ${captain.username}`
                 : ''}
-            </Grid.Column>
-            <Grid.Column width={5}>
-              <Header>Members</Header>
-              <List bulleted>
+            </Col>
+            <Col xs={5}>
+              <h4>Members</h4>
+              <ListGroup variant="flush">
                 {teamMembers.map((t) => (
-                  <List.Item key={t}>{t}</List.Item>
+                  <ListGroup.Item key={t}>{t}</ListGroup.Item>
                 ))}
-              </List>
-            </Grid.Column>
-            <Grid.Column width={5}>
+              </ListGroup>
+            </Col>
+            <Col xs={5}>
               {isCompliant ? (
-                <Header>Team is Compliant</Header>
+                <h4>Team is Compliant</h4>
               ) : (
-                <Header>
+                <h4>
                   <mark>Team is not Compliant</mark>
-                </Header>
+                </h4>
               )}
-              <Header>Devpost Page</Header>
+              <h4>Devpost Page</h4>
               {team.devPostPage}
-              <Header>Github Repo</Header>
+              <h4>Github Repo</h4>
               {team.gitHubRepo}
-            </Grid.Column>
-            <Grid.Column width={2}>
-              {/* eslint-disable-next-line max-len */}
-              <Button>
+            </Col>
+            <Col xs={2}>
+              <Button variant="primary">
                 <Link
                   to={`/admin-edit-team/${team._id}`}
-                  style={{ color: 'rgba(0, 0, 0, 0.6)' }}
+                  style={{
+                    color: 'rgba(0, 0, 0, 0.6)',
+                    textDecoration: 'none',
+                  }}
                 >
                   Edit
                 </Link>
               </Button>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+            </Col>
+          </Row>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
       </Modal>
-    </Item>
+    </Container>
   );
 };
 
