@@ -1,5 +1,4 @@
 import React from 'react';
-
 import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
 import SuggestToolSkillWidget from '../../components/participant/SuggestToolSkillWidget';
 
