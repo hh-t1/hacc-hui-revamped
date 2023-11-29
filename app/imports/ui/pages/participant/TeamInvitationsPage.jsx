@@ -57,13 +57,6 @@ const TeamInvitationsPage = () => {
     };
   });
 
-  // const sortBy = [
-  //   { key: 'teams', text: 'teams', value: 'teams' },
-  //   { key: 'challenges', text: 'challenges', value: 'challenges' },
-  //   { key: 'skills', text: 'skills', value: 'skills' },
-  //   { key: 'tools', text: 'tools', value: 'tools' },
-  // ];
-
   function getTeamInvitations(invs) {
     const data = [];
     for (let i = 0; i < invs.length; i++) {
