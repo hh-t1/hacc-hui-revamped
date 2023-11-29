@@ -40,7 +40,12 @@ const ResetHaccPage = () => {
         </Row>
         <Row>
           <Col className="text-center mx-auto py-3">
-            <Button variant="primary" onClick={handleResetClick} size="lg">
+            <Button
+              variant="primary"
+              onClick={handleResetClick}
+              size="lg"
+              id="reset-button"
+            >
               <FaSyncAlt /> Reset
             </Button>
           </Col>
@@ -67,6 +72,7 @@ const ResetHaccPage = () => {
               onClick={handleConfirmReset}
               disabled={isConfirmDisabled}
               size="lg"
+              id="confirm-button"
             >
               Confirm Reset
             </Button>{' '}
@@ -85,6 +91,7 @@ const ResetHaccPage = () => {
 
   return (
     <div
+      id="reset-hacc"
       className="d-flex justify-content-center align-items-center"
       style={{ height: '100vh' }}
     >
