@@ -36,4 +36,5 @@ export const ROUTES = {
   UPDATE_MP: '/update-minor-participants',
   SHOW_MINOR: '/show-minor',
   ALL_TEAM_INVITATIONS: '/all-team-invitations',
+  RESET_HACC: '/reset-hacc',
 };

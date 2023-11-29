@@ -52,6 +52,7 @@ import HelpPage from '../pages/HelpPage';
 import InterestedParticipantPage from '../pages/participant/InterestedParticipantPage';
 import AllTeamInvitationsPage from '../pages/administrator/AllTeamInvitationsPage';
 import ShowMinorPage from '../pages/administrator/ShowMinorPage';
+import ResetHaccPage from '../pages/administrator/ResetHaccPage';
 
 /**
  * Top-level layout component for this application. Called in imports/startup/client/startup.jsx.
@@ -114,6 +115,7 @@ const App = () => {
       <AdminProtectedRoute path={ROUTES.ADMIN_EDIT_TEAM} component={AdminEditTeamPage} />
       <AdminProtectedRoute path={ROUTES.VIEW_TEAMS} component={ViewTeamsPage} />
       <AdminProtectedRoute path={ROUTES.ALL_TEAM_INVITATIONS} component={AllTeamInvitationsPage} />
+      <AdminProtectedRoute path={ROUTES.RESET_HACC} component={ResetHaccPage} />
       <Route component={NotFound} />
     </Switch>
   );
