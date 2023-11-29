@@ -161,6 +161,7 @@ class ListParticipantsFilter {
    * @returns {[]|*} Returns the filtered array
    */
 
+  /*
   filterByChallenge(value, allChallenges, participantChallenge, participant) {
     // if there are no tools selected
     if (value.length === 0) {
@@ -202,6 +203,34 @@ class ListParticipantsFilter {
     return participants;
   }
 
+   */
+  filterByChallenge(selectedChallenges, allChallenges, participantChallenges, data) {
+    if (!selectedChallenges || selectedChallenges.length === 0) {
+      return data;
+    }
+
+    return data.filter((participant) => {
+      const participantChallengeIds = participantChallenges
+          .filter((pc) => pc.participantID === participant._id)
+          .map((pc) => pc.challengeID);
+
+      console.log('Participant ID:', participant._id);
+      console.log('Participant Challenge IDs:', participantChallengeIds);
+      console.log('Selected Challenges:', selectedChallenges);
+
+      const selectedChallengeIds = selectedChallenges.map(String);
+      const participantChallengeIds2 = participantChallengeIds.map(String);
+
+      const result = selectedChallengeIds.some((selectedChallengeId) =>
+          participantChallengeIds2.includes(selectedChallengeId)
+      );
+
+      console.log('Filter Result:', result);
+
+      return result;
+    });
+  }
+
   /**
    * Filters through the data based on the user selection. By default, if no option is selected it
    * returns the original data
@@ -212,7 +241,6 @@ class ListParticipantsFilter {
    * @returns {[]|*} Returns the filtered array
    */
   filterByTeam(value, allTeams, participantTeam, participant) {
-    // if there are no tools selected
     if (value.length === 0) {
       return participant;
     }
@@ -266,9 +294,8 @@ class ListParticipantsFilter {
 
     for (let i = 0; i < values.length; i++) {
       info.push({
-        key: values[i],
-        text: values[i],
-        value: values[i],
+        label: values[i],
+        value: i,
       });
     }
 

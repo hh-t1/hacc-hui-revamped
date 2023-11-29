@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Dropdown,
 } from 'semantic-ui-react';
+import Select from 'react-select'
 import PropTypes from 'prop-types';
 import { _ } from 'lodash';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -21,7 +22,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { ListGroup } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
-import { Dropdown as BDropdown } from 'react-bootstrap'
 
 class ListParticipantsWidget extends React.Component {
   constructor(props) {
@@ -82,6 +82,8 @@ class ListParticipantsWidget extends React.Component {
         this.props.participantChallenges,
         toolResults,
       );
+      console.log('Challenge Results:', challengeResults);
+
       const sorted = filters.sortBy(challengeResults, 'participants');
       this.setState(
         {
@@ -113,6 +115,7 @@ class ListParticipantsWidget extends React.Component {
       );
     };
 
+    /*
     const getTools = (event, { value }) => {
       this.setState(
         {
@@ -124,6 +127,36 @@ class ListParticipantsWidget extends React.Component {
       );
     };
 
+     */
+
+    /*
+    const getTools = (selectedOptions) => {
+      const selectedValues = selectedOptions.map((option) => option.value);
+      this.setState(
+          {
+            tools: selectedValues,
+          },
+          () => {
+            setFilters();
+          },
+      );
+    };
+
+     */
+
+    const getTools = (selectedOptions) => {
+      const selectedValues = selectedOptions.map((option) => option.value);
+      this.setState(
+          {
+            tools: selectedValues,
+          },
+          () => {
+            setFilters();
+          },
+      );
+    };
+
+    /*
     const getChallenge = (event, { value }) => {
       this.setState(
         {
@@ -135,6 +168,20 @@ class ListParticipantsWidget extends React.Component {
       );
     };
 
+     */
+
+    const getChallenge = (selectedOptions) => {
+      const selectedValues = selectedOptions.map((option) => option.value);
+      this.setState(
+          {
+            challenges: selectedValues,
+          },
+          () => {
+            setFilters();
+          },
+      );
+    };
+    /*
     const getTeam = (event, { value }) => {
       this.setState(
         {
@@ -144,6 +191,21 @@ class ListParticipantsWidget extends React.Component {
           setFilters();
         },
       );
+    };
+
+     */
+
+    const getTeam = (selectedOptions) => {
+      const selectedValues = selectedOptions.map((option) => option.value);
+      this.setState(
+          {
+            teams: selectedValues,
+          },
+          () => {
+            setFilters();
+          },
+      );
+      console.log(filters.dropdownValues(this.props.teams, 'name'));
     };
 
     const universalSkills = this.props.skills;
@@ -160,7 +222,6 @@ class ListParticipantsWidget extends React.Component {
           }
         }
       }
-      // console.log(data);
       return data;
     }
 
@@ -237,25 +298,17 @@ class ListParticipantsWidget extends React.Component {
                 </Form>
                 <div style={{ paddingTop: '2rem' }}>
                   <h3>Teams</h3>
-                  <Dropdown
-                    placeholder="Teams"
-                    fluid
-                    multiple
-                    search
-                    selection
-                    options={filters.dropdownValues(this.props.teams, 'name')}
-                    onChange={getTeam}
+                  <Select
+                      isMulti
+                      options={filters.dropdownValues(this.props.teams, 'name')}
+                      onChange={getTeam}
                   />
                 </div>
 
                 <div style={{ paddingTop: '2rem' }}>
                   <h3>Challenges</h3>
-                  <Dropdown
-                    placeholder="Challenges"
-                    fluid
-                    multiple
-                    search
-                    selection
+                  <Select
+                      isMulti
                     options={filters.dropdownValues(
                       this.props.challenges,
                       'title',
@@ -266,24 +319,16 @@ class ListParticipantsWidget extends React.Component {
               </div>
               <div style={{ paddingTop: '2rem' }}>
                 <h3>Skills</h3>
-                <Dropdown
-                  placeholder="Skills"
-                  fluid
-                  multiple
-                  search
-                  selection
+                <Select
+                    isMulti
                   options={filters.dropdownValues(this.props.skills, 'name')}
                   onChange={getSkills}
                 />
               </div>
               <div style={{ paddingTop: '2rem' }}>
                 <h3>Tools</h3>
-                <Dropdown
-                  placeholder="Tools"
-                  fluid
-                  multiple
-                  search
-                  selection
+                <Select
+                    isMulti
                   options={filters.dropdownValues(this.props.tools, 'name')}
                   onChange={getTools}
                 />

@@ -1,6 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-import { Grid, Segment, Loader } from 'semantic-ui-react';
 import swal from 'sweetalert';
 import {
   AutoForm,
@@ -26,6 +25,11 @@ import { ParticipantTools } from '../../../api/user/ParticipantToolCollection';
 import { ParticipantSkills } from '../../../api/user/ParticipantSkillCollection';
 import { ParticipantChallenges } from '../../../api/user/ParticipantChallengeCollection';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { Card } from 'react-bootstrap';
+import Spinner from 'react-bootstrap/Spinner';
 
 // added challenges, skills, tools fields to the Participants schema
 const schema = new SimpleSchema({
@@ -57,12 +61,12 @@ const schema = new SimpleSchema({
  * A simple edit page thats prefilled with any info about the participant.
  * @memberOf ui/pages
  */
-class EditProfile extends React.Component {
+const EditProfile = () => {
   /**
    * On successful submit, insert the data.
    * @param data {Object} the result from the form.
    */
-  submit(data) {
+  const submit = (data) => {
     const {
       firstName,
       lastName,
@@ -144,16 +148,15 @@ class EditProfile extends React.Component {
   }
 
   /** If the subscription(s) have been received, render the page, otherwise show a loading icon. */
-  render() {
-    return this.props.ready ? (
-      this.renderPage()
+    return this.props.ready ? (() => renderPage()
     ) : (
-      <Loader active>Getting data</Loader>
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
     );
-  }
 
   /** Render the page once subscriptions have been received. */
-  renderPage() {
+  const renderPage = () => {
     const formSchema = new SimpleSchema2Bridge(schema);
     const challengeList = _.map(this.props.challenges, 'title');
     const skillList = _.map(this.props.skills, 'name');
@@ -189,24 +192,24 @@ class EditProfile extends React.Component {
     dev.challenges = devChal;
 
     return (
-      <Grid stackable={true} textAlign="center" container>
-        <Grid.Row columns={1}>
-          <Grid.Column>
+      <Container stackable={true} textAlign="center" container>
+        <Row columns={1}>
+          <Col>
             <h1>Edit Your Profile</h1>
-          </Grid.Column>
-          <Grid.Column floated="right">
+          </Col>
+          <Col floated="right">
             <Link to="/profile">Cancel</Link>
-          </Grid.Column>
-        </Grid.Row>
+          </Col>
+        </Row>
 
-        <Grid.Row>
-          <Grid.Column>
+        <Row>
+          <Col>
             <AutoForm
               schema={formSchema}
-              onSubmit={(data) => this.submit(data)}
+              onSubmit={(data) => submit(data)}
               model={dev}
             >
-              <Segment>
+              <Card body>
                 <SelectField name="demographicLevel" />
                 <BoolField name="lookingForTeam" />
                 <TextField
@@ -241,11 +244,11 @@ class EditProfile extends React.Component {
                 />
                 <SubmitField value="Submit" />
                 <ErrorsField />
-              </Segment>
+              </Card>
             </AutoForm>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
