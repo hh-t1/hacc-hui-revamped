@@ -1,12 +1,6 @@
 import React, { useRef } from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
-import {
-  AutoForm,
-  ErrorsField,
-  LongTextField,
-  SubmitField,
-  TextField,
-} from 'uniforms-bootstrap5';
+import { AutoForm, ErrorsField, LongTextField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import swal from 'sweetalert';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
@@ -46,98 +40,104 @@ const schema = new SimpleSchema({
  * Renders the Page for adding stuff. **deprecated**
  * @memberOf ui/pages
  */
-class TeamCreation extends React.Component {
+const TeamCreation = ({
+                        teams,
+                        skills,
+                        tools,
+                        challenges,
+                        participants,
+                      }) => {
+
   /** On submit, insert the data.
    * @param formData {Object} the results from the form.
    * @param formRef {FormRef} reference to the form.
    */
-  // eslint-disable-next-line no-unused-vars
-  submit(formData, formRef) {
-    const skillsArr = this.props.skills;
-    const skillsObj = [];
+    // eslint-disable-next-line no-unused-vars
+  const submit = (e) => {
+      e.preventDefault();
 
-    const toolsArr = this.props.tools;
-    const toolsObj = [];
+      const skillsArr = this.props.skills;
+      const skillsObj = [];
 
-    const challengesArr = this.props.challenges;
-    const challengesObj = [];
+      const toolsArr = this.props.tools;
+      const toolsObj = [];
 
-    const owner = Participants.findDoc({ userID: Meteor.userId() }).username;
+      const challengesArr = this.props.challenges;
+      const challengesObj = [];
 
-    const { name, description, challenges, skills, tools, image } = formData;
-    let { open } = formData;
-    if (open === 'Open') {
-      open = true;
-    } else {
-      open = false;
-    }
+      const owner = Participants.findDoc({ userID: Meteor.userId() }).username;
 
-    for (let i = 0; i < skillsArr.length; i++) {
-      for (let j = 0; j < skills.length; j++) {
-        if (skillsArr[i].name === skills[j]) {
-          skillsObj.push(Slugs.getNameFromID(skillsArr[i].slugID));
+      const {
+        name, description, challenges, skills, tools, image,
+      } = formData;
+      let { open } = formData;
+      if (open === 'Open') {
+        open = true;
+      } else {
+        open = false;
+      }
+
+      for (let i = 0; i < skillsArr.length; i++) {
+        for (let j = 0; j < skills.length; j++) {
+          if (skillsArr[i].name === skills[j]) {
+            skillsObj.push(Slugs.getNameFromID(skillsArr[i].slugID));
+          }
         }
       }
-    }
 
-    for (let i = 0; i < toolsArr.length; i++) {
-      for (let j = 0; j < tools.length; j++) {
-        if (toolsArr[i].name === tools[j]) {
-          toolsObj.push(Slugs.getNameFromID(toolsArr[i].slugID));
+      for (let i = 0; i < toolsArr.length; i++) {
+        for (let j = 0; j < tools.length; j++) {
+          if (toolsArr[i].name === tools[j]) {
+            toolsObj.push(Slugs.getNameFromID(toolsArr[i].slugID));
+          }
         }
       }
-    }
 
-    for (let i = 0; i < challengesArr.length; i++) {
-      for (let j = 0; j < challenges.length; j++) {
-        if (challengesArr[i].title === challenges[j]) {
-          challengesObj.push(Slugs.getNameFromID(challengesArr[i].slugID));
+      for (let i = 0; i < challengesArr.length; i++) {
+        for (let j = 0; j < challenges.length; j++) {
+          if (challengesArr[i].title === challenges[j]) {
+            challengesObj.push(Slugs.getNameFromID(challengesArr[i].slugID));
+          }
         }
       }
-    }
 
-    // If the name has special character or space, throw a swal error and return early.
-    if (/^[a-zA-Z0-9-]*$/.test(name) === false) {
-      swal('Error', 'Sorry, no special characters or space allowed.', 'error');
-      return;
+      // If the name has special character or space, throw a swal error and return early.
+      if (/^[a-zA-Z0-9-]*$/.test(name) === false) {
+        swal('Error', 'Sorry, no special characters or space allowed.', 'error');
+        return;
+      }
+      const collectionName = Teams.getCollectionName();
+      const definitionData = {
+        name,
+        description,
+        owner,
+        open,
+        image,
+        challenges: challengesObj,
+        skills: skillsObj,
+        tools: toolsObj,
+      };
+      defineMethod.call({
+          collectionName,
+          definitionData,
+        },
+        (error) => {
+          if (error) {
+            swal('Error', error.message, 'error');
+          } else {
+            swal('Success', 'Team created successfully', 'success');
+            formRef.reset();
+          }
+        });
     }
-    const collectionName = Teams.getCollectionName();
-    const definitionData = {
-      name,
-      description,
-      owner,
-      open,
-      image,
-      challenges: challengesObj,
-      skills: skillsObj,
-      tools: toolsObj,
-    };
-    defineMethod.call(
-      {
-        collectionName,
-        definitionData,
-      },
-      (error) => {
-        if (error) {
-          swal('Error', error.message, 'error');
-        } else {
-          swal('Success', 'Team created successfully', 'success');
-          formRef.reset();
-        }
-      },
-    );
-  }
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
-  render() {
-    return this.props.ready ? (
-      this.renderPage()
-    ) : (
+  return (
+    (this.props.ready) ? this.renderPage() :
       <div className="spinner-border" role="status">
         <span className="sr-only">Getting data</span>
       </div>
-    );
-  }
+  );
 
   renderPage() {
     const fRef = null;
@@ -150,76 +150,45 @@ class TeamCreation extends React.Component {
       <Container centered>
         <Row>
           <hr />
-          <AutoForm
-            ref={useRef(fRef)}
-            schema={formSchema}
-            onSubmit={(data) => this.submit(data, fRef)}
-            style={{
-              paddingBottom: '40px',
-            }}
-          >
+          <AutoForm ref={useRef(fRef)} schema={formSchema} onSubmit={data => this.submit(data, fRef)}
+                    style={{
+                      paddingBottom: '40px',
+                    }}>
             <ul
               style={{
                 borderRadius: '10px',
                 backgroundColor: '#E5F0FE',
-              }}
-              className={'createTeam'}
-            >
+              }} className={'createTeam'}>
               <Row columns={1} style={{ paddingTop: '20px' }}>
                 <Col style={{ paddingLeft: '30px', paddingRight: '30px' }}>
-                  <Container as="h2" textAlign="center" inverted>
-                    Team Information
-                  </Container>
-                  <Col className="doubleLine">
-                    <TextField name="name" />
+                  <Container as="h2" textAlign="center" inverted>Team Information</Container>
+                  <Col className='doubleLine'>
+                    <TextField name='name' />
                     <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        value=""
-                        id="flexRadioDefault"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexRadioDefault"
-                      >
+                      <input className="form-check-input" type="radio" value="" id="flexRadioDefault"/>
+                      <label className="form-check-label" htmlFor="flexRadioDefault">
                         open
                       </label>
                     </div>
                   </Col>
-                  <TextField name="image" placeholder={'Team Image URL'} />
-                  <LongTextField name="description" />
-                  <MultiSelectField
-                    name="challenges"
-                    placeholder={'Challenges'}
-                    allowedValues={challengeArr}
-                    required
-                  />
-                  <MultiSelectField
-                    name="skills"
-                    placeholder={'Skills'}
-                    allowedValues={skillArr}
-                    required
-                  />
-                  <MultiSelectField
-                    name="tools"
-                    placeholder={'Toolsets'}
-                    allowedValues={toolArr}
-                    required
-                  />
+                  <TextField name='image' placeholder={'Team Image URL'} />
+                  <LongTextField name='description' />
+                  <MultiSelectField name='challenges' placeholder={'Challenges'}
+                                    allowedValues={challengeArr} required />
+                  <MultiSelectField name='skills' placeholder={'Skills'}
+                                    allowedValues={skillArr} required />
+                  <MultiSelectField name='tools' placeholder={'Toolsets'}
+                                    allowedValues={toolArr} required />
                   <TextField name="github" />
                   <TextField name="devpostPage" />
                 </Col>
               </Row>
               <div style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <SubmitField
-                  value="Submit"
-                  style={{
-                    color: 'white',
-                    backgroundColor: '#dd000a',
-                    margin: '20px 0px',
-                  }}
-                />
+                <SubmitField value='Submit'
+                             style={{
+                               color: 'white', backgroundColor: '#dd000a',
+                               margin: '20px 0px',
+                             }} />
               </div>
               <ErrorsField />
             </ul>
@@ -228,7 +197,7 @@ class TeamCreation extends React.Component {
       </Container>
     );
   }
-}
+};
 
 TeamCreation.propTypes = {
   challenges: PropTypes.array.isRequired,
@@ -236,6 +205,7 @@ TeamCreation.propTypes = {
   tools: PropTypes.array.isRequired,
   participants: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
+
 };
 
 export default useTracker(() => {
@@ -250,10 +220,6 @@ export default useTracker(() => {
     tools: Tools.find({}).fetch(),
     participants: Participants.find({}).fetch(),
     // eslint-disable-next-line max-len
-    ready:
-      subscriptionChallenges.ready() &&
-      subscriptionSkills.ready() &&
-      subscriptionTools.ready() &&
-      subscriptionParticipants.ready(),
+    ready: subscriptionChallenges.ready() && subscriptionSkills.ready() && subscriptionTools.ready() && subscriptionParticipants.ready(),
   };
 })(TeamCreation);
