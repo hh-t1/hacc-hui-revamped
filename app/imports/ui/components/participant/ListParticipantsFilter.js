@@ -160,6 +160,7 @@ class ListParticipantsFilter {
    * @param participant The participants
    * @returns {[]|*} Returns the filtered array
    */
+
   filterByChallenge(value, allChallenges, participantChallenge, participant) {
     // if there are no tools selected
     if (value.length === 0) {

@@ -1,11 +1,5 @@
 import React from 'react';
 import {
-  Grid,
-  Header,
-  Item,
-  Icon,
-  Segment,
-  Input,
   Dropdown,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
@@ -21,6 +15,13 @@ import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import ListParticipantsCard from './ListParticipantsCard';
 import ListParticipantsFilter from './ListParticipantsFilter';
+import { BsFillPeopleFill } from 'react-icons/bs';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { ListGroup } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
+import { Dropdown as BDropdown } from 'react-bootstrap'
 
 class ListParticipantsWidget extends React.Component {
   constructor(props) {
@@ -41,11 +42,11 @@ class ListParticipantsWidget extends React.Component {
     if (this.props.participants.length === 0) {
       return (
         <div style={{ textAlign: 'center' }}>
-          <Header as="h2" icon>
-            <Icon name="users" />
+          <h2>
+            <BsFillPeopleFill/>
             There are no participants at the moment.
-            <Header.Subheader>Please check back later.</Header.Subheader>
-          </Header>
+            <h4>Please check back later.</h4>
+          </h2>
         </div>
       );
     }
@@ -147,7 +148,7 @@ class ListParticipantsWidget extends React.Component {
 
     const universalSkills = this.props.skills;
 
-    function getParticipantSkills(participantID, participantSkills) {
+    const getParticipantSkills = (participantID, participantSkills) => {
       const data = [];
       const skills = _.filter(participantSkills, {
         participantID: participantID,
@@ -165,7 +166,7 @@ class ListParticipantsWidget extends React.Component {
 
     const universalTools = this.props.tools;
 
-    function getParticipantTools(participantID, participantTools) {
+    const getParticipantTools = (participantID, participantTools) => {
       const data = [];
       const tools = _.filter(participantTools, {
         participantID: participantID,
@@ -182,7 +183,7 @@ class ListParticipantsWidget extends React.Component {
 
     const universalChallenges = this.props.challenges;
 
-    function getParticipantChallenges(participantID, participantChallenges) {
+    const getParticipantChallenges = (participantID, participantChallenges) => {
       const data = [];
       const challenges = _.filter(participantChallenges, {
         participantID: participantID,
@@ -199,9 +200,9 @@ class ListParticipantsWidget extends React.Component {
 
     return (
       <div style={{ paddingBottom: '50px' }}>
-        <Grid container doubling relaxed stackable centered>
-          <Grid.Row centered>
-            <Grid.Column width={16}>
+        <Container doubling relaxed stackable centered>
+          <Row>
+            <Col width={16}>
               <div
                 style={{
                   backgroundColor: '#E5F0FE',
@@ -210,31 +211,32 @@ class ListParticipantsWidget extends React.Component {
                   borderRadius: '2rem',
                 }}
               >
-                <Header as={'h2'} textAlign="center">
+                <h2 style={{textAlign: "center"}}>
                   All Participants
-                </Header>
+                </h2>
               </div>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Column width={4}>
-            <Segment style={sticky}>
+            </Col>
+          </Row>
+          <Row>
+          <Col width={3}>
+            <div style={sticky}>
               <div style={{ paddingTop: '2rem' }}>
-                <Header>
-                  <Header.Content>
+                <h3>
                     Total Participants: {this.state.result.length}
-                  </Header.Content>
-                </Header>
+                </h3>
               </div>
               <div style={{ paddingTop: '2rem' }}>
-                <Input
+                <Form>
+                <Form.Control
                   icon="search"
                   iconPosition="left"
                   placeholder="Search by participants name..."
                   onChange={handleSearchChange}
                   fluid
                 />
+                </Form>
                 <div style={{ paddingTop: '2rem' }}>
-                  <Header>Teams</Header>
+                  <h3>Teams</h3>
                   <Dropdown
                     placeholder="Teams"
                     fluid
@@ -247,7 +249,7 @@ class ListParticipantsWidget extends React.Component {
                 </div>
 
                 <div style={{ paddingTop: '2rem' }}>
-                  <Header>Challenges</Header>
+                  <h3>Challenges</h3>
                   <Dropdown
                     placeholder="Challenges"
                     fluid
@@ -263,7 +265,7 @@ class ListParticipantsWidget extends React.Component {
                 </div>
               </div>
               <div style={{ paddingTop: '2rem' }}>
-                <Header>Skills</Header>
+                <h3>Skills</h3>
                 <Dropdown
                   placeholder="Skills"
                   fluid
@@ -275,7 +277,7 @@ class ListParticipantsWidget extends React.Component {
                 />
               </div>
               <div style={{ paddingTop: '2rem' }}>
-                <Header>Tools</Header>
+                <h3>Tools</h3>
                 <Dropdown
                   placeholder="Tools"
                   fluid
@@ -286,10 +288,10 @@ class ListParticipantsWidget extends React.Component {
                   onChange={getTools}
                 />
               </div>
-            </Segment>
-          </Grid.Column>
-          <Grid.Column width={12}>
-            <Item.Group divided>
+            </div>
+          </Col>
+          <Col xs={9}>
+            <ListGroup divided>
               {this.state.result.map((participants) => (
                 <ListParticipantsCard
                   key={participants._id}
@@ -309,9 +311,10 @@ class ListParticipantsWidget extends React.Component {
                   )}
                 />
               ))}
-            </Item.Group>
-          </Grid.Column>
-        </Grid>
+            </ListGroup>
+          </Col>
+          </Row>
+        </Container>
       </div>
     );
   }
