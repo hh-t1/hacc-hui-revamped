@@ -1,6 +1,4 @@
 
-![ci-badge](https://github.com/hh-t1/hacc-hui-revamped/actions/workflows/ci.yml/badge.svg)
-
 ## Contributing
 
 ### 1. Create an issue for something and assign yourself
